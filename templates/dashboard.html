@@ -4,1389 +4,1061 @@
 
 {% block content %}
 <style>
-/* ===== Notification Bell (with badge + small alert animation) ===== */
-/* ✅ Dashboard ONLY: reserve space for top bar */
-
-.notify-wrap{
-  width:34px;
-  height:34px;
-  border-radius:12px;
-  background:rgba(0,0,0,.18);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex: 0 0 auto;
-  text-decoration:none;
-  position: relative; /* ✅ for badge */
+/* ===== PIPO Financing Color Theme ===== */
+:root {
+  --primary:   #1B2A5E;
+  --accent:    #F5C518;
+  --danger:    #E03020;
+  --secondary: #1A4DB5;
+  --white:     #FFFFFF;
+  --light-bg:  #F4F6FB;
 }
 
-/* badge number */
+/* ===== Notification Bell ===== */
+.notify-wrap{
+  width:34px; height:34px; border-radius:12px;
+  background:rgba(0,0,0,.18);
+  display:flex; align-items:center; justify-content:center;
+  flex: 0 0 auto; text-decoration:none; position: relative;
+}
 .notify-badge{
-  position:absolute;
-  top:-6px;
-  right:-6px;
-  min-width:18px;
-  height:18px;
-  padding:0 6px;
-  border-radius:999px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  font-size:11px;
-  font-weight:950;
-  color:#fff;
-
-  background:#ef4444;
-  box-shadow: 0 6px 14px rgba(0,0,0,.35);
+  position:absolute; top:-6px; right:-6px;
+  min-width:18px; height:18px; padding:0 6px;
+  border-radius:999px; display:flex; align-items:center; justify-content:center;
+  font-size:11px; font-weight:950; color:#fff;
+  background:#ef4444; box-shadow: 0 6px 14px rgba(0,0,0,.35);
   border: 2px solid rgba(0,0,0,.25);
 }
-/* ===== Unread pulse (CSS only) ===== */
-.notify-wrap.has-unread{
-  animation: notifPulse 1.35s ease-in-out infinite;
-}
-
+.notify-wrap.has-unread{ animation: notifPulse 1.35s ease-in-out infinite; }
 @keyframes notifPulse{
   0%   { box-shadow: 0 0 0 0 rgba(239,68,68,.45); }
   70%  { box-shadow: 0 0 0 10px rgba(239,68,68,0); }
   100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
 }
-
-/* ===== Red dot mode (no number) ===== */
-/* ✅ if you want dot-only, add class "dot-only" on <a class="notify-wrap ..."> */
 .notify-wrap.dot-only .notify-badge{
-  min-width:10px;
-  width:10px;
-  height:10px;
-  padding:0;
-  border-radius:999px;
-  font-size:0;          /* hide number */
-  line-height:0;
-  top: -4px;
-  right: -4px;
+  min-width:10px; width:10px; height:10px; padding:0;
+  border-radius:999px; font-size:0; line-height:0; top:-4px; right:-4px;
 }
-
-/* bell base */
 .bell-container{
-  --color:#ffffff;
-  --size:22px;
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  font-size:var(--size);
-  fill:var(--color);
-  text-decoration:none;
-  color: inherit;
+  --color:#ffffff; --size:22px; position:relative;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; font-size:var(--size); fill:var(--color);
+  text-decoration:none; color: inherit;
 }
 .bell-container input{ display:none; }
-
-.bell-regular,
-.bell-solid{
-  width:22px;
-  height:22px;
-  position:absolute;
+.bell-regular, .bell-solid{
+  width:22px; height:22px; position:absolute;
   transition:transform .3s ease, opacity .3s ease;
 }
 .bell-solid{ opacity:0; }
-
-.bell-container input:checked ~ .bell-regular{
-  transform:rotate(-15deg);
-  opacity:0;
-}
-.bell-container input:checked ~ .bell-solid{
-  opacity:1;
-  animation:ring .5s ease;
-}
-
-/* ✅ alert animation when there is unread */
-.notify-wrap.has-unread{
-  animation: pop .28s ease;
-}
+.bell-container input:checked ~ .bell-regular{ transform:rotate(-15deg); opacity:0; }
+.bell-container input:checked ~ .bell-solid{ opacity:1; animation:ring .5s ease; }
 .notify-wrap.has-unread .bell-regular{
   animation: bellShake 1.2s ease-in-out infinite;
   transform-origin: 50% 10%;
 }
 @keyframes bellShake{
-  0%{ transform: rotate(0); }
-  10%{ transform: rotate(-12deg); }
-  20%{ transform: rotate(12deg); }
-  30%{ transform: rotate(-9deg); }
-  40%{ transform: rotate(9deg); }
-  50%{ transform: rotate(-6deg); }
-  60%{ transform: rotate(6deg); }
-  70%{ transform: rotate(-3deg); }
-  80%{ transform: rotate(3deg); }
-  100%{ transform: rotate(0); }
+  0%{ transform: rotate(0); } 10%{ transform: rotate(-12deg); }
+  20%{ transform: rotate(12deg); } 30%{ transform: rotate(-9deg); }
+  40%{ transform: rotate(9deg); } 50%{ transform: rotate(-6deg); }
+  60%{ transform: rotate(6deg); } 70%{ transform: rotate(-3deg); }
+  80%{ transform: rotate(3deg); } 100%{ transform: rotate(0); }
 }
-@keyframes pop{
-  from{ transform: scale(.92); }
-  to{ transform: scale(1); }
-}
-
+@keyframes pop{ from{ transform: scale(.92); } to{ transform: scale(1); } }
 @keyframes ring{
-  0%{transform:rotate(0)}
-  25%{transform:rotate(-15deg)}
-  50%{transform:rotate(15deg)}
-  75%{transform:rotate(-10deg)}
-  100%{transform:rotate(0)}
+  0%{transform:rotate(0)} 25%{transform:rotate(-15deg)}
+  50%{transform:rotate(15deg)} 75%{transform:rotate(-10deg)} 100%{transform:rotate(0)}
 }
 
-
-  /* ===== Account Status Badge ===== */
+/* ===== Account Status Badge ===== */
 .status-badge{
-  display: inline-block;
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 13px;
-  letter-spacing: .5px;
+  display: inline-block; padding: 6px 14px; border-radius: 999px;
+  font-weight: 700; font-size: 13px; letter-spacing: .5px;
+}
+.status-active{ background: #16a34a; color: #fff; }
+.status-danger{ background: #dc2626; color: #fff; }
+.status-warn{ background: #eab308; color: #111; }
+
+html, body{ width:100%; overflow-x:hidden; }
+
+.dash-wrap{
+  width: min(520px, 94vw); margin: 0 auto;
+  padding: 0 14px 24px !important; box-sizing: border-box;
 }
 
-/* ACTIVE */
-.status-active{
-  background: #16a34a; /* green */
-  color: #fff;
-}
-
-/* FROZEN / ERROR / REJECT */
-.status-danger{
-  background: #dc2626; /* red */
-  color: #fff;
-}
-/* WARNING / YELLOW */
-.status-warn{
-  background: #eab308; /* yellow strong */
-  color: #111;         /* readable */
-}
-
-  html, body{
-    width:100%;
-    overflow-x:hidden; /* stop sideways jump/twist */
-  }
-
-  /* ===== Dashboard page layout (center on PC/phone) ===== */
-  .dash-wrap{
-  width: min(520px, 94vw);
-  margin: 0 auto;
-  padding: 0 14px 24px !important;   /* ✅ remove the 74px */
-  box-sizing: border-box;
-}
-
-  /* ===== Background fixed ===== */
-  body{
-  margin: 0;
-  min-height: 100vh;
+body{
+  margin: 0; min-height: 100vh;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-
-  /* ✅ NO overlay, show image original */
   background: url("{% static 'img/SL-012322-48100-03.webp' %}") center/cover no-repeat fixed !important;
-  background-color: #ffffff;
-  background-blend-mode: normal;
-}
-  /* ===== Top bar (mini only) ===== */
-  .topbar{
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 80;
-    background: linear-gradient(90deg, #004182, #054585d0);
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(0,0,0,.18);
-    box-shadow: 0 8px 24px rgba(0,0,0,.25);
-    transform: translateY(0);
-    transition: transform .22s ease;
-  }
-  .topbar.hide-bar{
-    transform: translateY(-110%);
-  }
-/* ===== Welcome Slide Text (RIGHT -> LEFT, fit between bell and card-left) ===== */
-.welcome-slider{
-  position:absolute;
-  left:22px;
-  right:58px;
-  top:50%;
-  transform:translateY(-50%);
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  pointer-events:none;
+  background-color: #ffffff; background-blend-mode: normal;
 }
 
-.welcome-track{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-
-  color:#fff;
-  font-weight:900;
-  font-size:10px;
-  letter-spacing:.02em;
-
-  padding:2px 10px;
-  line-height:1;
-
-  border-radius:999px;
-
+/* ===== Top bar ===== */
+.topbar{
+  position: fixed; top: 0; left: 0; right: 0; z-index: 80;
   background: linear-gradient(90deg, #004182, #054585d0);
-  border:1px solid rgba(192,192,192,.6);
-
-  box-shadow: 0 0 6px rgba(10,10,9,.6);
-
-  max-width:100%;
-  overflow:hidden;
-
-  opacity:0;
-  transform:translateY(6px);
+  padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,.18);
+  box-shadow: 0 8px 24px rgba(0,0,0,.25);
+  transform: translateY(0); transition: transform .22s ease;
 }
+.topbar.hide-bar{ transform: translateY(-110%); }
 
+.welcome-slider{
+  position:absolute; left:22px; right:58px; top:50%;
+  transform:translateY(-50%); display:flex; align-items:center;
+  justify-content:center; pointer-events:none;
+}
+.welcome-track{
+  display:inline-flex; align-items:center; justify-content:center; gap:6px;
+  color:#fff; font-weight:900; font-size:10px; letter-spacing:.02em;
+  padding:2px 10px; line-height:1; border-radius:999px;
+  background: linear-gradient(90deg, #004182, #054585d0);
+  border:1px solid rgba(192,192,192,.6); box-shadow: 0 0 6px rgba(10,10,9,.6);
+  max-width:100%; overflow:hidden; opacity:0; transform:translateY(6px);
+}
 .welcome-track.show{
-  opacity:1;
-  transform:translateY(0);
+  opacity:1; transform:translateY(0);
   transition:opacity .35s ease, transform .35s ease;
 }
-
 .welcome-dot{
-  width:6px;height:6px;border-radius:999px;
-  background: rgba(255,255,255,.75);
-  box-shadow: 0 0 10px rgba(107,255,42,.55);
-  flex: 0 0 auto;
-  opacity:.9;
+  width:6px; height:6px; border-radius:999px;
+  background: rgba(255,255,255,.75); box-shadow: 0 0 10px rgba(107,255,42,.55);
+  flex: 0 0 auto; opacity:.9;
+}
+.welcome-text{ overflow:hidden; text-overflow: ellipsis; }
+@media (max-width: 420px){ .welcome-track{ font-size:12px; padding: 4px 8px; } }
+
+.topbar-inner{
+  width: min(520px, 94vw); margin: 0 auto; position: relative;
+  display:flex; align-items:center; justify-content:space-between;
+  gap:10px; min-height: 40px; padding: 0 14px;
+  box-sizing: border-box; max-width: none;
+}
+.brand-mini{
+  position:absolute; left:50%; transform:translateX(-50%);
+  display:flex; align-items:center; gap:10px; color:#fff;
+  text-decoration:none; font-weight:900;
+}
+.brand-mini .logo{
+  width:34px; height:34px; border-radius:10px;
+  background: rgba(0,0,0,.18);
+  display:flex; align-items:center; justify-content:center; font-size:14px;
+}
+.topbar-left, .topbar-right{ display: flex; align-items: center; gap: 10px; }
+.topbar-left{ margin-left: 0px; }
+.topbar-right{ margin-right: 0px; }
+.info-btn{
+  width:34px; height:34px; border-radius:12px; border:0;
+  background: rgba(0,0,0,.18); color:#fff;
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
 }
 
-.welcome-text{
-  overflow:hidden;
-  text-overflow: ellipsis;
-}
-
-@media (max-width: 420px){
-  .welcome-track{ font-size:12px; padding: 4px 8px; }
-}
-  .topbar-inner{
-  width: min(520px, 94vw);   /* ✅ same as dash-wrap */
-  margin: 0 auto;
-  position: relative;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  min-height: 40px;
-  padding: 0 14px;          /* ✅ same padding as dash-wrap */
-  box-sizing: border-box;
-
-  max-width: none;          /* ✅ important: stop old max-width behavior */
-}
-
-  /* Brand mini still center absolutely for logo */
-  .brand-mini{
-    position:absolute;
-    left:50%;
-    transform:translateX(-50%);
-    display:flex;
-    align-items:center;
-    gap:10px;
-    color:#fff;
-    text-decoration:none;
-    font-weight:900;
-  }
-  .brand-mini .logo{
-    width:34px;height:34px;
-    border-radius:10px;
-    background: rgba(0,0,0,.18);
-    display:flex;align-items:center;justify-content:center;
-    font-size:14px;
-  }
-
-  /* === Topbar left & right buttons tweak for pixel alignment === */
-  .topbar-left,
-  .topbar-right{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .topbar-left{
-    margin-left: 0px; /* Tweak so button aligns to left edge of .cardx (profile card) */
-  }
-  .topbar-right{
-    margin-right: 0px; /* Tweak so button aligns to right edge of .cardx (profile card) */
-  }
-
-  .info-btn{
-    width:34px;height:34px;border-radius:12px;
-    border:0;
-    background: rgba(0,0,0,.18);
-    color:#fff;
-    display:flex;align-items:center;justify-content:center;
-    cursor:pointer;
-  }
-
-  /* ===== Cards ===== */
-  /* ===== Cards ===== */
+/* ===== Cards (base) ===== */
 .cardx{
-  position: relative;
-
-  background: rgba(0, 0, 0, 0.788);
-
-  border-radius: 18px;
-  border: 2px solid rgba(192, 192, 192, 0.904);
-
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-
-  box-shadow: 0 0 10px rgba(10, 10, 9, 0.788),
-              0 14px 10px rgba(0, 0, 0, 0.815);
-
-  overflow: hidden;
-  margin-bottom: 16px;
-  padding: 18px;
+  position: relative; background: rgba(0,0,0,0.788);
+  border-radius: 18px; border: 2px solid rgba(192,192,192,0.904);
+  backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
+  box-shadow: 0 0 10px rgba(10,10,9,0.788), 0 14px 10px rgba(0,0,0,0.815);
+  overflow: hidden; margin-bottom: 16px; padding: 18px;
 }
 
-  /* ===== Swipe in animation (left/right) ===== */
-  .reveal{
-    opacity:0;
-    transform: translateX(0);
-    will-change: transform, opacity;
-  }
-  .from-left{ transform: translateX(-18px); }
-  .from-right{ transform: translateX(18px); }
-  .reveal.on{
-    opacity:1;
-    transform: translateX(0);
-    transition: opacity .45s ease, transform .45s ease;
-  }
-
-  /* ===== Profile card ===== */
-  .profile-card{ display:flex; gap:12px; align-items:flex-start; }
-  .avatar{
-    width:44px;height:44px;border-radius:14px;
-    background: rgba(255, 255, 255, 0.699);
-    display:flex;align-items:center;justify-content:center;
-    flex:0 0 auto;
-    border:1px solid rgba(255,255,255,.10);
-  }
-  .avatar svg{ width:22px; height:22px; opacity:.9; }
-  .profile-main{ flex:1 1 auto; min-width:0; }
-  .row1{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
-  .title{ color:#fff; font-weight:900; font-size:18px; line-height:1.1; }
-  .subline{ color:rgba(255,255,255,.72); font-size:12px; margin-top:2px; }
-  .pill{
-    padding:6px 12px;border-radius:999px;
-    border:1px solid rgba(255,255,255,.10);
-    background: rgba(0, 65, 130, 0.60);   /* #004182 */color: rgba(255,255,255,.92);
-    color:#dfffe9;
-    font-weight:800;
-    font-size:12px;
-    white-space:nowrap;
-  }
-  .amount{
-  font-size:26px;
-  font-weight:950;
-  letter-spacing:.02em;
-  color:#fff;
-  margin-top:10px;
-} 
-  .status{ margin-top:6px;font-size:12px;font-weight:900;color:#d5ffe7; }
-
-  /* ===== Section title ===== */
-  .section-title{
-    margin: 14px 2px 10px;
-    color:#e9fff1;
-    font-weight:950;
-    font-size:12px;
-    letter-spacing:.08em;
-    text-transform:uppercase;
-    opacity:.9;
-  }
-
-/* ===== Why choose (fix long title) ===== */
-/* ===== Why choose (single line + tight spacing) ===== */
-.why-card{ padding: 14px; }
-
-.why-head{
-  display:flex;
-  align-items:center;
-  justify-content:flex-start;  /* ✅ keep together */
-  gap:6px;                     /* ✅ not far */
-  flex-wrap:wrap;
-  margin-bottom:10px;
-
-  font-weight:950;
-  line-height:1.1;
-  font-size: clamp(16px, 3.8vw, 18px);
+/* ===== Swipe in animation ===== */
+.reveal{ opacity:0; transform: translateX(0); will-change: transform, opacity; }
+.from-left{ transform: translateX(-18px); }
+.from-right{ transform: translateX(18px); }
+.reveal.on{
+  opacity:1; transform: translateX(0);
+  transition: opacity .45s ease, transform .45s ease;
 }
 
-.why-head .label{
-  color:#fff;
-  white-space:nowrap;
+/* ===== PROFILE CARD — WHITE + RED BORDER ===== */
+.cardx.card-diamond {
+  background: #FFFFFF !important;
+  border: 2px solid rgba(224,48,32,.35) !important;
+  border-radius: 22px !important;
+  box-shadow: 0 16px 48px rgba(27,42,94,.14), 0 0 0 1px rgba(245,197,24,.10) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
-.why-head .brand{
-  color:#7dd3fc;               /* ✅ visible on dark */
-  text-shadow: 0 2px 10px rgba(0,0,0,.55);
-  letter-spacing:.04em;
-  font-weight:950;
-  text-transform:uppercase;
+/* Remove diamond overlays on white card */
+.cardx.card-diamond::before,
+.cardx.card-diamond::after { display: none !important; }
 
-  white-space:nowrap;          /* ✅ force 1 line */
+/* Profile card inner layout */
+.profile-card{ display:flex; gap:12px; align-items:flex-start; }
+
+/* Avatar — navy bg on white card */
+.avatar{
+  width:44px; height:44px; border-radius:14px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  display:flex; align-items:center; justify-content:center;
+  flex:0 0 auto; border:1px solid rgba(27,42,94,.15);
+}
+.avatar svg{ width:22px; height:22px; opacity:.9; fill:#fff; }
+
+.profile-main{ flex:1 1 auto; min-width:0; }
+.row1{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+
+/* Title & subline — DARK on white card */
+.title{ color: var(--primary) !important; font-weight:900; font-size:18px; line-height:1.1; }
+.subline{ color: #64748b !important; font-size:12px; margin-top:2px; }
+
+/* Balance pill — navy */
+.pill{
+  padding:6px 12px; border-radius:999px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  color: #fff !important; font-weight:800; font-size:12px; white-space:nowrap;
+  border: none !important;
 }
 
-/* ✅ keep 1 line on all devices */
-.why-head{
-  flex-wrap: nowrap !important;   /* no wrap */
-  gap: 6px !important;
+/* Amount — dark navy */
+.amount{
+  font-size:26px; font-weight:950; letter-spacing:.02em;
+  color: var(--primary) !important; margin-top:10px;
 }
 
-.why-head .brand{
-  min-width: 0;                   /* allow shrink */
-  overflow: hidden;
-  text-overflow: ellipsis;        /* if too long -> ... */
-  white-space: nowrap !important; /* force 1 line */
-}
-
-/* ✅ mobile: make it smaller so it fits */
-@media (max-width: 420px){
-  .why-head{ gap: 4px !important; }
-
-  .why-head .label{
-    font-size: 15px;
-  }
-
-  .why-head .brand{
-    font-size: 15px;      /* reduce on phone */
-    letter-spacing: .02em;/* less spacing = more fit */
-  }
-}
-  .ad-frame{
-    border-radius: 16px; overflow:hidden;
-    border:1px solid rgba(255,255,255,.10);
-    background: rgba(0, 0, 0, 0.219);
-    position:relative;
-    height: 132px;
-  }
-  .ovelion-head{
-  font-family: "Ovelion", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  font-weight: 600;
-  letter-spacing: .04em;
-}
-  .ad-slide{
-    position:absolute; inset:0;
-    opacity:0;
-    transform: translateX(16px);
-    transition: opacity .45s ease, transform .45s ease;
-    display:flex;
-    align-items:stretch;
-    justify-content:stretch;
-  }
-  .ad-slide.on{ opacity:1; transform: translateX(0); }
-  .ad-slide img{
-    width:100%; height:100%;
-    object-fit:cover;
-    filter: contrast(1.06) saturate(1.05);
-  }
-  .ad-overlay{
-    position:absolute; inset:0;
-    background: linear-gradient(90deg, rgba(0,0,0,.60), rgba(0,0,0,.12));
-    pointer-events:none;
-  }
-  .ad-text{
-    position:absolute; left:14px; top:14px; right: 92px;
-    color:#fff; z-index:2;
-  }
-  .ad-text h4{ margin:0; font-size:16px; font-weight:950; letter-spacing:.01em; }
-  .ad-text p{ margin:4px 0 0; font-size:12px; opacity:.86; }
-  .ad-btn{
-    position:absolute; left:14px; bottom:12px; z-index:2;
-    display:inline-flex; align-items:center; gap:8px;
-    padding:7px 12px; border-radius:999px;
-    border:1px solid rgba(255,255,255,.16);
-    background: rgba(0,0,0,.28);
-    color:#fff; font-weight:900; font-size:12px;
-    text-decoration:none;
-  }
-  .dots{ display:flex; gap:6px; justify-content:center; margin-top:10px; opacity:.9; }
-  .dot{ width:7px;height:7px;border-radius:99px;background: rgba(255,255,255,.25); }
-  .dot.on{ background: #004182; }
-
-  /* ===== Apply Now button - solid + shine ===== */
-  .quick{
-    margin-top: 14px;
-    width: 100%;
-    border:0;
-    padding: 16px 18px;
-    border-radius: 999px;
-    background: linear-gradient(135deg, #0066cc 0%, #004d99 100%);
-    color:#fff;
-    font-weight:950;
-    letter-spacing:.08em;
-    text-transform: uppercase;
-    font-size: 15px;
-    box-shadow: 0 4px 12px rgba(0,65,130,.45),
-                0 0 20px rgba(125,211,252,.25);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:12px;
-    cursor:pointer;
-    position: relative;
-    overflow:hidden;
-    border: 2px solid rgba(192,192,192,.85);
-  }
-  .quick{
-  text-decoration: none !important;
-}
-
-.quick::after{
-  display: none !important;
-  content: none !important;
-}  
-  .quick .go{
-    width:30px;height:30px;border-radius:999px;
-    background: rgba(0,0,0,.20);
-    display:flex;align-items:center;justify-content:center;
-    border:1px solid rgba(255,255,255,.20);
-  }
-  .quick .go svg{ width:16px;height:16px; fill:#fff; opacity:.95; }
-
-  /* ===== Video section ===== */
-  .video-card{
-    overflow:hidden;
-    border:1px solid rgba(255,255,255,.10);
-    height: 160px;
-    position:relative;
-  }
-  .video-card video{
-    width:100%;
-    height:100%;
-    object-fit: cover;
-    display:block;
-    border-radius: 16px
-  }
-
-  /* ===== Currency table card ===== */
-  .table-card{ padding: 12px; }
-
-  /* ===== Bottom nav (CENTER, IN-FLOW, above Quick Loan) ===== */
-/* ✅ Bottom nav = NO CARD background (transparent) */
-/* ✅ bottom nav centered, no card background */
+/* ===== NAV BUTTONS — WHITE + NAVY TEXT + RED BORDER ===== */
 .bottom-nav{
-  position: static !important;
-  width: 100% !important;        /* ✅ inside .dash-wrap -> take full width */
-  margin: 12px 0 16px !important;/* ✅ no auto (avoid weird shift) */
-  padding: 0 !important;
-
-  background: transparent !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  position: static !important; width: 100% !important;
+  margin: 12px 0 16px !important; padding: 0 !important;
+  background: transparent !important; border: 0 !important;
+  border-radius: 0 !important; box-shadow: none !important;
+  backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
 }
-
-
-
-.menu-btn svg{
-  width:20px;
-  height:20px;
-  fill:#fff;
-  opacity:.95;
-}
-
-.menu-btn:active{
-  transform: scale(.99);
-}
-  .bottom-nav.hide-bar{ transform:none !important; }
-
-/* ✅ NEW NAV GRID (2x2) */
 .nav-grid{
-  display:grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  align-items: stretch;
+  display:grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px; align-items: stretch;
 }
-
-/* ✅ 2x2 grid */
-.nav-grid{
-  display:grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-
-/* ✅ Buttons = solid blue + shine */
-.bottom-nav .nav-item{
-  width:100%;
-  min-height:56px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-
-  padding:14px 12px;
-  border-radius:18px;
-
-  color:#fff;
-  text-decoration:none;
-  font-weight:950;
-  letter-spacing:.06em;
-  text-transform:uppercase;
-  font-size:12px;
-
-  /* ✅ solid blue + shine effect */
-  background: linear-gradient(135deg, #0066cc 0%, #004d99 100%);
-  border: 2px solid rgba(192,192,192,.85);
-  box-shadow: 0 4px 12px rgba(0,65,130,.45),
-              0 0 20px rgba(125,211,252,.25);
-}
-
-.bottom-nav .nav-item svg{
-  width:20px;
-  height:20px;
-  fill:#fff;
-  opacity:.95;
-}
-
-.bottom-nav .nav-item:active{
-  transform: scale(.99);
-}
-
-/* ✅ optional active highlight */
-.bottom-nav .nav-item.active{
-  outline: 2px solid rgba(125,211,252,.45);
-}
-
-.bottom-nav .nav-item svg{
-  width:20px;
-  height:20px;
-  fill:#fff;
-  opacity:.95;
-}
-
-.bottom-nav .nav-item:active{
-  transform: scale(.99);
-}
-
-/* ✅ each button fill its grid cell */
-.nav-item{
-  width: 100%;
-  min-height: 54px;               /* make it look like real button */
-  justify-content: center;
-}
-
-  .nav-item:active{ transform: scale(.98); }
-  .nav-item svg{ width:20px;height:20px; fill:#fff; opacity:.95; }
-  .nav-item.active{
-    opacity:1;
-    background: rgba(0, 65, 130, 0.22);
-    border: 1px solid rgba(255,255,255,.16);
-  }
-
-  /* ===== Exchange rate ===== */
-  .fx-scroll{
-    max-height: 260px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding-right: 2px;
-  }
-  .fx-scroll::-webkit-scrollbar{ width: 6px; }
-  .fx-scroll::-webkit-scrollbar-thumb{ background: rgba(255,255,255,.18); border-radius: 99px; }
-  .fx-table{ width:100%; border-collapse: collapse; }
-  .fx-table thead th{
-    position: sticky;
-    top: 0;
-    background: rgba(0,0,0,.35);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    z-index: 2;
-  }
-  .fx-table th, .fx-table td{ padding: 10px 10px; }
-  .fx-table th{
-    font-size: 11px;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    opacity: .85;
-  }
-  .fx-table td{ border-top: 1px solid rgba(255,255,255,.08); color:#f2fff7; }
-  .fx-left{ display:flex; align-items:center; gap:10px; min-width: 0; }
-  .fx-flag{
-    width: 22px; height: 16px;
-    object-fit: cover;
-    border-radius: 3px;
-    box-shadow: 0 0 0 1px rgba(255,255,255,.15);
-    flex: 0 0 auto;
-  }
-  .fx-code{ font-weight: 950; letter-spacing: .04em; }
-  .fx-country{
-    font-size: 11px;
-    opacity: .7;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .fx-meta{
-    display:flex;
-    justify-content: space-between;
-    align-items:center;
-    margin-top: 8px;
-    font-size: 11px;
-    opacity: .85;
-    color:#eafff1;
-  }
-  .fx-auto{ opacity: .75; }
-  
-  @media (max-width: 768px){
-  .cardx{ backdrop-filter:none !important; -webkit-backdrop-filter:none !important; }
-  .bottom-nav{ backdrop-filter:none !important; -webkit-backdrop-filter:none !important; }
-  .fx-table thead th{ backdrop-filter:none !important; -webkit-backdrop-filter:none !important; }
-}
-/* =========================
-   ✅ STEP 1: Mobile/Android performance mode
-   - Keep blur on iPhone/PC
-   - Disable blur on phone/Android (smooth)
-   ========================= */
-/* ===== STEP 2: Keep blur on iPhone/PC, disable blur on Android only ===== */
-.android-no-blur .cardx,
-.android-no-blur .bottom-nav,
-.android-no-blur .topbar,
-.android-no-blur .fx-table thead th,
-.android-no-blur .video-card{
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-/* keep look glass (but cheap for android) */
-.android-no-blur .cardx{
-  background: rgba(0,0,0,.72) !important;
-}
-
-/* ✅ FORCE badge color (prevent CSS override) */
-#accStatusBadge.status-active { background:#16a34a !important; color:#fff !important; }
-#accStatusBadge.status-warn   { background:#eab308 !important; color:#111 !important; }
-#accStatusBadge.status-danger { background:#dc2626 !important; color:#fff !important; }
-
-/* ✅ FORCE NAV BUTTONS = BLUE like Quick Loan (override all green) */
-.bottom-nav .nav-grid{
-  width: 100% !important;
-  display: grid !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: 12px !important;
-}
-
-.bottom-nav a.nav-item{
-  width: 100% !important;
-  min-height: 56px !important;
-
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 10px !important;
-
-  padding: 14px 12px !important;
-  border-radius: 18px !important;
-
-  color: #fff !important;
-  text-decoration: none !important;
-  font-weight: 950 !important;
-  letter-spacing: .06em !important;
-  text-transform: uppercase !important;
-  font-size: 12px !important;
-
-  /* ✅ same as Quick Loan */
-  background: linear-gradient(90deg, #004182, #054585d0) !important;
-  border: 1px solid rgba(255,255,255,.14) !important;
-  box-shadow: 0 16px 40px rgba(0,0,0,.45) !important;
-}
-
-.bottom-nav a.nav-item svg{
-  width: 20px !important;
-  height: 20px !important;
-  fill: #fff !important;
-  opacity: .95 !important;
-}
-
-/* ✅ Make buttons solid and clear */
+/* Override ALL nav button styles to white */
 .bottom-nav a.nav-item,
-a.quick{
-  border: 2px solid rgba(192, 192, 192, 0.85) !important;
-  box-shadow: 0 4px 12px rgba(0,65,130,.45),
-              0 0 20px rgba(125,211,252,.25) !important;
-  background: linear-gradient(135deg, #0066cc 0%, #004d99 100%) !important;
-}
-
-/* (optional) keep same radius feeling like card */
-.bottom-nav a.nav-item{ border-radius: 18px !important; }
-a.quick{ border-radius: 999px !important; }
-
-/* ✅ OUR SERVICES card = same as other cardx */
-.cardx.video-card{
-  background: rgba(0, 0, 0, 0.788) !important;
-  border: 2px solid rgba(192, 192, 192, 0.904) !important;
+.bottom-nav .nav-item {
+  width: 100% !important; min-height: 56px !important;
+  display: flex !important; flex-direction: row !important;
+  align-items: center !important; justify-content: center !important;
+  gap: 10px !important; padding: 14px 12px !important;
   border-radius: 18px !important;
-
-  box-shadow: 0 0 10px rgba(10, 10, 9, 0.788),
-              0 14px 10px rgba(0, 0, 0, 0.815) !important;
-
-  backdrop-filter: blur(22px) !important;
-  -webkit-backdrop-filter: blur(22px) !important;
-
-  padding: 18px !important;
-  overflow: hidden !important;
-  height: 160px; /* keep your size */
+  background: #FFFFFF !important;
+  border: 2px solid rgba(224,48,32,.32) !important;
+  color: var(--primary) !important;
+  text-decoration: none !important; font-weight: 950 !important;
+  letter-spacing: .06em !important; text-transform: uppercase !important;
+  font-size: 12px !important;
+  box-shadow: 0 8px 24px rgba(27,42,94,.12) !important;
+  transition: transform .15s ease, box-shadow .15s ease !important;
+}
+.bottom-nav a.nav-item:active,
+.bottom-nav .nav-item:active {
+  transform: scale(.98) !important;
+  box-shadow: 0 4px 12px rgba(27,42,94,.10) !important;
 }
 
-/* ✅ video must follow same radius */
-.cardx.video-card video{
-  border-radius: 16px !important;
+/* SVG icons → NAVY on white buttons */
+.bottom-nav a.nav-item svg,
+.bottom-nav .nav-item svg {
+  width: 20px !important; height: 20px !important;
+  fill: var(--primary) !important; opacity: 1 !important;
 }
 
-/* ✅ Company name marquee (slide to show all letters) */
-.why-head .brand.marquee{
-  position: relative;
-  flex: 1 1 auto;          /* take remaining space */
-  min-width: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: clip !important; /* stop ... */
+/* Active state — same as all other buttons (no highlight) */
+.bottom-nav .nav-item.active {
+  background: #FFFFFF !important;
+  border-color: rgba(224,48,32,.32) !important;
 }
 
-/* the moving text */
-.why-head .brand.marquee .marquee-inner{
-  display: inline-block;
-  padding-left: 100%;               /* start from right */
-  animation: brandMarquee 10s linear infinite;
-  will-change: transform;
+/* ===== Apply Now button — YELLOW + RED BORDER ===== */
+.quick{
+  margin-top: 14px; width: 100%; border:0;
+  padding: 16px 18px; border-radius: 999px;
+  background: #F5C518 !important;
+  color: var(--primary) !important;
+  font-weight:950; letter-spacing:.08em;
+  text-transform: uppercase; font-size: 15px;
+  border: 1px solid var(--danger) !important;
+  box-shadow: 0 10px 28px rgba(245,197,24,.45) !important;
+  display:flex; align-items:center; justify-content:center;
+  gap:12px; cursor:pointer; position: relative; overflow:hidden;
+  text-decoration: none !important;
+  transition: transform .15s ease, box-shadow .15s ease !important;
 }
-
-/* speed control (mobile faster a bit) */
-@media (max-width: 420px){
-  .why-head .brand.marquee .marquee-inner{
-    animation-duration: 8s;
-  }
+.quick:active{ transform: scale(.98) !important; }
+.quick::after{ display: none !important; content: none !important; }
+.quick .go{
+  width:30px; height:30px; border-radius:999px;
+  background: rgba(27,42,94,.15);
+  display:flex; align-items:center; justify-content:center;
+  border:1px solid rgba(27,42,94,.20);
 }
+.quick .go svg{ width:16px; height:16px; fill: var(--primary) !important; opacity:.9; }
 
-/* move right -> left */
-@keyframes brandMarquee{
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
-}
-
-/* ✅ optional: pause when user press */
-.why-head .brand.marquee:active .marquee-inner{
-  animation-play-state: paused;
-}
-/* ===============================
-   ✅ TOPBAR = SAME WIDTH AS CARD
-   =============================== */
-
-/* 1) topbar background full width (ok) */
-.topbar{
-  left: 0;
-  right: 0;
-  width: 100%;
-}
-
-/* 2) make inner EXACT same width + same padding as .dash-wrap */
-.topbar-inner{
-  width: min(520px, 94vw) !important;   /* ✅ same as .dash-wrap */
-  margin: 0 auto !important;
-  padding: 0 14px !important;          /* ✅ same as .dash-wrap padding */
-  box-sizing: border-box !important;
-}
-
-/* 3) OPTIONAL: If you want topbar look like a card (border + radius) */
-.topbar{
-  background: transparent !important;  /* remove full bar color */
-  padding: 10px 0 !important;
-  box-shadow: none !important;
-  border-bottom: 0 !important;
-}
-.topbar-inner{
-  background: linear-gradient(90deg, #004182, #054585d0) !important;
-  border-radius: 18px !important;
-  border: 2px solid rgba(192, 192, 192, 0.904) !important;
-  box-shadow: 0 0 10px rgba(10,10,9,0.788), 0 14px 10px rgba(0,0,0,0.815) !important;
-  min-height: 50px !important;
-}
-
-:root{
-  --topbar-h: 58px;   /* ✅ height of the top bar card */
-  --topbar-gap: 14px; /* ✅ gap like other cards */
-}
-
-/* ✅ Topbar card stays fixed */
-.topbar{
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-
-  background: transparent !important;
-  padding: 10px 0 !important; /* outer breathing */
-  box-shadow: none !important;
-  border-bottom: 0 !important;
-  z-index: 80;
-}
-
-/* ✅ inner looks like card and controls real height */
-.topbar-inner{
-  height: var(--topbar-h) !important;
-  width: min(520px, 94vw) !important;
-  margin: 0 auto !important;
-  padding: 0 14px !important;
-  box-sizing: border-box !important;
-
-  background: linear-gradient(90deg, #004182, #054585d0) !important;
-  border-radius: 18px !important;
-  border: 2px solid rgba(192, 192, 192, 0.904) !important;
-  box-shadow: 0 0 10px rgba(10,10,9,0.788),
-              0 14px 10px rgba(0,0,0,0.815) !important;
-
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-}
-
-/* ✅ DASHBOARD: remove double spacing from base + dashboard */
-.wrap{
-  padding-top: 18px !important;     /* keep base top spacing only */
-}
-
-/* ✅ topbar card height + gap like other cards */
-:root{
-  --topbar-h: 58px;
-  --topbar-gap: 14px;
-}
-/* =========================
-   ✅ FINAL TOPBAR FIX (NO OVERLAP + SOLID BG)
-   ========================= */
-
-/* 1) Dashboard only: stop base wrap from adding extra top space */
-.wrap{
-  padding-top: 0 !important;
-}
-
-/* 2) One source of truth for topbar sizing */
-:root{
-  --topbar-pad: 10px;      /* outer padding of .topbar */
-  --topbar-card-h: 58px;   /* height of .topbar-inner card */
-  --topbar-gap: 14px;      /* gap between topbar and first card */
-}
-
-/* 3) Topbar always solid (background 100%) */
-.topbar{
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 999;
-  padding: var(--topbar-pad) 0 !important;
-
-  /* ✅ make the area behind TOPBAR solid (no showing wallpaper) */
-  background: #004182 !important;/* or #004182 if you want full blue */
-  box-shadow: none !important;
-  border-bottom: 0 !important;
-}
-
-/* 4) The card itself (inner) stays like your design */
-.topbar-inner{
-  height: var(--topbar-card-h) !important;
-  width: min(520px, 94vw) !important;
-  margin: 0 auto !important;
-  padding: 0 14px !important;
-  box-sizing: border-box !important;
-
-  background: linear-gradient(90deg, #004182, #054585) !important; /* 100% color */
-  border-radius: 18px !important;
-  border: 2px solid rgba(192, 192, 192, 0.904) !important;
-  box-shadow: 0 0 10px rgba(10,10,9,0.788),
-              0 14px 10px rgba(0,0,0,0.815) !important;
-
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-}
-
-/* 5) ✅ This is the main fix: push content down exactly */
-.dash-wrap{
-  padding-top: calc(
-    (var(--topbar-pad) * 2) + var(--topbar-card-h) + var(--topbar-gap)
-  ) !important;
-}
-/* ✅ Remove the blue background behind the topbar (keep the topbar card) */
-.topbar{
-  background: transparent !important;   /* remove big blue bar */
-}
-
-/* ✅ Optional: remove any shadow behind the big bar (card still has its own shadow) */
-.topbar{
-  box-shadow: none !important;
-}
-/* ✅ ONLY profile card = diamond/real card look */
-.cardx.card-diamond{
-  position: relative;
-  background: linear-gradient(135deg,
-    #004182 0%,
-    #053a66 45%,
-    #0b2f55 70%,
-    #d4af37 100%) !important; /* blue + gold */
-
-  border: 2px solid rgba(212,175,55,.90) !important; /* gold border */
-  border-radius: 18px !important;
-
-  box-shadow: 0 18px 46px rgba(0,0,0,.55),
-              0 0 0 1px rgba(255,255,255,.10) inset !important;
-
-  overflow: hidden;
-}
-
-/* polygon / diamond texture */
-.cardx.card-diamond::before{
-  content:"";
-  position:absolute;
-  inset:-40%;
-  background:
-    linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,0) 60%),
-    repeating-linear-gradient(135deg,
-      rgba(255,255,255,.14) 0px,
-      rgba(255,255,255,.14) 14px,
-      rgba(255,255,255,0) 14px,
-      rgba(255,255,255,0) 34px);
-  transform: rotate(18deg);
-  opacity:.50;
-  pointer-events:none;
-}
-
-/* shine sweep */
-.cardx.card-diamond::after{
-  content:"";
-  position:absolute; inset:0;
-  background: linear-gradient(120deg,
-    transparent 0%,
-    rgba(255,255,255,.22) 50%,
-    transparent 100%);
-  transform: translateX(-120%);
-  animation: diamondShine 3.6s ease-in-out infinite;
-  pointer-events:none;
-  opacity:.55;
-}
-
-@keyframes diamondShine{
-  0%,55%{ transform: translateX(-120%); }
-  100%{ transform: translateX(120%); }
-}
-
-/* keep inside content above overlays */
-.cardx.card-diamond > *{
-  position: relative;
-  z-index: 2;
-}
-/* ✅ Section titles: OUR SERVICES / CURRENCY = blue+gold shine */
+/* ===== Section title ===== */
 .section-title{
-  font-weight: 950 !important;
-  letter-spacing: .12em !important;
-  text-transform: uppercase !important;
+  margin: 14px 2px 10px; color:#e9fff1; font-weight:950;
+  font-size:12px; letter-spacing:.08em; text-transform:uppercase; opacity:.9;
+}
 
-  /* gradient text */
+/* ===== WHY CHOOSE CARD — WHITE + RED BORDER ===== */
+.why-card{
+  position: relative; background: #FFFFFF !important;
+  border: 2px solid rgba(224,48,32,.28) !important;
+  border-radius: 22px !important;
+  box-shadow: 0 16px 48px rgba(27,42,94,.12), 0 0 0 1px rgba(245,197,24,.12) !important;
+  overflow: hidden; color: #1B2A5E !important;
+  padding: 14px;
+}
+.why-card::before{ display: none !important; }
+
+.why-card > *{ position: relative; z-index: 2; }
+
+.ovelion-head{
+  font-family: "Ovelion", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 600; letter-spacing: .04em;
+}
+
+/* ===== Currency card — WHITE + RED BORDER ===== */
+.table-card{ padding: 12px; }
+.cardx.table-card{
+  position: relative !important; border-radius: 22px !important;
+  background: #FFFFFF !important;
+  border: 2px solid rgba(224,48,32,.28) !important;
+  box-shadow: 0 16px 48px rgba(27,42,94,.12), 0 0 0 1px rgba(245,197,24,.12) !important;
+  overflow: hidden !important; padding: 14px !important; color: #1B2A5E !important;
+}
+.cardx.table-card, .cardx.table-card *{ color: #1B2A5E !important; }
+.fx-table td{ border-top: 1px solid rgba(27,42,94,.10) !important; }
+.fx-table thead th{
+  background: var(--primary) !important; color: #ffffff !important;
+  border-bottom: 1px solid rgba(27,42,94,.20) !important;
+}
+.fx-country{ opacity: .75 !important; color: #475569 !important; }
+.fx-meta{ color: #64748b !important; opacity: 1 !important; }
+
+/* Exchange rate table */
+.fx-scroll{
+  max-height: 260px; overflow-y: auto; overflow-x: hidden; padding-right: 2px;
+}
+.fx-scroll::-webkit-scrollbar{ width: 6px; }
+.fx-scroll::-webkit-scrollbar-thumb{ background: rgba(27,42,94,.18); border-radius: 99px; }
+.fx-table{ width:100%; border-collapse: collapse; }
+.fx-table thead th{
+  position: sticky; top: 0; z-index: 2;
+  background: var(--primary) !important; color:#fff !important;
+  font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+  padding: 10px 10px;
+}
+.fx-table th, .fx-table td{ padding: 10px 10px; }
+.fx-left{ display:flex; align-items:center; gap:10px; min-width: 0; }
+.fx-flag{
+  width: 22px; height: 16px; object-fit: cover;
+  border-radius: 3px; box-shadow: 0 0 0 1px rgba(0,0,0,.08); flex: 0 0 auto;
+}
+.fx-code{ font-weight: 950; letter-spacing: .04em; color: var(--primary) !important; }
+.fx-meta{
+  display:flex; justify-content: space-between; align-items:center;
+  margin-top: 8px; font-size: 11px;
+}
+.fx-auto{ opacity: .75; }
+
+/* Currency heading inside white card */
+.cardx.table-card h3{
+  color: var(--primary) !important;
+}
+
+/* Section titles */
+.section-title{
+  font-weight: 950 !important; letter-spacing: .12em !important;
+  text-transform: uppercase !important;
   background: linear-gradient(90deg, #004182, #d4af37, #004182) !important;
   background-size: 220% 100% !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
+  -webkit-background-clip: text !important; background-clip: text !important;
   color: transparent !important;
-
-  /* glow */
-  text-shadow: 0 2px 14px rgba(0,65,130,.35),
-               0 2px 18px rgba(212,175,55,.22) !important;
-  opacity: 1 !important;
-}
-
-/* ✨ shiny move */
-.section-title{
+  text-shadow: none !important; opacity: 1 !important;
   animation: titleShine 3.2s linear infinite !important;
+  display: inline-block !important; padding-bottom: 6px !important;
+  border-bottom: 2px solid rgba(212,175,55,.55) !important;
 }
 @keyframes titleShine{
   0%{ background-position: 0% 50%; }
   100%{ background-position: 220% 50%; }
 }
-.section-title{
-  display: inline-block !important;
-  padding-bottom: 6px !important;
-  border-bottom: 2px solid rgba(212,175,55,.55) !important;
+
+/* FORCE badge color */
+#accStatusBadge.status-active { background:#16a34a !important; color:#fff !important; }
+#accStatusBadge.status-warn   { background:#eab308 !important; color:#111 !important; }
+#accStatusBadge.status-danger { background:#dc2626 !important; color:#fff !important; }
+
+/* Android no blur */
+@media (max-width: 768px){
+  .cardx{ backdrop-filter:none !important; -webkit-backdrop-filter:none !important; }
+  .bottom-nav{ backdrop-filter:none !important; -webkit-backdrop-filter:none !important; }
+  .fx-table thead th{ backdrop-filter:none !important; -webkit-backdrop-filter:none !important; }
 }
-/* ✅ Currency table header text = WHITE (fix missing/black) */
-.fx-table thead th{
-  color: #ffffff !important;
-  opacity: 1 !important;
-  text-shadow: 0 2px 10px rgba(0,0,0,.6) !important;
+.android-no-blur .cardx,
+.android-no-blur .bottom-nav,
+.android-no-blur .topbar,
+.android-no-blur .fx-table thead th {
+  backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
 }
 
-/* ✅ optional: make header row look cleaner */
-.fx-table thead{
-  border-bottom: 1px solid rgba(255,255,255,.10) !important;
+/* Topbar */
+:root{
+  --topbar-pad: 10px;
+  --topbar-card-h: 58px;
+  --topbar-gap: 14px;
 }
-/* ✅ WHY CHOOSE CARD = Blue + Gold theme */
-.why-card{
-  position: relative;
 
-  background: linear-gradient(
-    135deg,
-    #004182 0%,
-    #053a66 45%,
-    #0b2f55 70%,
-    #d4af37 100%
-  ) !important;
+.topbar{
+  position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+  padding: var(--topbar-pad) 0 !important;
+  background: transparent !important;
+  box-shadow: none !important; border-bottom: 0 !important;
+}
 
-  border: 2px solid rgba(212,175,55,.90) !important; /* gold border */
+.topbar-inner{
+  height: var(--topbar-card-h) !important;
+  width: min(520px, 94vw) !important;
+  margin: 0 auto !important; padding: 0 14px !important;
+  box-sizing: border-box !important;
+  background: #1B2A5E !important;
   border-radius: 18px !important;
+  border: 2px solid rgba(192,192,192,0.70) !important;
+  box-shadow: 0 0 10px rgba(10,10,9,0.50), 0 14px 20px rgba(0,0,0,0.40) !important;
+  display: flex !important; align-items: center !important; justify-content: space-between !important;
+}
+.wrap{ padding-top: 0 !important; }
+.dash-wrap{
+  padding-top: calc((var(--topbar-pad) * 2) + var(--topbar-card-h) + var(--topbar-gap)) !important;
+}
 
-  box-shadow: 0 20px 50px rgba(0,0,0,.55),
-              0 0 0 1px rgba(255,255,255,.08) inset !important;
+/* Status message box */
+.dash-status-msg{
+  margin-top: 10px; padding: 10px 12px; border-radius: 14px;
+  font-weight: 900; font-size: 12px; line-height: 1.35;
+  border: 2px solid rgba(255,255,255,.18); box-shadow: 0 10px 24px rgba(0,0,0,.25);
+}
+.dash-status-green{ background: linear-gradient(90deg, #0E5F2F, #1E8E3E); color:#fff; }
+.dash-status-red{ background: linear-gradient(90deg, #dc2626, #991b1b); color:#fff; }
 
+/* ===== WHY CHOOSE CARD - CAROUSEL STYLE ===== */
+
+/* Main card container */
+.why-card {
+  position: relative !important;
+  background: #FFFFFF !important;
+  border: 2px solid rgba(224,48,32,.28) !important;
+  border-radius: 22px !important;
+  box-shadow: 0 20px 56px rgba(27,42,94,.14), 0 0 0 1px rgba(245,197,24,.15) !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  margin-top: 14px !important;
+}
+
+/* Animated shine effect across card */
+.why-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.4), transparent);
+  animation: cardShine 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 10;
+}
+
+@keyframes cardShine {
+  0%, 60% { left: -100%; }
+  100% { left: 200%; }
+}
+
+/* Header section with navy gradient */
+.why-header {
+  padding: 16px 18px;
+  background: linear-gradient(135deg, #1B2A5E 0%, #1A4DB5 100%);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+/* Floating gold accent in header */
+.why-header::before {
+  content: "";
+  position: absolute;
+  top: -60%;
+  right: -15%;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(245,197,24,.25) 0%, transparent 65%);
+  animation: float 6s ease-in-out infinite;
+}
+
+.why-header::after {
+  content: "";
+  position: absolute;
+  bottom: -60%;
+  left: -15%;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(245,197,24,.15) 0%, transparent 65%);
+  animation: float 8s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(-10px, 10px) rotate(5deg); }
+}
+
+/* ===== ANIMATED HEADER TITLE ===== */
+.why-title {
+  font-size: 20px;
+  font-weight: 950;
+  color: #fff !important;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0;
+  position: relative;
+  z-index: 2;
+  
+  /* Gradient text with animation */
+  background: linear-gradient(90deg, #ffffff, #F5C518, #ffffff, #F5C518, #ffffff);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  
+  /* Animation */
+  animation: titleSlideIn 0.8s ease-out, titleGradientFlow 4s ease-in-out infinite;
+}
+
+@keyframes titleSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes titleGradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ===== ANIMATED SUBTITLE (Company Name) ===== */
+.why-subtitle {
+  font-size: 13px;
+  margin: 8px 0 0;
+  font-weight: 800;
+  position: relative;
+  z-index: 2;
+  letter-spacing: .08em;
+  
+  /* Gradient text */
+  background: linear-gradient(90deg, #F5C518, #FFE566, #F5C518);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  
+  /* Glow effect */
+  text-shadow: 0 0 20px rgba(245,197,24,0.5);
+  filter: drop-shadow(0 0 8px rgba(245,197,24,0.3));
+  
+  /* Animation */
+  animation: subtitleSlideIn 0.8s ease-out 0.2s both, subtitlePulse 2s ease-in-out infinite, subtitleGradient 3s linear infinite;
+}
+
+@keyframes subtitleSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes subtitlePulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba(245,197,24,0.3));
+  }
+  50% {
+    filter: drop-shadow(0 0 15px rgba(245,197,24,0.6));
+  }
+}
+
+@keyframes subtitleGradient {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+/* Decorative line under header */
+.why-header-line {
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #F5C518, transparent);
+  margin: 10px auto 0;
+  border-radius: 2px;
+  animation: lineExpand 1s ease-out 0.5s both;
+}
+
+@keyframes lineExpand {
+  0% {
+    width: 0;
+    opacity: 0;
+  }
+  100% {
+    width: 60px;
+    opacity: 1;
+  }
+}
+
+/* Carousel container */
+.why-carousel {
+  position: relative;
+  height: 280px;
+  background: #f8f9fb;
+}
+
+/* Individual slides */
+.why-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(30px);
+  transition: all .7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.why-slide.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  z-index: 2;
+}
+
+/* Split layout: Image 45% | Content 55% */
+.why-slide-inner {
+  display: grid;
+  grid-template-columns: 45% 55%;
+  height: 100%;
+  gap: 0;
+}
+
+/* MOBILE OPTIMIZATION */
+@media (max-width: 480px) {
+  .why-carousel {
+    height: auto;
+    min-height: 400px;
+  }
+  
+  .why-slide-inner {
+    grid-template-columns: 1fr;
+    grid-template-rows: 160px auto;
+    height: auto;
+    min-height: 400px;
+  }
+  
+  .why-image {
+    height: 160px;
+    min-height: 160px;
+  }
+  
+  .why-content {
+    padding: 16px 16px 70px;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+    min-height: 240px;
+  }
+  
+  .why-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 10px;
+  }
+  
+  .why-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .why-content-title {
+    font-size: 16px;
+    margin-bottom: 6px;
+    text-align: center;
+  }
+  
+  .why-content-desc {
+    font-size: 12px;
+    line-height: 1.5;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  
+  /* CENTERED BUTTON */
+  .why-learn-more {
+    padding: 12px 24px;
+    font-size: 12px;
+    align-self: center !important;
+    margin: 0 auto;
+  }
+  
+  /* Navigation buttons - move to top corners of image */
+  .why-nav {
+    width: 36px;
+    height: 36px;
+    top: 80px;
+    transform: translateY(0);
+  }
+  
+  .why-nav:hover {
+    transform: translateY(0) scale(1.05);
+  }
+  
+  .why-nav:active {
+    transform: translateY(0) scale(.95);
+  }
+  
+  .why-nav-prev {
+    left: 8px;
+  }
+  
+  .why-nav-next {
+    right: 8px;
+  }
+  
+  .why-nav svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .why-dots {
+    bottom: 14px;
+    padding: 8px 14px;
+    gap: 10px;
+  }
+  
+  .why-dot {
+    width: 8px;
+    height: 8px;
+  }
+  
+  .why-dot.active {
+    width: 24px;
+  }
+  
+  .why-title {
+    font-size: 18px;
+  }
+  
+  .why-subtitle {
+    font-size: 11px;
+  }
+}
+
+/* Even smaller screens */
+@media (max-width: 360px) {
+  .why-carousel {
+    min-height: 380px;
+  }
+  
+  .why-slide-inner {
+    grid-template-rows: 140px auto;
+    min-height: 380px;
+  }
+  
+  .why-image {
+    height: 140px;
+    min-height: 140px;
+  }
+  
+  .why-nav {
+    top: 70px;
+    width: 32px;
+    height: 32px;
+  }
+  
+  .why-content {
+    padding: 14px 12px 65px;
+    min-height: 220px;
+  }
+  
+  .why-content-title {
+    font-size: 15px;
+  }
+  
+  .why-content-desc {
+    font-size: 11px;
+    margin-bottom: 12px;
+  }
+  
+  .why-learn-more {
+    padding: 10px 20px;
+    font-size: 11px;
+  }
+}
+
+/* DESKTOP VIEW */
+@media (min-width: 481px) {
+  .why-carousel {
+    height: 280px;
+  }
+  
+  .why-slide-inner {
+    height: 280px;
+  }
+  
+  .why-content {
+    padding: 20px 18px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 0;
+  }
+  
+  .why-learn-more {
+    margin-top: 0;
+    align-self: center;
+  }
+}
+
+/* Image section */
+.why-image {
+  position: relative;
+  overflow: hidden;
+  background: #e5e7eb;
+}
+
+.why-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(1.08) contrast(1.06) saturate(1.05);
+  transform: scale(1);
+  transition: transform 8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Slow zoom animation when slide is active */
+.why-slide.active .why-image img {
+  transform: scale(1.08);
+}
+
+/* Dark overlay on image */
+.why-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(27,42,94,.05) 0%, rgba(27,42,94,.45) 100%);
+  z-index: 1;
+}
+
+/* Mobile: overlay from top to bottom */
+@media (max-width: 480px) {
+  .why-overlay {
+    background: linear-gradient(to bottom, rgba(27,42,94,.02) 0%, rgba(27,42,94,.25) 100%);
+  }
+}
+
+/* Content section */
+.why-content {
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: #ffffff;
+  position: relative;
+  min-height: 0;
+}
+
+/* Icon box */
+.why-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  box-shadow: 0 8px 20px rgba(27,42,94,.20);
+  flex-shrink: 0;
+}
+
+.why-icon svg {
+  width: 24px;
+  height: 24px;
+  fill: #fff;
+}
+
+/* Content title */
+.why-content-title {
+  font-size: 17px;
+  font-weight: 950;
+  color: var(--primary) !important;
+  margin: 0 0 8px;
+  letter-spacing: .02em;
+  line-height: 1.2;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+/* Content description */
+.why-content-desc {
+  font-size: 13px;
+  color: #64748b !important;
+  line-height: 1.6;
+  margin: 0 0 16px;
+  font-weight: 600;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+/* CENTERED Learn more button */
+.why-learn-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  color: #fff !important;
+  font-weight: 900;
+  font-size: 12px;
+  text-decoration: none;
+  align-self: center;
+  box-shadow: 0 6px 18px rgba(27,42,94,.25);
+  transition: all .25s ease;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+  border: none;
+  cursor: pointer;
+  position: relative;
   overflow: hidden;
 }
 
-/* ✨ Diamond shine overlay */
-.why-card::before{
-  content:"";
-  position:absolute;
-  inset:-40%;
-  background:
-    linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,0) 60%),
-    repeating-linear-gradient(135deg,
-      rgba(255,255,255,.10) 0px,
-      rgba(255,255,255,.10) 14px,
-      rgba(255,255,255,0) 14px,
-      rgba(255,255,255,0) 34px);
-  transform: rotate(18deg);
-  opacity:.45;
-  pointer-events:none;
+/* Button shine effect */
+.why-learn-more::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s;
 }
 
-/* ✨ moving shine */
-.why-card::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background: linear-gradient(
-    120deg,
-    transparent 0%,
-    rgba(255,255,255,.25) 50%,
-    transparent 100%
-  );
-  transform: translateX(-120%);
-  animation: whyShine 4s ease-in-out infinite;
-  pointer-events:none;
-  opacity:.5;
+.why-learn-more:hover::before {
+  left: 100%;
 }
 
-@keyframes whyShine{
-  0%,55%{ transform: translateX(-120%); }
-  100%{ transform: translateX(120%); }
+.why-learn-more:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(27,42,94,.35);
 }
 
-/* keep text above shine */
-.why-card > *{
-  position: relative;
-  z-index: 2;
-}
-/* =========================
-   ✅ OUR SERVICES CARD STYLE (NO ANIMATION)
-   ========================= */
-
-/* Our Services section title (make bigger + blue/gold) */
-.section-title#status{
-  font-size: 14px !important;      /* bigger */
-  font-weight: 1000 !important;
-  letter-spacing: .18em !important;
-  margin-top: 16px !important;
-  margin-bottom: 10px !important;
-
-  /* blue -> gold text */
-  background: linear-gradient(90deg, #7dd3fc 0%, #ffffff 35%, #d4af37 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent !important;
-
-  text-shadow: 0 2px 10px rgba(0,0,0,.35);
+.why-learn-more:active {
+  transform: translateY(0) scale(.98);
 }
 
-/* Our Services card itself */
-.cardx.video-card{
-  position: relative !important;
-
-  /* blue + gold base */
-  background: linear-gradient(
-    135deg,
-    #004182 0%,
-    #053a66 55%,
-    #0b2f55 78%,
-    #d4af37 100%
-  ) !important;
-
-  border: 2px solid rgba(212,175,55,.90) !important; /* gold border */
-  border-radius: 18px !important;
-
-  box-shadow: 0 20px 50px rgba(0,0,0,.55),
-              0 0 0 1px rgba(255,255,255,.08) inset !important;
-
-  overflow: hidden !important;
-  padding: 14px !important; /* little inner spacing so it looks like real card */
+.why-learn-more svg {
+  width: 14px;
+  height: 14px;
+  fill: #fff;
+  flex-shrink: 0;
 }
 
-/* Stripes overlay (static, no animation) */
-.cardx.video-card::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background: repeating-linear-gradient(
-    135deg,
-    rgba(255,255,255,.10) 0px,
-    rgba(255,255,255,.10) 14px,
-    rgba(255,255,255,0) 14px,
-    rgba(255,255,255,0) 34px
-  );
-  opacity: .35;
-  pointer-events:none;
+/* Navigation dots */
+.why-dots {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 15;
+  background: rgba(255,255,255,.92);
+  padding: 8px 14px;
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px rgba(0,0,0,.12);
 }
 
-/* keep video above background */
-.cardx.video-card video{
-  position: relative;
-  z-index: 2;
-  border-radius: 14px !important;
-}
-/* Currency title bigger + blue/gold too */
-.section-title#currency{
-  font-size: 14px !important;
-  font-weight: 1000 !important;
-  letter-spacing: .18em !important;
-
-  background: linear-gradient(90deg, #7dd3fc 0%, #ffffff 35%, #d4af37 100%);
-  -webkit-background-clip:text;
-  background-clip:text;
-  color: transparent !important;
-
-  text-shadow: 0 2px 10px rgba(0,0,0,.35);
-}
-/* =========================
-   ✅ CURRENCY CARD = BLUE+GOLD (DIAMOND FACET, NO ANIMATION)
-   ========================= */
-
-/* Currency title bigger + blue/gold */
-.section-title#currency{
-  font-size: 14px !important;
-  font-weight: 1000 !important;
-  letter-spacing: .18em !important;
-  margin-top: 16px !important;
-  margin-bottom: 10px !important;
-
-  background: linear-gradient(90deg, #7dd3fc 0%, #ffffff 35%, #d4af37 100%);
-  -webkit-background-clip:text;
-  background-clip:text;
-  color: transparent !important;
-
-  text-shadow: 0 2px 10px rgba(0,0,0,.35);
+.why-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(27,42,94,.25);
+  cursor: pointer;
+  transition: all .35s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid transparent;
+  flex-shrink: 0;
 }
 
-/* Currency card base */
-.cardx.table-card{
-  position: relative !important;
-  border-radius: 18px !important;
-
-  background: linear-gradient(
-    135deg,
-    #004182 0%,
-    #073a68 50%,
-    #0b2f55 78%,
-    #d4af37 100%
-  ) !important;
-
-  border: 2px solid rgba(212,175,55,.90) !important;
-  box-shadow: 0 20px 50px rgba(0,0,0,.55),
-              0 0 0 1px rgba(255,255,255,.08) inset !important;
-
-  overflow: hidden !important;
-  padding: 14px !important;
+.why-dot:hover {
+  background: rgba(27,42,94,.45);
 }
 
-/* ✅ Diamond / Facet overlay (different style, no repeating stripes) */
-.cardx.table-card::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  opacity:.42;
-
-  background:
-    linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,0) 55%),
-    linear-gradient(315deg, rgba(212,175,55,.14), rgba(212,175,55,0) 60%),
-    linear-gradient(45deg, rgba(255,255,255,.08), rgba(255,255,255,0) 58%);
-
-  /* facet cuts */
-  clip-path: polygon(
-    0% 0%, 58% 0%, 100% 22%, 100% 100%, 40% 100%, 0% 68%,
-    0% 0%,
-    18% 20%, 42% 8%, 68% 22%, 86% 44%, 70% 70%, 44% 86%, 20% 72%
-  );
+.why-dot.active {
+  background: var(--primary);
+  width: 28px;
+  border-radius: 999px;
+  box-shadow: 0 0 16px rgba(27,42,94,.40);
 }
 
-/* extra facet lines (crystal look) */
-.cardx.table-card::after{
-  content:"";
-  position:absolute;
-  inset:-40px;
-  pointer-events:none;
-  opacity:.22;
-
-  background:
-    radial-gradient(circle at 25% 30%, rgba(255,255,255,.22), transparent 55%),
-    radial-gradient(circle at 75% 70%, rgba(212,175,55,.22), transparent 58%),
-    linear-gradient(115deg, transparent 40%, rgba(255,255,255,.12) 41%, transparent 43%),
-    linear-gradient(205deg, transparent 52%, rgba(212,175,55,.12) 53%, transparent 55%);
+/* Arrow navigation buttons */
+.why-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.95);
+  border: 2px solid rgba(27,42,94,.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 15;
+  transition: all .25s ease;
+  box-shadow: 0 6px 18px rgba(0,0,0,.15);
+  padding: 0;
 }
 
-/* Make table readable on new background */
-.cardx.table-card,
-.cardx.table-card *{
-  color: #ffffff !important;
+.why-nav:hover {
+  background: #ffffff;
+  border-color: rgba(27,42,94,.25);
+  box-shadow: 0 10px 24px rgba(0,0,0,.20);
+  transform: translateY(-50%) scale(1.05);
 }
 
-.fx-table td{
-  border-top: 1px solid rgba(255,255,255,.12) !important;
+.why-nav:active {
+  transform: translateY(-50%) scale(.95);
 }
 
-/* header area inside table (make it slightly glass but readable) */
-.fx-table thead th{
-  background: rgba(0,0,0,.22) !important;
-  color: #ffffff !important;
-  border-bottom: 1px solid rgba(255,255,255,.14) !important;
+.why-nav-prev {
+  left: 12px;
 }
 
-.fx-country{ opacity: .78 !important; }
-.fx-meta{ color:#ffffff !important; opacity:.88 !important; }
-/* ✅ Dashboard-only status message box */
-.dash-status-msg{
-  margin-top: 10px;
-  padding: 10px 12px;
-  border-radius: 14px;
-  font-weight: 900;
-  font-size: 12px;
-  line-height: 1.35;
-  border: 2px solid rgba(255,255,255,.18);
-  box-shadow: 0 10px 24px rgba(0,0,0,.25);
+.why-nav-next {
+  right: 12px;
 }
 
-.dash-status-green{
-  background: linear-gradient(90deg, #0E5F2F, #1E8E3E);
-  color:#fff;
-}
-
-.dash-status-red{
-  background: linear-gradient(90deg, #dc2626, #991b1b);
-  color:#fff;
+.why-nav svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--primary);
+  flex-shrink: 0;
 }
 </style>
 
@@ -1394,47 +1066,41 @@ a.quick{ border-radius: 999px !important; }
 
 <div class="topbar">
   <div class="topbar-inner">
-
-  <div class="topbar-left" style="gap:8px;">
-    <div class="welcome-slider" aria-hidden="true">
-      <div class="welcome-track" id="welcomeTrack">
-        <span class="welcome-dot"></span>
-        <span class="welcome-text" id="welcomeText">Secure System • Trusted Service • 24/7 Support</span>
+    <div class="topbar-left" style="gap:8px;">
+      <div class="welcome-slider" aria-hidden="true">
+        <div class="welcome-track" id="welcomeTrack">
+          <span class="welcome-dot"></span>
+          <span class="welcome-text" id="welcomeText">Secure System • Trusted Service • 24/7 Support</span>
+        </div>
       </div>
     </div>
+    <a class="brand-mini" href="#top" aria-label="Top"></a>
+    <div class="topbar-right">
+      <a class="notify-wrap dot-only {% if notif_count|default:0|add:0 > 0 %}has-unread{% endif %}"
+        href="{% url 'notifications' %}" aria-label="Notifications">
+        {% if notif_count|default:0|add:0 > 0 %}
+          <span class="notify-badge">
+            {% if notif_count > 99 %}99+{% else %}{{ notif_count }}{% endif %}
+          </span>
+        {% endif %}
+        <label class="bell-container">
+          <input type="checkbox" {% if notif_count|default:0|add:0 > 0 %}checked{% endif %}>
+          <svg class="bell-regular" viewBox="0 0 24 24">
+            <path d="M12 22a2 2 0 0 0 2-2h-4a2 2 0 0 0 2 2zm6-6V11a6 6 0 1 0-12 0v5L4 18v1h16v-1l-2-2z"/>
+          </svg>
+          <svg class="bell-solid" viewBox="0 0 24 24">
+            <path d="M12 22a2 2 0 0 0 2-2h-4a2 2 0 0 0 2 2zm6-6V11a6 6 0 1 0-12 0v5L4 18v1h16v-1l-2-2z"/>
+          </svg>
+        </label>
+      </a>
+    </div>
   </div>
-
-  <a class="brand-mini" href="#top" aria-label="Top"></a>
-
-  <div class="topbar-right">
-    <a class="notify-wrap dot-only {% if notif_count|default:0|add:0 > 0 %}has-unread{% endif %}"
-      href="{% url 'notifications' %}"
-      aria-label="Notifications">
-
-      {% if notif_count|default:0|add:0 > 0 %}
-        <span class="notify-badge">
-          {% if notif_count > 99 %}99+{% else %}{{ notif_count }}{% endif %}
-        </span>
-      {% endif %}
-
-      <label class="bell-container">
-        <input type="checkbox" {% if notif_count|default:0|add:0 > 0 %}checked{% endif %}>
-        <svg class="bell-regular" viewBox="0 0 24 24">
-          <path d="M12 22a2 2 0 0 0 2-2h-4a2 2 0 0 0 2 2zm6-6V11a6 6 0 1 0-12 0v5L4 18v1h16v-1l-2-2z"/>
-        </svg>
-        <svg class="bell-solid" viewBox="0 0 24 24">
-          <path d="M12 22a2 2 0 0 0 2-2h-4a2 2 0 0 0 2 2zm6-6V11a6 6 0 1 0-12 0v5L4 18v1h16v-1l-2-2z"/>
-        </svg>
-      </label>
-    </a>
-  </div>
-
-</div>
 </div>
 
 <div class="dash-wrap">
-  <!-- Profile card -->
-  <div class="cardx profile-card metal reveal from-left card-diamond">
+
+  <!-- Profile card — WHITE + RED BORDER -->
+  <div class="cardx profile-card reveal from-left card-diamond">
     <div class="avatar" aria-hidden="true">
       {% if selfie_url %}
         <img src="{{ selfie_url }}" alt="Selfie" style="width:100%;height:100%;object-fit:cover;border-radius:14px;">
@@ -1452,31 +1118,28 @@ a.quick{ border-radius: 999px !important; }
         <div class="pill ovelion">Balance</div>
       </div>
 
-      <div class="amount"><span style="font-family:'Inter', system-ui, sans-serif; font-weight:700;">₱</span> <span data-balance>{{ request.user.balance|default:"0.00" }}</span></div>
+      <div class="amount">
+        <span style="font-family:'Inter', system-ui, sans-serif; font-weight:700;">₱</span>
+        <span data-balance>{{ request.user.balance|default:"0.00" }}</span>
+      </div>
+
       <div class="muted" style="margin-top:6px;">
-        {# Dashboard status badge #}
-        {# Dashboard status badge (the badge in image 2) #}
-{# ✅ Dashboard status badge should read from DB directly #}
-{% with raw=request.user.dashboard_status_label|default:request.user.account_status|default:"ACTIVE" %}
-  <span id="accStatusBadge"
-        class="status-badge
-        {% if raw|lower == 'active' or raw|lower == 'approved' %}
-          status-active
-        {% elif raw|lower == 'pending' or raw|lower == 'review' or raw|lower == 'app maintenance' or raw|lower == 'invalid detail' %}
-          status-warn
-        {% else %}
-          status-danger
-        {% endif %}">
-    {{ raw }}
-  </span>
-{% endwith %}
-</span>
-      </div>      
+        {% with raw=request.user.dashboard_status_label|default:request.user.account_status|default:"ACTIVE" %}
+          <span id="accStatusBadge"
+                class="status-badge
+                {% if raw|lower == 'active' or raw|lower == 'approved' %}status-active
+                {% elif raw|lower == 'pending' or raw|lower == 'review' or raw|lower == 'app maintenance' or raw|lower == 'invalid detail' %}status-warn
+                {% else %}status-danger{% endif %}">
+            {{ raw }}
+          </span>
+        {% endwith %}
+      </div>
     </div>
   </div>
-<!-- ✅ Bottom nav (4 buttons: HOME / WALLET / CONTACT / PROFILE) -->
+
+  <!-- 4 Nav buttons — WHITE + NAVY TEXT + RED BORDER -->
   <nav class="bottom-nav" role="navigation" aria-label="Bottom Navigation">
-  <div class="nav-grid">
+    <div class="nav-grid">
       <a class="nav-item" href="#top" data-nav="home" aria-label="Home">
         <svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
         HOME
@@ -1486,7 +1149,7 @@ a.quick{ border-radius: 999px !important; }
         WALLET
       </a>
       <a class="nav-item" href="{% url 'contact' %}" data-nav="contact" aria-label="Contact">
-        <svg viewBox="0 0 24 24"><path d="M4 4h16v12H7l-3 3z"/><path d="M7 8h10M7 11h7" stroke="rgba(0,0,0,.35)" stroke-width="2" stroke-linecap="round"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M4 4h16v12H7l-3 3z"/><path d="M7 8h10M7 11h7" stroke="rgba(27,42,94,.35)" stroke-width="2" stroke-linecap="round"/></svg>
         CONTACT
       </a>
       <a class="nav-item" href="/profile/" data-nav="profile" aria-label="Profile">
@@ -1495,66 +1158,111 @@ a.quick{ border-radius: 999px !important; }
       </a>
     </div>
   </nav>
-<!-- ✅ Apply Now button (ពីមុនឈ្មោះ Quick Loan) នៅពីលើ Our Services -->
+
+  <!-- Apply Now -->
   <a href="{% url 'quick_loan' %}" class="quick reveal from-left ovelion-head">
     APPLY NOW
     <span class="go" aria-hidden="true">
       <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
     </span>
   </a>
-<!-- Why choose -->
-<div class="cardx why-card metal reveal from-right" style="margin-top:14px;">
 
-  <div class="why-head ovelion">
-    <span class="label">Why Choose</span>
-    <span class="brand marquee">
-  <span class="marquee-inner">BESTLOAN FINANCE AND LEASING PHILIPPINES INC. ?</span>
-</span>
-  </div>
-
-    <div class="ad-frame" aria-label="Why choose slider">
-      <div class="ad-slide on" data-i="0">
-        <img src="{% static 'img/ads/ad1.jpg' %}" alt="Ad 1">
-        <div class="ad-overlay"></div>
-        <div class="ad-text">
-          <h4>Fast approval</h4>
-          <p>Clear process • quick verification • secure system</p>
-        </div>
-        <a class="ad-btn" href="#">Learn more <span style="opacity:.85;">›</span></a>
-      </div>
-
-      <div class="ad-slide" data-i="1">
-        <img src="{% static 'img/ads/ad2.jpg' %}" alt="Ad 2">
-        <div class="ad-overlay"></div>
-        <div class="ad-text">
-          <h4>Trusted service</h4>
-          <p>No hidden fees • transparent policy • 24/7 support</p>
-        </div>
-        <a class="ad-btn" href="#">Details <span style="opacity:.85;">›</span></a>
-      </div>
-
-      <div class="ad-slide" data-i="2">
-        <img src="{% static 'img/ads/ad3.jpg' %}" alt="Ad 3">
-        <div class="ad-overlay"></div>
-        <div class="ad-text">
-          <h4>Easy to use</h4>
-          <p>Mobile-friendly dashboard • simple steps • strong security</p>
-        </div>
-        <a class="ad-btn" href="#">Start now <span style="opacity:.85;">›</span></a>
-      </div>
+  <!-- WHY CHOOSE CARD with ANIMATED HEADER -->
+  <div class="cardx why-card reveal from-right" id="whyChooseCard">
+    <!-- Header with ANIMATED title -->
+    <div class="why-header">
+      <div class="why-title">Why Choose Us</div>
+      <div class="why-subtitle">PIPO FINANCING (PH) INC.</div>
+      <div class="why-header-line"></div>
     </div>
 
-    <div class="dots" aria-hidden="true" id="adsDots">
-      <div class="dot on"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
+    <!-- Carousel container -->
+    <div class="why-carousel" id="whyCarousel">
+      
+      <!-- Slide 1: Fast Approval -->
+      <div class="why-slide active" data-index="0">
+        <div class="why-slide-inner">
+          <div class="why-image">
+            <img src="{% static 'img/ads/ad1.jpg' %}" alt="Fast approval">
+            <div class="why-overlay"></div>
+          </div>
+          <div class="why-content">
+            <div class="why-icon">
+              <svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+            </div>
+            <h3 class="why-content-title">Fast Approval</h3>
+            <p class="why-content-desc">Clear process • Quick verification • Secure system with instant updates</p>
+            <button type="button" class="why-learn-more">
+              Learn More
+              <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Trusted Service -->
+      <div class="why-slide" data-index="1">
+        <div class="why-slide-inner">
+          <div class="why-image">
+            <img src="{% static 'img/ads/ad2.jpg' %}" alt="Trusted service">
+            <div class="why-overlay"></div>
+          </div>
+          <div class="why-content">
+            <div class="why-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2L3 7v6c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V7l-9-5z"/></svg>
+            </div>
+            <h3 class="why-content-title">Trusted Service</h3>
+            <p class="why-content-desc">No hidden fees • Transparent policy • 24/7 support always available</p>
+            <button type="button" class="why-learn-more">
+              Details
+              <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Easy To Use -->
+      <div class="why-slide" data-index="2">
+        <div class="why-slide-inner">
+          <div class="why-image">
+            <img src="{% static 'img/ads/ad3.jpg' %}" alt="Easy to use">
+            <div class="why-overlay"></div>
+          </div>
+          <div class="why-content">
+            <div class="why-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            </div>
+            <h3 class="why-content-title">Easy To Use</h3>
+            <p class="why-content-desc">Mobile-friendly • Simple steps • Strong security protection</p>
+            <button type="button" class="why-learn-more">
+              Start Now
+              <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Arrows -->
+      <button type="button" class="why-nav why-nav-prev" id="whyPrevBtn" aria-label="Previous">
+        <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <button type="button" class="why-nav why-nav-next" id="whyNextBtn" aria-label="Next">
+        <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+
+      <!-- Dots Navigation -->
+      <div class="why-dots" id="whyDots">
+        <div class="why-dot active" data-index="0"></div>
+        <div class="why-dot" data-index="1"></div>
+        <div class="why-dot" data-index="2"></div>
+      </div>
+      
     </div>
   </div>
 
   <!-- Currency -->
-
   <div class="cardx table-card reveal from-left">
-    <h3 style="text-align:center; margin:0 0 16px; font-size:14px; font-weight:950; letter-spacing:.18em; color:#fff; text-transform:uppercase;">CURRENCY</h3>
+    <h3 style="text-align:center; margin:0 0 16px; font-size:14px; font-weight:950; letter-spacing:.18em; text-transform:uppercase;">CURRENCY</h3>
     <div class="fx-scroll" aria-label="Exchange rates list">
       <table class="fx-table">
         <thead>
@@ -1567,7 +1275,6 @@ a.quick{ border-radius: 999px !important; }
         <tbody id="fxRows"></tbody>
       </table>
     </div>
-
     <div class="fx-meta">
       <div id="fxUpdated">Updated: —</div>
       <div class="fx-auto">Auto daily</div>
@@ -1577,7 +1284,6 @@ a.quick{ border-radius: 999px !important; }
 </div>
 
 <script>
-/* ===== Reveal animation on load (swipe left/right) ===== */
 (function(){
   const nodes = Array.from(document.querySelectorAll('.reveal'));
   if(!nodes.length) return;
@@ -1586,51 +1292,34 @@ a.quick{ border-radius: 999px !important; }
 </script>
 
 <script>
-/* ===== Make video show/play from first load ===== */
 (function(){
   const v = document.getElementById('statusVideo');
   if(!v) return;
-
-  const tryPlay = () => {
-    const p = v.play();
-    if(p && typeof p.catch === "function") p.catch(()=>{});
-  };
-
-  if(document.readyState === "complete" || document.readyState === "interactive"){
-    setTimeout(tryPlay, 50);
-  }else{
-    document.addEventListener("DOMContentLoaded", () => setTimeout(tryPlay, 50));
-  }
-  document.addEventListener("visibilitychange", () => {
-    if(!document.hidden) setTimeout(tryPlay, 50);
-  });
+  const tryPlay = () => { const p = v.play(); if(p && typeof p.catch === "function") p.catch(()=>{}); };
+  if(document.readyState === "complete" || document.readyState === "interactive"){ setTimeout(tryPlay, 50); }
+  else{ document.addEventListener("DOMContentLoaded", () => setTimeout(tryPlay, 50)); }
+  document.addEventListener("visibilitychange", () => { if(!document.hidden) setTimeout(tryPlay, 50); });
 })();
 </script>
 
 <script>
-/* ===== Ad slider ===== */
 (function(){
   const slides = Array.from(document.querySelectorAll('.ad-slide'));
   const dots = Array.from(document.querySelectorAll('#adsDots .dot'));
   if(!slides.length) return;
-
   let i = 0;
   setInterval(() => {
-    slides[i].classList.remove('on');
-    dots[i].classList.remove('on');
+    slides[i].classList.remove('on'); dots[i].classList.remove('on');
     i = (i + 1) % slides.length;
-    slides[i].classList.add('on');
-    dots[i].classList.add('on');
+    slides[i].classList.add('on'); dots[i].classList.add('on');
   }, 3500);
 })();
 </script>
 
 <script>
-/* ===== Bottom nav active highlight ===== */
 (function(){
   const items = Array.from(document.querySelectorAll(".bottom-nav .nav-item"));
   if(!items.length) return;
-
   function setActiveFromHash(){
     const h = (location.hash || "#top").toLowerCase();
     items.forEach(a => a.classList.remove("active"));
@@ -1643,161 +1332,233 @@ a.quick{ border-radius: 999px !important; }
 </script>
 
 <script>
-  (function () {
-    const rowsEl = document.getElementById("fxRows");
-    const updatedEl = document.getElementById("fxUpdated");
-    if (!rowsEl || !updatedEl) return;
-  
-    // ✅ Only MUST show
-    const currencies = [
-  { code:"PHP", country:"Philippines", flag:"{% static 'img/flags/philippines.png' %}" },
-  { code:"SAR", country:"Saudi",       flag:"{% static 'img/flags/saudi arabian.png' %}" },
-  { code:"MYR", country:"Malaysia",    flag:"{% static 'img/flags/malaysia.png' %}" },
-  { code:"IDR", country:"Indonesia",   flag:"{% static 'img/flags/indonesia.png' %}" },
-  { code:"INR", country:"India",       flag:"{% static 'img/flags/india.png' %}" },
-  { code:"AFN", country:"Afghanistan", flag:"{% static 'img/flags/afghanistan.png' %}" },
-  { code:"KES", country:"Kenya",       flag:"{% static 'img/flags/kenyan.png' %}" },
-  { code:"OMR", country:"Oman",        flag:"{% static 'img/flags/oman.png' %}" },
-  { code:"PKR", country:"Pakistan",    flag:"{% static 'img/flags/pakistan.png' %}" },
-  { code:"VND", country:"Vietnam",     flag:"{% static 'img/flags/vietnam.png' %}" },
-];
-  
-    function fmtRate(x){
-      if (!Number.isFinite(x)) return "—";
-      // ✅ no trailing .00
-      const s = new Intl.NumberFormat(undefined, {
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 0,
-      }).format(x);
-      return s;
-    }
-  
-    function render(rates, updatedText){
-      rowsEl.innerHTML = "";
-      currencies.forEach(c => {
-        const raw = rates && Object.prototype.hasOwnProperty.call(rates, c.code) ? rates[c.code] : null;
-        const rate = (raw === null || raw === undefined) ? NaN : Number(raw);
-  
-        const tr = document.createElement("tr");
-  
-        const td1 = document.createElement("td");
-        td1.innerHTML =
-          '<div class="fx-left">' +
-            '<img class="fx-flag" src="'+c.flag+'" alt="'+c.country+'">' +
-            '<div style="min-width:0">' +
-              '<div class="fx-code">'+c.code+'</div>' +
-              '<div class="fx-country">'+c.country+'</div>' +
-            '</div>' +
-          '</div>';
-  
-        const td2 = document.createElement("td");
-        td2.textContent = "1 USD";
-  
-        const td3 = document.createElement("td");
-        td3.style.textAlign = "right";
-        td3.textContent = Number.isFinite(rate) ? (fmtRate(rate) + " " + c.code) : ("— " + c.code);
-  
-        tr.appendChild(td1); tr.appendChild(td2); tr.appendChild(td3);
-        rowsEl.appendChild(tr);
-      });
-  
-      updatedEl.textContent = "Updated: " + (updatedText || new Date().toLocaleString());
-    }
-  
-    // ✅ IMPORTANT: use your Django endpoint
-    fetch("/api/fx/", { cache: "no-store" })
-      .then(r => r.ok ? r.json() : Promise.reject(r))
-      .then(data => render(data.rates || {}, data.updated))
-      .catch(() => render(null, null));
-  })();
-  </script>
+(function () {
+  const rowsEl = document.getElementById("fxRows");
+  const updatedEl = document.getElementById("fxUpdated");
+  if (!rowsEl || !updatedEl) return;
+  const currencies = [
+    { code:"PHP", country:"Philippines", flag:"{% static 'img/flags/philippines.png' %}" },
+    { code:"SAR", country:"Saudi",       flag:"{% static 'img/flags/saudi arabian.png' %}" },
+    { code:"MYR", country:"Malaysia",    flag:"{% static 'img/flags/malaysia.png' %}" },
+    { code:"IDR", country:"Indonesia",   flag:"{% static 'img/flags/indonesia.png' %}" },
+    { code:"INR", country:"India",       flag:"{% static 'img/flags/india.png' %}" },
+    { code:"AFN", country:"Afghanistan", flag:"{% static 'img/flags/afghanistan.png' %}" },
+    { code:"KES", country:"Kenya",       flag:"{% static 'img/flags/kenyan.png' %}" },
+    { code:"OMR", country:"Oman",        flag:"{% static 'img/flags/oman.png' %}" },
+    { code:"PKR", country:"Pakistan",    flag:"{% static 'img/flags/pakistan.png' %}" },
+    { code:"VND", country:"Vietnam",     flag:"{% static 'img/flags/vietnam.png' %}" },
+  ];
+  function fmtRate(x){
+    if (!Number.isFinite(x)) return "—";
+    return new Intl.NumberFormat(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 0 }).format(x);
+  }
+  function render(rates, updatedText){
+    rowsEl.innerHTML = "";
+    currencies.forEach(c => {
+      const raw = rates && Object.prototype.hasOwnProperty.call(rates, c.code) ? rates[c.code] : null;
+      const rate = (raw === null || raw === undefined) ? NaN : Number(raw);
+      const tr = document.createElement("tr");
+      const td1 = document.createElement("td");
+      td1.innerHTML = '<div class="fx-left"><img class="fx-flag" src="'+c.flag+'" alt="'+c.country+'"><div style="min-width:0"><div class="fx-code">'+c.code+'</div><div class="fx-country">'+c.country+'</div></div></div>';
+      const td2 = document.createElement("td"); td2.textContent = "1 USD";
+      const td3 = document.createElement("td"); td3.style.textAlign = "right";
+      td3.textContent = Number.isFinite(rate) ? (fmtRate(rate) + " " + c.code) : ("— " + c.code);
+      tr.appendChild(td1); tr.appendChild(td2); tr.appendChild(td3);
+      rowsEl.appendChild(tr);
+    });
+    updatedEl.textContent = "Updated: " + (updatedText || new Date().toLocaleString());
+  }
+  fetch("/api/fx/", { cache: "no-store" })
+    .then(r => r.ok ? r.json() : Promise.reject(r))
+    .then(data => render(data.rates || {}, data.updated))
+    .catch(() => render(null, null));
+})();
+</script>
 
 <script>
-  /* ===== Smart hide/show TOP bar on scroll (disable on Android for smooth) ===== */
-  (function(){
-    const topBar = document.querySelector('.topbar');
-    if(!topBar) return;
-  
-    const ua = (navigator.userAgent || "").toLowerCase();
-    const isAndroid = ua.includes("android");
-  
-    // ✅ Android: keep bar always visible (NO scroll listener = smoother)
-    if(isAndroid){
-      topBar.classList.remove('hide-bar');
-      return;
-    }
-  
-    // ✅ iPhone/PC: keep your smart hide/show
-    topBar.classList.remove('hide-bar');
-  
-    let lastY = window.scrollY || 0;
-    const SCROLL_THRESHOLD = 6;
-  
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY || 0;
-      const diff = y - lastY;
-      if(Math.abs(diff) < SCROLL_THRESHOLD) return;
-  
-      if(diff > 0) topBar.classList.add('hide-bar');
-      else topBar.classList.remove('hide-bar');
-  
-      lastY = y;
-    }, { passive:true });
-  })();
-  </script>
-<script>
-  /* ✅ Auto-clear dot/badge immediately when user opens notifications */
-  (function(){
-    const a = document.querySelector('.notify-wrap');
-    if(!a) return;
-  
-    a.addEventListener('click', function(){
-      a.classList.remove('has-unread');
-      const b = a.querySelector('.notify-badge');
-      if(b) b.style.display = 'none';
-    }, {passive:true});
-  })();
-  </script>
-<script>
-  /* ===== STEP 2: Detect Android and add class ===== */
-  (function(){
-    var ua = (navigator.userAgent || "").toLowerCase();
-    if(ua.includes("android")){
-      document.documentElement.classList.add("android-no-blur");
-    }
-  })();
-  
-  </script>  
+(function(){
+  const topBar = document.querySelector('.topbar');
+  if(!topBar) return;
+  const ua = (navigator.userAgent || "").toLowerCase();
+  const isAndroid = ua.includes("android");
+  if(isAndroid){ topBar.classList.remove('hide-bar'); return; }
+  topBar.classList.remove('hide-bar');
+  let lastY = window.scrollY || 0;
+  const SCROLL_THRESHOLD = 6;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY || 0;
+    const diff = y - lastY;
+    if(Math.abs(diff) < SCROLL_THRESHOLD) return;
+    if(diff > 0) topBar.classList.add('hide-bar');
+    else topBar.classList.remove('hide-bar');
+    lastY = y;
+  }, { passive:true });
+})();
+</script>
 
 <script>
-/* ===== Topbar Welcome rotate ===== */
+(function(){
+  const a = document.querySelector('.notify-wrap');
+  if(!a) return;
+  a.addEventListener('click', function(){
+    a.classList.remove('has-unread');
+    const b = a.querySelector('.notify-badge');
+    if(b) b.style.display = 'none';
+  }, {passive:true});
+})();
+</script>
+
+<script>
+(function(){
+  var ua = (navigator.userAgent || "").toLowerCase();
+  if(ua.includes("android")){ document.documentElement.classList.add("android-no-blur"); }
+})();
+</script>
+
+<script>
 (function(){
   const track = document.getElementById("welcomeTrack");
   const textEl = document.getElementById("welcomeText");
   if(!track || !textEl) return;
-
   const msgs = [
     "Secure System • Trusted Service • 24/7 Support",
     "Fast Approval • Simple Steps • Transparent Policy",
     "Your data is protected • Verified process • Safe service"
   ];
-
   let i = 0;
-
   function show(msg){
     track.classList.remove("show");
-    setTimeout(() => {
-      textEl.textContent = msg;
-      track.classList.add("show");
-    }, 180);
+    setTimeout(() => { textEl.textContent = msg; track.classList.add("show"); }, 180);
   }
-
   show(msgs[0]);
-
-  setInterval(() => {
-    i = (i + 1) % msgs.length;
-    show(msgs[i]);
-  }, 4000);
+  setInterval(() => { i = (i + 1) % msgs.length; show(msgs[i]); }, 4000);
 })();
 </script>
+
+<!-- Why Choose Carousel Script -->
+<script>
+(function() {
+  'use strict';
+  
+  const carousel = document.getElementById('whyCarousel');
+  const slides = document.querySelectorAll('.why-slide');
+  const dots = document.querySelectorAll('#whyDots .why-dot');
+  const prevBtn = document.getElementById('whyPrevBtn');
+  const nextBtn = document.getElementById('whyNextBtn');
+  
+  if (!slides.length) return;
+  
+  let currentIndex = 0;
+  let autoplayInterval = null;
+  let isTransitioning = false;
+  
+  function showSlide(index) {
+    if (isTransitioning) return;
+    isTransitioning = true;
+    
+    slides.forEach(s => s.classList.remove('active'));
+    dots.forEach(d => d.classList.remove('active'));
+    
+    slides[index].classList.add('active');
+    if (dots[index]) dots[index].classList.add('active');
+    currentIndex = index;
+    
+    setTimeout(() => { isTransitioning = false; }, 700);
+  }
+  
+  function nextSlide() {
+    const next = (currentIndex + 1) % slides.length;
+    showSlide(next);
+  }
+  
+  function prevSlide() {
+    const prev = (currentIndex - 1 + slides.length) % slides.length;
+    showSlide(prev);
+  }
+  
+  function startAutoplay() {
+    stopAutoplay();
+    autoplayInterval = setInterval(nextSlide, 5000);
+  }
+  
+  function stopAutoplay() {
+    if (autoplayInterval) {
+      clearInterval(autoplayInterval);
+      autoplayInterval = null;
+    }
+  }
+  
+  if (nextBtn) {
+    nextBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      nextSlide();
+      startAutoplay();
+    });
+  }
+  
+  if (prevBtn) {
+    prevBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      prevSlide();
+      startAutoplay();
+    });
+  }
+  
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      showSlide(index);
+      startAutoplay();
+    });
+  });
+  
+  startAutoplay();
+  
+  if (carousel) {
+    carousel.addEventListener('mouseenter', stopAutoplay);
+    carousel.addEventListener('mouseleave', startAutoplay);
+  }
+  
+  document.addEventListener('visibilitychange', function() {
+    if (document.hidden) {
+      stopAutoplay();
+    } else {
+      startAutoplay();
+    }
+  });
+  
+  let touchStartX = 0;
+  let touchEndX = 0;
+  
+  if (carousel) {
+    carousel.addEventListener('touchstart', function(e) {
+      touchStartX = e.changedTouches[0].screenX;
+      stopAutoplay();
+    }, {passive: true});
+    
+    carousel.addEventListener('touchend', function(e) {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+      startAutoplay();
+    }, {passive: true});
+  }
+  
+  function handleSwipe() {
+    const swipeThreshold = 50;
+    const diff = touchStartX - touchEndX;
+    
+    if (Math.abs(diff) > swipeThreshold) {
+      if (diff > 0) {
+        nextSlide();
+      } else {
+        prevSlide();
+      }
+    }
+  }
+})();
+</script>
+
 {% endblock %}

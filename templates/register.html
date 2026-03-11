@@ -3,7 +3,6 @@
 {% load static %}
 {% block nav %}
 <a href="/login/" class="nav-pill" aria-label="Back to login">
-  <!-- back icon -->
   <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
     <path d="M14.5 6.5L9 12l5.5 5.5" stroke="white" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>
@@ -13,379 +12,252 @@
 
 {% block content %}
 <style>
-  /* ===== move card higher (register only) ===== */
-  :root{
-  --g1:#004182;
-  --g2:#054585d0;
-  --icon:#054585d0;
-}
-  .wrap{
-    align-items:flex-start;
-    padding-top:92px;
-  }
-  @media(max-width:480px){
-    .wrap{ padding-top:78px; }
+  :root {
+    --primary:   #1B2A5E;
+    --secondary: #1A4DB5;
+    --danger:    #E03020;
+    --accent:    #F5C518;
+    --white:     #FFFFFF;
+    --light-bg:  #F4F6FB;
+    --g1: #1B2A5E;
+    --g2: #1A4DB5;
+    --icon: #1B2A5E;
   }
 
-  /* ===== top right button look (professional) ===== */
-  .nav .nav-pill{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    height:34px;
-    padding:0 14px;
-    border-radius:999px;
-    text-decoration:none;
-    color:#fff;
-    font-weight:800;
+  .wrap {
+    align-items: flex-start;
+    padding-top: 92px;
+  }
+  @media(max-width:480px) { .wrap { padding-top: 78px; } }
+
+  /* nav pill */
+  .nav .nav-pill {
+    display: flex; align-items: center; gap: 8px;
+    height: 34px; padding: 0 14px; border-radius: 999px;
+    text-decoration: none; color: #fff; font-weight: 800;
     background: linear-gradient(90deg, var(--g1), var(--g2));
-    box-shadow:0 8px 20px rgba(0,0,0,.35);
-    border:1px solid rgba(255,255,255,.18);
+    box-shadow: 0 8px 20px rgba(0,0,0,.35);
+    border: 1px solid rgba(255,255,255,.18);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
   }
-  .nav .nav-pill svg{ width:18px; height:18px; }
+  .nav .nav-pill svg { width: 18px; height: 18px; }
 
-  /* ✅ REGISTER CARD = SAME AS LOGIN (dark glass) */
-.auth-card{
-  width: min(560px, 100%);
-  margin-top: 10px;
-  background: rgba(40,40,40,.40);
-  border: 1px solid rgba(255,255,255,.18);
-  border-radius: 18px;
-  padding: 18px;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 18px 50px rgba(0,0,0,.45);
-}
-/* ✅ Make black texts white (Register page) */
-.auth-sub,
-.label,
-.footer,
-.agree-text{
-  color:#fff !important;
-  opacity:1 !important;
-  text-shadow: 0 1px 0 rgba(0,0,0,.35), 0 10px 22px rgba(0,0,0,.35);
-}
+  /* ✅ WHITE CARD + RED BORDER */
+  .auth-card {
+    position: relative;
+    z-index: 10;
+    width: min(560px, 100%);
+    margin-top: 10px;
+    background: var(--white);
+    border: 2px solid rgba(224,48,32,.30);
+    border-radius: 26px;
+    padding: 32px 28px 24px;
+    box-shadow:
+      0 20px 60px rgba(27,42,94,.14),
+      0 0 0 1px rgba(245,197,24,.15);
+  }
 
-/* keep links blue like login */
-.footer a,
-.agree-row a{
-  color:#59acffe8 !important;
-  font-weight:900 !important;
-}
-
-/* checkbox line nicer on dark bg */
-.agree-line input[type="checkbox"]{
-  accent-color: #59acffe8;
-}
-
-/* keep inputs readable (white inputs, dark typed text) */
-.input{
-  background: rgba(255,255,255,.92) !important;
-  color:#111 !important;
-}
-.input::placeholder{
-  color:#666 !important;
-}
-
-/* icons keep blue */
-.icon-left path,
-.eye-btn svg path,
-.eye-btn svg circle{
-  stroke:#004182 !important;
-}
-.icon-left path[fill]{
-  fill:#004182 !important;
-}
-  /* ===== silver running title ===== */
-  .auth-title{
-    margin:0 0 6px;
-    font-size:26px;
-    font-weight:900;
-    letter-spacing:.2px;
-
-    background: linear-gradient(
-      120deg,
-      rgba(255,255,255,.70),
-      rgba(255,255,255,.95),
-      rgba(200,200,200,.85),
-      rgba(255,255,255,.95),
-      rgba(255,255,255,.70)
-    );
+  /* navy shimmer title */
+  .auth-title {
+    margin: 0 0 6px;
+    font-size: 26px; font-weight: 900; letter-spacing: .2px;
+    background: linear-gradient(120deg, var(--primary), var(--secondary), var(--primary));
     background-size: 220% 100%;
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
     animation: silverRun 2.6s linear infinite;
   }
-  @keyframes silverRun{
-    0%{ background-position:0% 50%; }
-    100%{ background-position:220% 50%; }
+  @keyframes silverRun {
+    0%   { background-position: 0%   50%; }
+    100% { background-position: 220% 50%; }
   }
 
-  .auth-sub{
-    margin:0 0 16px;
-    font-size:13px;
-    opacity:.92;
+  .auth-sub { margin: 0 0 16px; font-size: 13px; color: #64748b; }
+
+  .field { margin: 12px 0; }
+
+  .label {
+    display: block;
+    font-size: 13px; font-weight: 750;
+    color: var(--primary);
+    margin-bottom: 8px;
   }
 
-  .field{ margin:12px 0; }
-  .label{
-    display:block;
-    font-size:13px;
-    font-weight:750;
-    opacity:.95;
-    margin-bottom:8px;
+  .input-wrap { position: relative; }
+
+  .input {
+    width: 100%; height: 44px;
+    border-radius: 12px;
+    border: 1.5px solid rgba(27,42,94,.15);
+    background: var(--light-bg);
+    color: #111;
+    outline: none;
+    padding: 0 44px 0 44px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .input:focus {
+    border-color: rgba(224,48,32,.40);
+    box-shadow: 0 0 0 3px rgba(224,48,32,.08);
+  }
+  .input::placeholder { color: #888; }
+
+  .icon-left {
+    position: absolute; left: 14px; top: 50%;
+    transform: translateY(-50%);
+    width: 18px; height: 18px;
+    opacity: .85; pointer-events: none;
   }
 
-  .input-wrap{ position:relative; }
-
-  .input{
-    width:100%;
-    height:44px;
-    border-radius:12px;
-    border:1px solid rgba(255,255,255,.22);
-    background: rgba(255,255,255,.92);
-    color:#111;
-    outline:none;
-    padding:0 44px 0 44px;
-    font-size:14px;
-    box-sizing:border-box;
+  .eye-btn {
+    position: absolute; right: 12px; top: 50%;
+    transform: translateY(-50%);
+    width: 32px; height: 32px;
+    border: 0; padding: 0; background: transparent;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
   }
-  .input::placeholder{ color:#666; }
+  .eye-btn svg { width: 18px; height: 18px; opacity: .85; }
 
-  .icon-left{
-    position:absolute;
-    left:14px;
-    top:50%;
-    transform:translateY(-50%);
-    width:18px;
-    height:18px;
-    opacity:.95;
-    pointer-events:none;
+  /* icons color */
+  .icon-left path, .eye-btn svg path, .eye-btn svg circle {
+    stroke: var(--primary) !important;
   }
+  .icon-left path[fill] { fill: var(--primary) !important; stroke: none !important; }
 
-  /* eye button (NO box) */
-  .eye-btn{
-    position:absolute;
-    right:12px;
-    top:50%;
-    transform:translateY(-50%);
-    width:32px;
-    height:32px;
-    border:0;
-    padding:0;
-    background:transparent;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-  }
-  .eye-btn svg{ width:18px; height:18px; opacity:.95; }
-
-  .btn-main{
-    width:100%;
-    height:46px;
-    margin-top:14px;
-    border:0;
-    border-radius:999px;
+  /* REGISTER BUTTON */
+  .btn-main {
+    width: 100%; height: 46px; margin-top: 14px;
+    border: 0; border-radius: 999px;
     background: linear-gradient(90deg, var(--g1), var(--g2));
-    color:#fff;
-    font-weight:900;
-    letter-spacing:.4px;
-    cursor:pointer;
-    box-shadow: 0 10px 26px rgba(0,0,0,.35);
-    transition: opacity .2s ease, transform .05s ease;
+    color: var(--white); font-weight: 900; letter-spacing: .4px;
+    cursor: pointer;
+    box-shadow: 0 10px 26px rgba(27,42,94,.28);
+    transition: opacity .2s, transform .1s;
+    font-size: 15px;
   }
-  .btn-main:active{ transform: translateY(1px); }
-  .btn-main:disabled{
-    opacity:.55;
-    cursor:not-allowed;
-  }
+  .btn-main:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(27,42,94,.35); }
+  .btn-main:active { transform: translateY(0); }
+  .btn-main:disabled { opacity: .45; cursor: not-allowed; transform: none; }
 
-  .footer{
-    margin-top:12px;
-    text-align:center;
-    font-size:13px;
-    opacity:.95;
-  }
-  .footer a{ color:#59acffe8; font-weight:900; text-decoration:none; }
+  .footer { margin-top: 12px; text-align: center; font-size: 13px; color: #475569; }
+  .footer a { color: var(--secondary); font-weight: 900; text-decoration: none; }
+  .footer a:hover { text-decoration: underline; color: var(--danger); }
 
-  @media (max-width:480px){
-    .auth-title{ font-size:24px; }
-    .auth-card{ padding:20px 18px 16px; margin-top:6px; }
-  }
-
-  /* alerts */
-  .err{
+  .err {
     margin: 10px 0 0;
-    background: rgba(255, 0, 0, .14);
-    border: 1px solid rgba(255, 0, 0, .25);
-    color:#ffecec;
-    padding: 10px 12px;
-    border-radius: 12px;
-    font-size: 13px;
+    background: rgba(224,48,32,.08);
+    border: 1px solid rgba(224,48,32,.25);
+    color: #b91c1c;
+    padding: 10px 12px; border-radius: 12px; font-size: 13px;
   }
-  .ok{
+  .ok {
     margin: 10px 0 0;
-    background: rgba(34, 197, 94, .14);
-    border: 1px solid rgba(34, 197, 94, .25);
-    color:#eafff1;
-    padding: 10px 12px;
-    border-radius: 12px;
-    font-size: 13px;
+    background: rgba(34,197,94,.10);
+    border: 1px solid rgba(34,197,94,.30);
+    color: #15803d;
+    padding: 10px 12px; border-radius: 12px; font-size: 13px;
   }
 
-  /* agreement row */
-  .agree-row{
-    margin: 12px 0 0;
-    display:flex;
-    justify-content:center;
+  /* agree row */
+  .agree-row { margin: 12px 0 0; display: flex; justify-content: center; }
+  .agree-line {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 10px; width: fit-content; max-width: 100%;
+    margin: 0 auto; cursor: pointer;
   }
-  .agree-line{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    gap:10px;
-    width:fit-content;
-    max-width: 100%;
-    margin:0 auto;
-    cursor:pointer;
+  .agree-line input[type="checkbox"] {
+    width: 16px; height: 16px; margin: 0; flex: 0 0 auto;
+    accent-color: var(--danger);
   }
-  .agree-line input[type="checkbox"]{
-    width:16px;
-    height:16px;
-    margin:0;
-    flex: 0 0 auto;
-  }
-  .agree-text{
-    font-size:13px;
-    font-weight:600;
-    line-height:1.35;
-    opacity:.95;
-    white-space:normal;
-    text-align:center;
-  }
-  .agree-row a{ color:#59acffe8; font-weight:800; text-decoration:none; }
-  .agree-row a:hover{ text-decoration: underline; }
+  .agree-text { font-size: 13px; font-weight: 600; line-height: 1.35; color: #475569; white-space: normal; text-align: center; }
+  .agree-row a { color: var(--secondary); font-weight: 800; text-decoration: none; }
+  .agree-row a:hover { text-decoration: underline; color: var(--danger); }
 
   /* modal */
-  .agreement-modal{
-    position:fixed;
-    inset:0;
-    background: rgba(0,0,0,.62);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    z-index:9999;
-    padding: 18px 14px;
-    box-sizing:border-box;
+  .agreement-modal {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.60);
+    display: none; align-items: center; justify-content: center;
+    z-index: 9999; padding: 18px 14px; box-sizing: border-box;
   }
-  .agreement-box{
-    width:min(720px, 100%);
+  .agreement-box {
+    width: min(720px, 100%);
     max-height: min(86vh, 760px);
-    background: rgba(25,25,25,.92);
-    border:1px solid rgba(255,255,255,.14);
+    background: var(--white);
+    border: 2px solid rgba(224,48,32,.25);
     border-radius: 18px;
-    box-shadow: 0 24px 60px rgba(0,0,0,.55);
-    overflow:hidden;
-    backdrop-filter: blur(10px);
+    box-shadow: 0 24px 60px rgba(27,42,94,.25);
+    overflow: hidden;
   }
-  
-  /* ✅ FIXED: Header with absolute positioning for perfect center */
-  .agreement-head{
+  .agreement-head {
     padding: 14px 16px;
-    border-bottom:1px solid rgba(255,255,255,.10);
-    display:flex;
-    align-items:center;
-    justify-content:center; /* Changed from space-between to center */
-    position: relative; /* Added for absolute positioning of close button */
-    gap:10px;
+    border-bottom: 1px solid rgba(27,42,94,.10);
+    display: flex; align-items: center;
+    justify-content: center; position: relative; gap: 10px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
   }
-  
-  /* ✅ FIXED: Title white and centered with !important */
-  .agreement-title{
-    font-weight: 950;
-    letter-spacing:.2px;
-    color: #ffffff !important;
-    text-align: center !important;
-    font-size: 16px;
-    flex: 1;
+  .agreement-title {
+    font-weight: 950; letter-spacing: .2px;
+    color: #fff !important; text-align: center; font-size: 16px; flex: 1;
   }
-  
-  /* ✅ FIXED: Close button positioned absolutely to not interfere with title */
-  .agreement-close{
-    position: absolute;
-    right: 16px;
-    top: 50%;
+  .agreement-close {
+    position: absolute; right: 16px; top: 50%;
     transform: translateY(-50%);
-    border:0;
-    background: transparent;
-    color:#fff;
-    font-size: 24px;
-    cursor:pointer;
-    opacity:.9;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border: 0; background: transparent; color: #fff;
+    font-size: 24px; cursor: pointer; opacity: .9;
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
   }
-  
-  .agreement-body{
+  .agreement-body {
     padding: 14px 16px;
-    overflow:auto;
-    max-height: 58vh;
-    line-height: 1.55;
-    font-size: 13px;
-    color: rgba(255,255,255,.92);
+    overflow: auto; max-height: 58vh;
+    line-height: 1.55; font-size: 13px;
+    color: #334155;
   }
-  .agreement-body h3{
-    margin: 12px 0 6px;
-    font-size: 13px;
-    letter-spacing:.2px;
-  }
-  .agreement-body p{ margin: 8px 0; opacity:.95; }
-  .agreement-body ul{ margin: 8px 0 8px 18px; }
-  .agreement-foot{
+  .agreement-body h1 { color: var(--primary); text-align: center; margin: 0 0 12px; font-size: 15px; font-weight: 900; }
+  .agreement-body h2 { color: var(--primary); margin: 14px 0 6px; font-size: 13px; font-weight: 800; letter-spacing: .2px; }
+  .agreement-body h3 { color: var(--primary); margin: 12px 0 6px; font-size: 13px; }
+  .agreement-body p  { margin: 8px 0; opacity: .95; }
+  .agreement-body ul, .agreement-body ol { margin: 8px 0 8px 18px; }
+  .agreement-body li { margin-bottom: 4px; }
+  .agreement-body hr { border-color: rgba(27,42,94,.12); margin: 14px 0; }
+  .agreement-body strong { color: #1e293b; }
+
+  .agreement-foot {
     padding: 12px 16px;
-    border-top:1px solid rgba(255,255,255,.10);
-    display:flex;
-    gap:10px;
-    justify-content:flex-end;
+    border-top: 1px solid rgba(27,42,94,.10);
+    display: flex; gap: 10px; justify-content: flex-end;
+    background: var(--light-bg);
   }
-  .btn-agree{
-    height:40px;
-    padding:0 16px;
-    border-radius:999px;
-    border:0;
-    font-weight: 900;
-    cursor:pointer;
+  .btn-agree {
+    height: 40px; padding: 0 20px; border-radius: 999px; border: 0;
+    font-weight: 900; cursor: pointer;
     background: linear-gradient(90deg, var(--g1), var(--g2));
-    color:#fff;
-    opacity:.55;
+    color: #fff; opacity: .45; transition: opacity .2s;
   }
-  .btn-agree.enabled{ opacity:1; }
-  .btn-decline{
-    height:40px;
-    padding:0 16px;
-    border-radius:999px;
-    border:1px solid rgba(255,255,255,.22);
-    background: rgba(255,255,255,.08);
-    color:#fff;
-    font-weight: 900;
-    cursor:pointer;
+  .btn-agree.enabled { opacity: 1; }
+  .btn-decline {
+    height: 40px; padding: 0 20px; border-radius: 999px;
+    border: 1.5px solid rgba(27,42,94,.25);
+    background: transparent; color: var(--primary);
+    font-weight: 900; cursor: pointer;
+  }
+  .btn-decline:hover { background: rgba(224,48,32,.08); border-color: var(--danger); color: var(--danger); }
+
+  @media (max-width:480px) {
+    .auth-title { font-size: 24px; }
+    .auth-card  { padding: 20px 18px 16px; margin-top: 6px; }
   }
 
   @font-face {
-  font-family: 'Ovelion';
-  src: url("{% static 'fonts/Ovelion-Regular.ttf' %}") format('truetype');
-}
-
-body, body * {
-  font-family: 'Ovelion', sans-serif !important;
-}
+    font-family: 'Ovelion';
+    src: url("{% static 'fonts/Ovelion-Regular.ttf' %}") format('truetype');
+  }
+  body, body * { font-family: 'Ovelion', sans-serif !important; }
 </style>
 
 <div class="auth-card card">
@@ -404,8 +276,6 @@ body, body * {
 
   <form method="post" action="" id="registerForm">
     {% csrf_token %}
-
-    <!-- backend reads this -->
     <input type="hidden" name="agree_accepted" id="agreeAccepted" value="0">
 
     <div class="field">
@@ -413,22 +283,11 @@ body, body * {
       <div class="input-wrap">
         <svg class="icon-left" viewBox="0 0 24 24" fill="none">
           <path d="M7 3.8c.6-1 2-1.1 2.8-.3l2 2c.7.7.7 1.9 0 2.6l-1.1 1.1c-.2.2-.3.6-.2.9 1 2.3 2.8 4.1 5.1 5.1.3.1.7 0 .9-.2l1.1-1.1c.7-.7 1.9-.7 2.6 0l2 2c.8.8.7 2.2-.3 2.8l-1.2.8c-1 .7-2.2 1-3.4.7-6.2-1.5-11-6.3-12.5-12.5-.3-1.2 0-2.4.7-3.4L7 3.8Z"
-                fill="#004182"/>
+                fill="#1B2A5E"/>
         </svg>
-
-        <!-- ✅ digits only -->
-        <input
-          class="input"
-          id="id_phone"
-          name="phone"
-          type="tel"
-          inputmode="numeric"
-          pattern="[0-9]*"
-          maxlength="20"
-          placeholder="Phone number"
-          autocomplete="tel"
-          required
-        >
+        <input class="input" id="id_phone" name="phone" type="tel"
+               inputmode="numeric" pattern="[0-9]*" maxlength="20"
+               placeholder="Phone number" autocomplete="tel" required>
       </div>
     </div>
 
@@ -437,31 +296,21 @@ body, body * {
       <div class="input-wrap">
         <svg class="icon-left" viewBox="0 0 24 24" fill="none">
           <path d="M7.5 10V8.2C7.5 5.9 9.4 4 11.7 4h.6c2.3 0 4.2 1.9 4.2 4.2V10"
-                stroke="#004182" stroke-width="2" stroke-linecap="round"/>
-          <rect x="6" y="10" width="12" height="10" rx="2.4"
-                fill="#004182" opacity=".12"/>
-          <rect x="6" y="10" width="12" height="10" rx="2.4"
-                stroke="#004182" stroke-width="2"/>
+                stroke="#1B2A5E" stroke-width="2" stroke-linecap="round"/>
+          <rect x="6" y="10" width="12" height="10" rx="2.4" fill="#1B2A5E" opacity=".12"/>
+          <rect x="6" y="10" width="12" height="10" rx="2.4" stroke="#1B2A5E" stroke-width="2"/>
         </svg>
-
         <input class="input" id="id_password" name="password" type="password" placeholder="Password" required>
-
         <button class="eye-btn" type="button" data-target="id_password" aria-label="Toggle password">
           <svg class="eye-on" viewBox="0 0 24 24" fill="none">
-            <path d="M2.3 12s3.4-6.5 9.7-6.5S21.7 12 21.7 12 18.3 18.5 12 18.5 2.3 12 2.3 12Z"
-                  stroke="#004182" stroke-width="2"/>
-            <circle cx="12" cy="12" r="3"
-                    stroke="#004182" stroke-width="2"/>
+            <path d="M2.3 12s3.4-6.5 9.7-6.5S21.7 12 21.7 12 18.3 18.5 12 18.5 2.3 12 2.3 12Z" stroke="#1B2A5E" stroke-width="2"/>
+            <circle cx="12" cy="12" r="3" stroke="#1B2A5E" stroke-width="2"/>
           </svg>
           <svg class="eye-off" viewBox="0 0 24 24" fill="none" style="display:none">
-            <path d="M3 3l18 18"
-                  stroke="#004182" stroke-width="2" stroke-linecap="round"/>
-            <path d="M2.3 12s3.4-6.5 9.7-6.5c1.7 0 3.2.4 4.5 1"
-                  stroke="#004182" stroke-width="2" stroke-linecap="round"/>
-            <path d="M21.7 12s-3.4 6.5-9.7 6.5c-1.7 0-3.2-.4-4.5-1"
-                  stroke="#004182" stroke-width="2" stroke-linecap="round"/>
-            <path d="M10 10a3 3 0 0 1 4 4"
-                  stroke="#004182" stroke-width="2" stroke-linecap="round"/>
+            <path d="M3 3l18 18" stroke="#1B2A5E" stroke-width="2" stroke-linecap="round"/>
+            <path d="M2.3 12s3.4-6.5 9.7-6.5c1.7 0 3.2.4 4.5 1" stroke="#1B2A5E" stroke-width="2" stroke-linecap="round"/>
+            <path d="M21.7 12s-3.4 6.5-9.7 6.5c-1.7 0-3.2-.4-4.5-1" stroke="#1B2A5E" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 10a3 3 0 0 1 4 4" stroke="#1B2A5E" stroke-width="2" stroke-linecap="round"/>
           </svg>
         </button>
       </div>
@@ -472,50 +321,37 @@ body, body * {
       <div class="input-wrap">
         <svg class="icon-left" viewBox="0 0 24 24" fill="none">
           <path d="M7.5 10V8.2C7.5 5.9 9.4 4 11.7 4h.6c2.3 0 4.2 1.9 4.2 4.2V10"
-                stroke="#004182" stroke-width="2" stroke-linecap="round"/>
-          <rect x="6" y="10" width="12" height="10" rx="2.4"
-                fill="#004182" opacity=".12"/>
-          <rect x="6" y="10" width="12" height="10" rx="2.4"
-                stroke="#004182" stroke-width="2"/>
+                stroke="#1B2A5E" stroke-width="2" stroke-linecap="round"/>
+          <rect x="6" y="10" width="12" height="10" rx="2.4" fill="#1B2A5E" opacity=".12"/>
+          <rect x="6" y="10" width="12" height="10" rx="2.4" stroke="#1B2A5E" stroke-width="2"/>
         </svg>
-
         <input class="input" id="id_confirm" name="confirm_password" type="password" placeholder="Confirm password" required>
-
         <button class="eye-btn" type="button" data-target="id_confirm" aria-label="Toggle confirm password">
           <svg class="eye-on" viewBox="0 0 24 24" fill="none">
-            <path d="M2.3 12s3.4-6.5 9.7-6.5S21.7 12 21.7 12 18.3 18.5 12 18.5 2.3 12 2.3 12Z"
-                  stroke="#004182" stroke-width="2"/>
-            <circle cx="12" cy="12" r="3"
-                    stroke="#004182" stroke-width="2"/>
+            <path d="M2.3 12s3.4-6.5 9.7-6.5S21.7 12 21.7 12 18.3 18.5 12 18.5 2.3 12 2.3 12Z" stroke="#1B2A5E" stroke-width="2"/>
+            <circle cx="12" cy="12" r="3" stroke="#1B2A5E" stroke-width="2"/>
           </svg>
           <svg class="eye-off" viewBox="0 0 24 24" fill="none" style="display:none">
-            <path d="M3 3l18 18"
-                  stroke="#004182" stroke-width="2" stroke-linecap="round"/>
-            <path d="M2.3 12s3.4-6.5 9.7-6.5c1.7 0 3.2.4 4.5 1"
-                  stroke="#004182" stroke-width="2" stroke-linecap="round"/>
-            <path d="M21.7 12s-3.4 6.5-9.7 6.5c-1.7 0-3.2-.4-4.5-1"
-                  stroke="#004182" stroke-width="2" stroke-linecap="round"/>
-            <path d="M10 10a3 3 0 0 1 4 4"
-                  stroke="#004182" stroke-width="2" stroke-linecap="round"/>
+            <path d="M3 3l18 18" stroke="#1B2A5E" stroke-width="2" stroke-linecap="round"/>
+            <path d="M2.3 12s3.4-6.5 9.7-6.5c1.7 0 3.2.4 4.5 1" stroke="#1B2A5E" stroke-width="2" stroke-linecap="round"/>
+            <path d="M21.7 12s-3.4 6.5-9.7 6.5c-1.7 0-3.2-.4-4.5-1" stroke="#1B2A5E" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 10a3 3 0 0 1 4 4" stroke="#1B2A5E" stroke-width="2" stroke-linecap="round"/>
           </svg>
         </button>
       </div>
     </div>
 
-    <!-- ✅ NEW: Reference Number Field -->
-    <!-- Reference Number Field -->
-<div class="field">
-  <label class="label" for="id_reference">Reference Number (Required)</label>
-  <div class="input-wrap">
-    <svg class="icon-left" viewBox="0 0 24 24" fill="none">
-      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" fill="#004182"/>
-    </svg>
-    <input class="input" id="id_reference" name="reference_number" type="text" 
-           placeholder="Enter Company reference number (e.g.....)" required>
-  </div>
-  <small style="color:rgba(255,255,255,0.7); font-size:11px; margin-top:4px; display:block;">
-  </small>
-</div>
+    <!-- Reference Number -->
+    <div class="field">
+      <label class="label" for="id_reference">Reference Number (Required)</label>
+      <div class="input-wrap">
+        <svg class="icon-left" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" fill="#1B2A5E"/>
+        </svg>
+        <input class="input" id="id_reference" name="reference_number" type="text"
+               placeholder="Enter Company reference number (e.g.....)" required>
+      </div>
+    </div>
 
     <div class="agree-row">
       <div class="agree-line">
@@ -526,7 +362,6 @@ body, body * {
       </div>
     </div>
 
-    <!-- ✅ Disabled until user ACCEPTS agreement -->
     <button class="btn-main" type="submit" id="registerBtn" disabled>REGISTER</button>
 
     <div class="footer">
@@ -535,418 +370,300 @@ body, body * {
   </form>
 </div>
 
-<!-- Agreement Modal -->
+<!-- ═══════════════════════════════════════
+     AGREEMENT MODAL — Full original content
+═══════════════════════════════════════ -->
 <div class="agreement-modal" id="agreementModal" aria-hidden="true">
   <div class="agreement-box" role="dialog" aria-modal="true" aria-label="User Agreement">
+
     <div class="agreement-head">
-      <div class="agreement-title">User Agreement & About Us</div>
+      <div class="agreement-title">User Agreement &amp; About Us</div>
       <button class="agreement-close" type="button" id="closeAgreement" aria-label="Close">×</button>
     </div>
 
     <div class="agreement-body" id="agreementBody">
-      <!-- =========================
-     AGREEMENT BODY (REPLACEMENT)
-     About Us (Top) + Agreement (Full)
-========================= -->
 
-<div class="agreementbody">
+      <!-- ABOUT US -->
+      <p><b>ABOUT US</b></p>
 
-  <!-- ABOUT US (from Longest_About_Us.pdf) -->
-  <p><b>ABOUT US</b></p>
+      <p><b>
+        Company Name: [PIPO FINANCING (PH) INC.]<br>
+        Registration Date: [September 4, 2017]<br>
+        SEC / License / Registration Number: [CS201729260 / 2526]<br>
+        Registered Country: [Philippine]
+      </b> {{ now|default:"" }}</p>
 
-  <p><b>
-    Company Name: [BESTLOAN FINANCE AND LEASING PHILIPPINES INC]<br>
-    Registration Date: [July 26, 2006]<br>
-    SEC / License / Registration Number: [CS200611770 / 202]<br>
-    Registered Country: [Philippine]
-  </b> {{ now|default:"" }}</p>
+      <p>
+        [PIPO FINANCING (PH) INC.] is a formally established and legally registered financial services organization operating
+        in accordance with the applicable laws, regulations, and regulatory frameworks of [COUNTRY / JURISDICTION].
+        The Company was officially incorporated on [September 4, 2017] and operates under business registration,
+        financial service license, or regulatory approval number [SEC / LICENSE / REGISTRATION NUMBER], as issued
+        by the relevant governmental or regulatory authority.
+        The establishment of [PIPO FINANCING (PH) INC.] was driven by the growing demand for structured, accountable, and legally
+        compliant financial assistance solutions designed to serve individuals seeking access to short-term and long-term
+        funding options within a regulated framework.
+        The Company exists as a lawful business entity with recognized legal standing and conducts its operations in compliance
+        with commercial, financial, consumer protection, and data protection laws applicable within [COUNTRY / JURISDICTION].
+        The primary nature of the Company's business is the provision of loan-related and financial facilitation services.
+        These services are structured to ensure operational sustainability, risk management, and legal enforceability.
+        The purpose of [PIPO FINANCING (PH) INC.] is to provide structured access to financial resources while maintaining responsible
+        lending practices, internal risk controls, regulatory compliance, and repayment accountability.
+        The mission of the Company is to deliver transparent, disciplined, and structured financial services that support borrower
+        needs while ensuring repayment responsibility, operational continuity, and long-term business sustainability.
+        The Company's vision is to become a scalable, trusted, and compliant financial service provider capable of operating within
+        evolving regulatory environments while maintaining consistent service standards and risk management practices.
+      </p>
 
-  <p>
-    [BESTLOAN FINANCE AND LEASING PHILIPPINES INC.] is a formally established and legally registered financial services organization operating
-    in accordance with the applicable laws, regulations, and regulatory frameworks of [COUNTRY / JURISDICTION].
-    The Company was officially incorporated on [July 26, 2006] and operates under business registration,
-    financial service license, or regulatory approval number [SEC / LICENSE / REGISTRATION NUMBER], as issued
-    by the relevant governmental or regulatory authority.
-    The establishment of [BESTLOAN FINANCE AND LEASING PHILIPPINES INC.] was driven by the growing demand for structured, accountable, and legally
-    compliant financial assistance solutions designed to serve individuals seeking access to short-term and long-term
-    funding options within a regulated framework.
-    The Company exists as a lawful business entity with recognized legal standing and conducts its operations in compliance
-    with commercial, financial, consumer protection, and data protection laws applicable within [COUNTRY / JURISDICTION].
-    The primary nature of the Company's business is the provision of loan-related and financial facilitation services.
-    These services are structured to ensure operational sustainability, risk management, and legal enforceability.
-    The purpose of [BESTLOAN FINANCE AND LEASING PHILIPPINES INC.] is to provide structured access to financial resources while maintaining responsible
-    lending practices, internal risk controls, regulatory compliance, and repayment accountability.
-    The mission of the Company is to deliver transparent, disciplined, and structured financial services that support borrower
-    needs while ensuring repayment responsibility, operational continuity, and long-term business sustainability.
-    The Company's vision is to become a scalable, trusted, and compliant financial service provider capable of operating within
-    evolving regulatory environments while maintaining consistent service standards and risk management practices.
-  </p>
+      <p>
+        The Company operates under the philosophy that financial access must be structured, borrowing carries responsibility,
+        agreements must be respected, and repayment is mandatory.
+        The Company's services may include loan application intake, identity verification, document validation, risk and eligibility
+        assessment, loan approval or rejection, loan disbursement coordination, repayment schedule administration, account monitoring,
+        and customer communication.
+        All applications, requests, and services are subject to internal review and discretion. The Company is not obligated to approve
+        any application and may reject, delay, or suspend services without providing a detailed explanation, except where required by law.
+        Users engaging with the Company acknowledge and accept that loans are legally binding obligations, repayment is not optional,
+        and failure to read documentation does not remove responsibility.
+        The Company collects, stores, and processes user information for identity verification, compliance checks, operational processing,
+        risk management, and legal enforcement purposes, in accordance with applicable data protection and privacy laws.
+        The Company utilizes internal systems and third-party technologies to manage applications, records, communications, and operational
+        workflows. While reasonable security measures are implemented, no electronic system can be guaranteed to be completely risk-free.
+        The Company does not provide financial advisory services, investment recommendations, legal consultation, or tax planning advice.
+        All services are transactional in nature.
+        The Company reserves the right to modify, update, expand, reduce, or discontinue any part of its services, systems, or operational
+        processes as required by business needs or regulatory changes.
+        This About Us section may be updated, revised, expanded, or replaced at any time to reflect changes in operations, regulatory requirements,
+        or business structure. Continued use of the Company's services constitutes acceptance of such updates.
+      </p>
 
-  <p>
-    The Company operates under the philosophy that financial access must be structured, borrowing carries responsibility,
-    agreements must be respected, and repayment is mandatory.
-    The Company's services may include loan application intake, identity verification, document validation, risk and eligibility
-    assessment, loan approval or rejection, loan disbursement coordination, repayment schedule administration, account monitoring,
-    and customer communication.
-    All applications, requests, and services are subject to internal review and discretion. The Company is not obligated to approve
-    any application and may reject, delay, or suspend services without providing a detailed explanation, except where required by law.
-    Users engaging with the Company acknowledge and accept that loans are legally binding obligations, repayment is not optional,
-    and failure to read documentation does not remove responsibility.
-    The Company collects, stores, and processes user information for identity verification, compliance checks, operational processing,
-    risk management, and legal enforcement purposes, in accordance with applicable data protection and privacy laws.
-    The Company utilizes internal systems and third-party technologies to manage applications, records, communications, and operational
-    workflows. While reasonable security measures are implemented, no electronic system can be guaranteed to be completely risk-free.
-    The Company does not provide financial advisory services, investment recommendations, legal consultation, or tax planning advice.
-    All services are transactional in nature.
-    The Company reserves the right to modify, update, expand, reduce, or discontinue any part of its services, systems, or operational
-    processes as required by business needs or regulatory changes.
-    This About Us section may be updated, revised, expanded, or replaced at any time to reflect changes in operations, regulatory requirements,
-    or business structure. Continued use of the Company's services constitutes acceptance of such updates.
-  </p>
+      <hr>
 
-  <hr>
+      <!-- EXTENDED LOAN USER AGREEMENT -->
+      <div id="loanAgreement" style="max-width:900px; margin:0 auto; line-height:1.6;">
+        <h1>EXTENDED LOAN USER AGREEMENT, TERMS, CONDITIONS, DISCLOSURES, ACKNOWLEDGMENTS, WAIVERS, AND LEGAL NOTICES</h1>
 
-  <!-- EXTENDED LOAN USER AGREEMENT (from Extended_Loan_User_Agreement (1).pdf) -->
-  <div class="loan-agreement" id="loanAgreement" style="max-width: 900px; margin: 0 auto; line-height: 1.6;">
-    <h1 style="text-align:center; margin: 0 0 12px 0;">
-      EXTENDED LOAN USER AGREEMENT, TERMS, CONDITIONS, DISCLOSURES, ACKNOWLEDGMENTS, WAIVERS, AND LEGAL NOTICES
-    </h1>
-  
-    <p><strong>Last Updated:</strong> [01/01/2026]</p>
-  
-    <p>
-      This <strong>Extended Loan User Agreement, Terms, Conditions, Disclosures, Acknowledgments, Waivers, and Legal Notices</strong>
-      (the "<strong>Agreement</strong>") is a legally binding and enforceable contract entered into by and between
-      <strong>[BESTLOAN FINANCE AND LEASING PHILIPPINES INC.]</strong> (the "Company," "We," "Us," or "Our") and any individual or legal entity who accesses,
-      applies for, receives, guarantees, repays, or otherwise interacts with any loan, financial product, service,
-      website, mobile application, communication channel, or platform operated or provided by the Company
-      (the "User," "Borrower," "Applicant," "Guarantor," "You," or "Your").
-    </p>
-  
-    <hr />
-  
-    <h2>SECTION 1 — ACCEPTANCE OF TERMS</h2>
-    <ol>
-      <li>
-        By accessing, using, applying for, signing, receiving, or continuing to use any Company service, You expressly acknowledge,
-        confirm, and agree that You have read, understood, accepted, and agreed to be legally bound by all provisions of this Agreement.
-      </li>
-      <li>
-        You acknowledge this Agreement may be lengthy, complex, and repetitive. Such length or repetition does not reduce enforceability.
-      </li>
-      <li>
-        Choosing not to read this Agreement does not relieve You of obligations. "I didn't know" or "I didn't read" is not a defense.
-      </li>
-    </ol>
-  
-    <h2>SECTION 2 — DEFINITIONS</h2>
-    <ul>
-      <li><strong>"Loan"</strong> means any amount of money disbursed or made available to You, including renewals, extensions, or restructures.</li>
-      <li><strong>"Due Date"</strong> means the date repayment is required, regardless of weekends, holidays, illness, travel, or personal hardship.</li>
-      <li><strong>"Default"</strong> means any failure, delay, avoidance, misrepresentation, or breach, whether intentional or unintentional.</li>
-      <li><strong>"Platform"</strong> includes websites, apps, Telegram bots, SMS, calls, email, and any other channel used by the Company.</li>
-      <li><strong>"Fees"</strong> include processing, service, administrative, late fees, penalty interest, and recovery costs where permitted by law.</li>
-    </ul>
-  
-    <h2>SECTION 3 — ELIGIBILITY & USER REPRESENTATIONS</h2>
-    <ol>
-      <li>You confirm You are legally capable of entering a binding contract in <strong>[COUNTRY / JURISDICTION]</strong>.</li>
-      <li>
-        You confirm all information You provide (identity, income, contacts, guarantor info, documents) is true, accurate, complete,
-        and kept up-to-date.
-      </li>
-      <li>
-        Any false, misleading, incomplete, or outdated information may result in rejection, suspension, cancellation, immediate repayment demand,
-        or lawful recovery action.
-      </li>
-    </ol>
-  
-    <h2>SECTION 4 — LOAN APPLICATION & APPROVAL</h2>
-    <ol>
-      <li>Submitting an application does not guarantee approval.</li>
-      <li>The Company may request additional documents (ID, selfie, signature, guarantor proof, income proof, bank/wallet details).</li>
-      <li>The Company may verify information through manual checks, databases, and lawful third parties.</li>
-      <li>The Company may approve, reject, delay, cancel, or suspend any application at its sole discretion unless prohibited by law.</li>
-    </ol>
-  
-    <h2>SECTION 5 — LOAN AMOUNT, INTEREST, FEES, AND CHARGES</h2>
-    <ol>
-      <li>Loan amount, interest rate, fees, penalties, and schedule are determined by the Company and the specific loan product.</li>
-      <li>
-        Interest may be calculated daily, weekly, monthly, or using other methods, including compounding, as permitted by law and disclosed to You.
-      </li>
-      <li>Fees may include: processing, administrative, platform/service fees, late fees, penalty interest, and recovery/legal costs.</li>
-      <li>All fees are non-refundable unless mandatory law requires otherwise.</li>
-    </ol>
-  
-    <h2>SECTION 6 — REPAYMENT OBLIGATIONS</h2>
-    <ol>
-      <li>You agree to repay the Loan in full, including all interest, fees, and penalties by the due dates.</li>
-      <li>
-        Repayment remains required regardless of personal circumstances, missed notifications, device issues, or inability to access the Platform.
-      </li>
-      <li>Failure to receive reminders does not excuse late payment.</li>
-    </ol>
-  
-    <h2>SECTION 7 — LATE PAYMENT, DEFAULT, AND RECOVERY</h2>
-    <ol>
-      <li>Late payments may result in late fees, penalty interest, service restrictions, and account flags.</li>
-      <li>
-        A Loan may be considered in Default if a payment is overdue, if You provide false information, avoid communication,
-        or breach any term of this Agreement.
-      </li>
-      <li>
-        Upon Default, the Company may take lawful recovery actions, including contacting You and/or your guarantor, restricting services,
-        and initiating legal procedures where permitted.
-      </li>
-    </ol>
-  
-    <h2>SECTION 8 — GUARANTOR RESPONSIBILITY</h2>
-    <ol>
-      <li>If You provide a guarantor, You confirm You have the guarantor's informed permission to share their details.</li>
-      <li>
-        The guarantor may be jointly and severally liable, meaning the Company may seek repayment from the borrower, the guarantor,
-        or both, as allowed by law and the guarantor agreement.
-      </li>
-    </ol>
-  
-    <h2>SECTION 9 — DATA COLLECTION, PRIVACY, AND CONSENT</h2>
-    <ol>
-      <li>
-        You authorize the Company to collect, store, and process data necessary for verification, compliance, risk assessment,
-        customer support, and lawful recovery.
-      </li>
-      <li>
-        Data may include: identity details, images, signatures, contact information, device/IP data, communication logs, and repayment history.
-      </li>
-      <li>
-        Data may be shared with service providers, legal authorities, regulators, or recovery partners where lawful and necessary.
-      </li>
-      <li>
-        The Company will take reasonable security measures; however, no system can guarantee absolute security.
-      </li>
-    </ol>
-  
-    <h2>SECTION 10 — COMMUNICATION CONSENT</h2>
-    <ol>
-      <li>
-        You consent to being contacted via phone calls, SMS, email, messaging apps, and in-app notifications for verification,
-        reminders, notices, and recovery communications where permitted by law.
-      </li>
-      <li>Contact may occur at reasonable times, and may be increased during overdue or Default status.</li>
-    </ol>
-  
-    <h2>SECTION 11 — USER CONDUCT</h2>
-    <p>You agree not to:</p>
-    <ul>
-      <li>Provide false information or forged documents.</li>
-      <li>Threaten, harass, or abuse staff, partners, or agents.</li>
-      <li>Attempt to manipulate repayment records or bypass Platform controls.</li>
-      <li>Use the service for unlawful activity.</li>
-    </ul>
-  
-    <h2>SECTION 12 — SUSPENSION, TERMINATION, AND CONTINUING OBLIGATIONS</h2>
-    <ol>
-      <li>The Company may suspend, restrict, or terminate accounts for policy violations, fraud risk, compliance needs, or Default.</li>
-      <li>Termination does not cancel or reduce outstanding debt. All repayment obligations survive termination.</li>
-    </ol>
-  
-    <h2>SECTION 13 — DISCLAIMER OF WARRANTIES</h2>
-    <p>
-      All services are provided <strong>"AS IS"</strong> and <strong>"AS AVAILABLE"</strong>. The Company makes no warranties regarding uninterrupted service,
-      approval outcomes, processing times, or suitability for any particular purpose, except where required by law.
-    </p>
-  
-    <h2>SECTION 14 — LIMITATION OF LIABILITY</h2>
-    <p>
-      To the maximum extent permitted by law, the Company shall not be liable for indirect, incidental, consequential, special, or punitive damages,
-      including loss of income, profit, opportunity, reputation, or data.
-    </p>
-  
-    <h2>SECTION 15 — INDEMNIFICATION</h2>
-    <p>
-      You agree to indemnify and hold harmless the Company from claims, losses, damages, liabilities, and expenses arising from Your breach of this Agreement,
-      misuse of the Platform, unlawful activity, or violation of third-party rights.
-    </p>
-  
-    <h2>SECTION 16 — GOVERNING LAW & DISPUTE RESOLUTION</h2>
-    <ol>
-      <li>This Agreement is governed by the laws of <strong>[COUNTRY / JURISDICTION]</strong>.</li>
-      <li>
-        You agree to attempt good-faith resolution by contacting support at <strong>[CONTACT]</strong> before initiating formal proceedings, where permitted.
-      </li>
-    </ol>
-  
-    <h2>SECTION 17 — MODIFICATIONS</h2>
-    <p>
-      The Company may update this Agreement at any time. Continued use of services after updates constitutes acceptance of the revised terms,
-      except where mandatory law requires a different process.
-    </p>
-  
-    <h2>SECTION 18 — SEVERABILITY</h2>
-    <p>
-      If any provision is held invalid or unenforceable, the remaining provisions remain in full force and effect.
-    </p>
-  
-    <h2>SECTION 19 — ENTIRE AGREEMENT</h2>
-    <p>
-      This Agreement constitutes the entire agreement between You and the Company regarding the services and supersedes prior communications,
-      representations, or understandings, unless expressly stated in writing by authorized Company officers.
-    </p>
-  
-    <h2>SECTION 20 — FINAL ACKNOWLEDGMENT</h2>
-    <p>
-      By clicking <strong>"I Agree"</strong>, signing, or receiving loan funds, You confirm that You had the opportunity to read this Agreement,
-      You understand it creates legal obligations, and You agree to be bound by it in full.
-    </p>
-  
-    <hr />
-  
-    <p style="font-size: 0.95em;">
-      <strong>Company:</strong> [BESTLOAN FINANCE AND LEASING PHILIPPINES INC.] &nbsp; | &nbsp;
-      <strong>Registration Date:</strong> [July 26, 2006] &nbsp; | &nbsp;
-      <strong>SEC / License No.:</strong> [ #CS200611770 / 202]
-    </p>
-  
-  </div>
-  
+        <p><strong>Last Updated:</strong> [01/01/2026]</p>
 
-      <p style="margin-top:18px; opacity:.70;">End of Agreement.</p>
+        <p>
+          This <strong>Extended Loan User Agreement, Terms, Conditions, Disclosures, Acknowledgments, Waivers, and Legal Notices</strong>
+          (the "<strong>Agreement</strong>") is a legally binding and enforceable contract entered into by and between
+          <strong>[PIPO FINANCING (PH) INC.]</strong> (the "Company," "We," "Us," or "Our") and any individual or legal entity who accesses,
+          applies for, receives, guarantees, repays, or otherwise interacts with any loan, financial product, service,
+          website, mobile application, communication channel, or platform operated or provided by the Company
+          (the "User," "Borrower," "Applicant," "Guarantor," "You," or "Your").
+        </p>
+
+        <hr>
+
+        <h2>SECTION 1 — ACCEPTANCE OF TERMS</h2>
+        <ol>
+          <li>By accessing, using, applying for, signing, receiving, or continuing to use any Company service, You expressly acknowledge, confirm, and agree that You have read, understood, accepted, and agreed to be legally bound by all provisions of this Agreement.</li>
+          <li>You acknowledge this Agreement may be lengthy, complex, and repetitive. Such length or repetition does not reduce enforceability.</li>
+          <li>Choosing not to read this Agreement does not relieve You of obligations. "I didn't know" or "I didn't read" is not a defense.</li>
+        </ol>
+
+        <h2>SECTION 2 — DEFINITIONS</h2>
+        <ul>
+          <li><strong>"Loan"</strong> means any amount of money disbursed or made available to You, including renewals, extensions, or restructures.</li>
+          <li><strong>"Due Date"</strong> means the date repayment is required, regardless of weekends, holidays, illness, travel, or personal hardship.</li>
+          <li><strong>"Default"</strong> means any failure, delay, avoidance, misrepresentation, or breach, whether intentional or unintentional.</li>
+          <li><strong>"Platform"</strong> includes websites, apps, Telegram bots, SMS, calls, email, and any other channel used by the Company.</li>
+          <li><strong>"Fees"</strong> include processing, service, administrative, late fees, penalty interest, and recovery costs where permitted by law.</li>
+        </ul>
+
+        <h2>SECTION 3 — ELIGIBILITY &amp; USER REPRESENTATIONS</h2>
+        <ol>
+          <li>You confirm You are legally capable of entering a binding contract in <strong>[COUNTRY / JURISDICTION]</strong>.</li>
+          <li>You confirm all information You provide (identity, income, contacts, guarantor info, documents) is true, accurate, complete, and kept up-to-date.</li>
+          <li>Any false, misleading, incomplete, or outdated information may result in rejection, suspension, cancellation, immediate repayment demand, or lawful recovery action.</li>
+        </ol>
+
+        <h2>SECTION 4 — LOAN APPLICATION &amp; APPROVAL</h2>
+        <ol>
+          <li>Submitting an application does not guarantee approval.</li>
+          <li>The Company may request additional documents (ID, selfie, signature, guarantor proof, income proof, bank/wallet details).</li>
+          <li>The Company may verify information through manual checks, databases, and lawful third parties.</li>
+          <li>The Company may approve, reject, delay, cancel, or suspend any application at its sole discretion unless prohibited by law.</li>
+        </ol>
+
+        <h2>SECTION 5 — LOAN AMOUNT, INTEREST, FEES, AND CHARGES</h2>
+        <ol>
+          <li>Loan amount, interest rate, fees, penalties, and schedule are determined by the Company and the specific loan product.</li>
+          <li>Interest may be calculated daily, weekly, monthly, or using other methods, including compounding, as permitted by law and disclosed to You.</li>
+          <li>Fees may include: processing, administrative, platform/service fees, late fees, penalty interest, and recovery/legal costs.</li>
+          <li>All fees are non-refundable unless mandatory law requires otherwise.</li>
+        </ol>
+
+        <h2>SECTION 6 — REPAYMENT OBLIGATIONS</h2>
+        <ol>
+          <li>You agree to repay the Loan in full, including all interest, fees, and penalties by the due dates.</li>
+          <li>Repayment remains required regardless of personal circumstances, missed notifications, device issues, or inability to access the Platform.</li>
+          <li>Failure to receive reminders does not excuse late payment.</li>
+        </ol>
+
+        <h2>SECTION 7 — LATE PAYMENT, DEFAULT, AND RECOVERY</h2>
+        <ol>
+          <li>Late payments may result in late fees, penalty interest, service restrictions, and account flags.</li>
+          <li>A Loan may be considered in Default if a payment is overdue, if You provide false information, avoid communication, or breach any term of this Agreement.</li>
+          <li>Upon Default, the Company may take lawful recovery actions, including contacting You and/or your guarantor, restricting services, and initiating legal procedures where permitted.</li>
+        </ol>
+
+        <h2>SECTION 8 — GUARANTOR RESPONSIBILITY</h2>
+        <ol>
+          <li>If You provide a guarantor, You confirm You have the guarantor's informed permission to share their details.</li>
+          <li>The guarantor may be jointly and severally liable, meaning the Company may seek repayment from the borrower, the guarantor, or both, as allowed by law and the guarantor agreement.</li>
+        </ol>
+
+        <h2>SECTION 9 — DATA COLLECTION, PRIVACY, AND CONSENT</h2>
+        <ol>
+          <li>You authorize the Company to collect, store, and process data necessary for verification, compliance, risk assessment, customer support, and lawful recovery.</li>
+          <li>Data may include: identity details, images, signatures, contact information, device/IP data, communication logs, and repayment history.</li>
+          <li>Data may be shared with service providers, legal authorities, regulators, or recovery partners where lawful and necessary.</li>
+          <li>The Company will take reasonable security measures; however, no system can guarantee absolute security.</li>
+        </ol>
+
+        <h2>SECTION 10 — COMMUNICATION CONSENT</h2>
+        <ol>
+          <li>You consent to being contacted via phone calls, SMS, email, messaging apps, and in-app notifications for verification, reminders, notices, and recovery communications where permitted by law.</li>
+          <li>Contact may occur at reasonable times, and may be increased during overdue or Default status.</li>
+        </ol>
+
+        <h2>SECTION 11 — USER CONDUCT</h2>
+        <p>You agree not to:</p>
+        <ul>
+          <li>Provide false information or forged documents.</li>
+          <li>Threaten, harass, or abuse staff, partners, or agents.</li>
+          <li>Attempt to manipulate repayment records or bypass Platform controls.</li>
+          <li>Use the service for unlawful activity.</li>
+        </ul>
+
+        <h2>SECTION 12 — SUSPENSION, TERMINATION, AND CONTINUING OBLIGATIONS</h2>
+        <ol>
+          <li>The Company may suspend, restrict, or terminate accounts for policy violations, fraud risk, compliance needs, or Default.</li>
+          <li>Termination does not cancel or reduce outstanding debt. All repayment obligations survive termination.</li>
+        </ol>
+
+        <h2>SECTION 13 — DISCLAIMER OF WARRANTIES</h2>
+        <p>All services are provided <strong>"AS IS"</strong> and <strong>"AS AVAILABLE"</strong>. The Company makes no warranties regarding uninterrupted service, approval outcomes, processing times, or suitability for any particular purpose, except where required by law.</p>
+
+        <h2>SECTION 14 — LIMITATION OF LIABILITY</h2>
+        <p>To the maximum extent permitted by law, the Company shall not be liable for indirect, incidental, consequential, special, or punitive damages, including loss of income, profit, opportunity, reputation, or data.</p>
+
+        <h2>SECTION 15 — INDEMNIFICATION</h2>
+        <p>You agree to indemnify and hold harmless the Company from claims, losses, damages, liabilities, and expenses arising from Your breach of this Agreement, misuse of the Platform, unlawful activity, or violation of third-party rights.</p>
+
+        <h2>SECTION 16 — GOVERNING LAW &amp; DISPUTE RESOLUTION</h2>
+        <ol>
+          <li>This Agreement is governed by the laws of <strong>[COUNTRY / JURISDICTION]</strong>.</li>
+          <li>You agree to attempt good-faith resolution by contacting support at <strong>[CONTACT]</strong> before initiating formal proceedings, where permitted.</li>
+        </ol>
+
+        <h2>SECTION 17 — MODIFICATIONS</h2>
+        <p>The Company may update this Agreement at any time. Continued use of services after updates constitutes acceptance of the revised terms, except where mandatory law requires a different process.</p>
+
+        <h2>SECTION 18 — SEVERABILITY</h2>
+        <p>If any provision is held invalid or unenforceable, the remaining provisions remain in full force and effect.</p>
+
+        <h2>SECTION 19 — ENTIRE AGREEMENT</h2>
+        <p>This Agreement constitutes the entire agreement between You and the Company regarding the services and supersedes prior communications, representations, or understandings, unless expressly stated in writing by authorized Company officers.</p>
+
+        <h2>SECTION 20 — FINAL ACKNOWLEDGMENT</h2>
+        <p>By clicking <strong>"I Agree"</strong>, signing, or receiving loan funds, You confirm that You had the opportunity to read this Agreement, You understand it creates legal obligations, and You agree to be bound by it in full.</p>
+
+        <hr>
+
+        <p style="font-size:.95em;">
+          <strong>Company:</strong> [PIPO FINANCING (PH) INC.] &nbsp;|&nbsp;
+          <strong>Registration Date:</strong> [September 4, 2017] &nbsp;|&nbsp;
+          <strong>SEC / License No.:</strong> [CS201729260 / 2526]
+        </p>
+      </div>
+
+      <p style="margin-top:18px; color:#94a3b8; font-size:12px;">End of Agreement.</p>
     </div>
 
     <div class="agreement-foot">
       <button class="btn-decline" type="button" id="declineAgreement">Not Agree</button>
-      <button class="btn-agree" type="button" id="acceptAgreement" disabled>Agree</button>
+      <button class="btn-agree"   type="button" id="acceptAgreement"  disabled>Agree</button>
     </div>
   </div>
 </div>
 
 <script>
+  // Eye toggle
   document.querySelectorAll('.eye-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const id = btn.getAttribute('data-target');
       const input = document.getElementById(id);
       if (!input) return;
-
       const on = btn.querySelector('.eye-on');
       const off = btn.querySelector('.eye-off');
-
       const isHidden = input.type === 'password';
       input.type = isHidden ? 'text' : 'password';
-
-      if (on && off){
-        on.style.display = isHidden ? 'none' : 'block';
+      if (on && off) {
+        on.style.display  = isHidden ? 'none'  : 'block';
         off.style.display = isHidden ? 'block' : 'none';
       }
     });
   });
 
+  // Agreement modal
   (function(){
-    const modal = document.getElementById('agreementModal');
-    const openBtn = document.getElementById('openAgreement');
-    const closeBtn = document.getElementById('closeAgreement');
-    const declineBtn = document.getElementById('declineAgreement');
-    const acceptBtn = document.getElementById('acceptAgreement');
-    const body = document.getElementById('agreementBody');
-
-    const agreeChk = document.getElementById('agreeChk');
+    const modal       = document.getElementById('agreementModal');
+    const openBtn     = document.getElementById('openAgreement');
+    const closeBtn    = document.getElementById('closeAgreement');
+    const declineBtn  = document.getElementById('declineAgreement');
+    const acceptBtn   = document.getElementById('acceptAgreement');
+    const body        = document.getElementById('agreementBody');
+    const agreeChk    = document.getElementById('agreeChk');
     const registerBtn = document.getElementById('registerBtn');
     const agreeHidden = document.getElementById('agreeAccepted');
-    const form = document.getElementById('registerForm');
-
-    let hasAccepted = false;
+    const form        = document.getElementById('registerForm');
+    let hasAccepted   = false;
 
     function syncRegisterButton(){
       agreeChk.checked = hasAccepted;
       if (agreeHidden) agreeHidden.value = hasAccepted ? "1" : "0";
-
-      // ✅ IMPORTANT: block register until accepted
-      if (registerBtn){
-        registerBtn.disabled = !hasAccepted;
-      }
+      if (registerBtn) registerBtn.disabled = !hasAccepted;
     }
-
     function openModal(e){
       if (e) e.preventDefault();
       modal.style.display = 'flex';
-      modal.setAttribute('aria-hidden', 'false');
-
+      modal.setAttribute('aria-hidden','false');
       acceptBtn.disabled = true;
       acceptBtn.classList.remove('enabled');
       body.scrollTop = 0;
     }
-
     function closeModal(){
       modal.style.display = 'none';
-      modal.setAttribute('aria-hidden', 'true');
+      modal.setAttribute('aria-hidden','true');
     }
 
     openBtn.addEventListener('click', openModal);
     closeBtn.addEventListener('click', closeModal);
-
-    // enable Agree only when scrolled to bottom
     body.addEventListener('scroll', () => {
       const nearBottom = body.scrollTop + body.clientHeight >= body.scrollHeight - 6;
-      if (nearBottom){
-        acceptBtn.disabled = false;
-        acceptBtn.classList.add('enabled');
-      }
+      if (nearBottom){ acceptBtn.disabled = false; acceptBtn.classList.add('enabled'); }
     });
-
-    declineBtn.addEventListener('click', () => {
-      hasAccepted = false;
-      syncRegisterButton();
-      closeModal();
-    });
-
-    acceptBtn.addEventListener('click', () => {
-      hasAccepted = true;
-      syncRegisterButton();
-      closeModal();
-    });
-
-    // clicking checkbox forces modal
-    agreeChk.addEventListener('change', () => {
-      if (!hasAccepted){
-        agreeChk.checked = false;
-        openModal();
-      }
-    });
-
-    // extra safety: if someone bypasses, block submit
+    declineBtn.addEventListener('click', () => { hasAccepted = false; syncRegisterButton(); closeModal(); });
+    acceptBtn.addEventListener('click',  () => { hasAccepted = true;  syncRegisterButton(); closeModal(); });
+    agreeChk.addEventListener('change',  () => { if (!hasAccepted){ agreeChk.checked = false; openModal(); } });
     if (form){
-      form.addEventListener('submit', (e) => {
-        if (!hasAccepted || (agreeHidden && agreeHidden.value !== "1")){
-          e.preventDefault();
-          openModal(e);
-        }
-      });
+      form.addEventListener('submit', (e) => { if (!hasAccepted){ e.preventDefault(); openModal(e); } });
     }
-
     syncRegisterButton();
-
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) closeModal();
-    });
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
   })();
-</script>
 
-<!-- ✅ Phone digits only (no letters / symbols / +) -->
-<script>
+  // Phone digits only
   (function(){
     const phone = document.getElementById("id_phone");
-    if(!phone) return;
-
-    function onlyDigits(){
-      phone.value = (phone.value || "").replace(/\D+/g, "");
-    }
-
+    if (!phone) return;
+    function onlyDigits(){ phone.value = (phone.value || "").replace(/\D+/g, ""); }
     phone.addEventListener("input", onlyDigits);
     phone.addEventListener("paste", () => setTimeout(onlyDigits, 0));
-
     phone.addEventListener("keydown", (e) => {
-      const bad = ["+", "-", " ", "e", "E", "."];
-      if (bad.includes(e.key)) e.preventDefault();
+      if (["+","-"," ","e","E","."].includes(e.key)) e.preventDefault();
     });
   })();
 </script>

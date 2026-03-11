@@ -4,645 +4,462 @@
 
 {% block content %}
 <style>
-  @font-face{
-    font-family: "Ovelion";
-    src: url("{% static 'fonts/Ovelion-Regular.ttf' %}") format("truetype");
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
+@font-face {
+  font-family: 'Ovelion';
+  src: url("{% static 'fonts/Ovelion-Regular.ttf' %}") format('truetype');
+}
+body, body * { font-family: 'Ovelion', sans-serif !important; }
 
-  /* ✅ apply font to agreement page only */
-  .agree-page, .agree-page *{
-    font-family: "Ovelion", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
-  }
-
-  .agree-page{
-    padding: 22px 14px;
-    color: rgba(255,255,255,.96);
-  }
-
-  .agree-wrap{
-    width: min(980px, 96vw);
-    margin: 0 auto;
-  }
-
-  /* paper / glass style like your screenshot */
-  .agree-card{
-  position: relative;
-  border-radius: 8px;              /* មិនមូលពេក */
-  padding: 30px 28px;
-  margin-bottom: 24px;
-
-  /* Paper gradient theme */
-  background: linear-gradient(
-    145deg,
-    #ffffff 0%,
-    #f5f8fc 60%,
-    #e6eef7 100%
-  );
-
-  border: 1px solid #004182;
-  box-shadow:
-    0 8px 20px rgba(0, 0, 0, 0.15),
-    0 0 0 4px rgba(0, 65, 130, 0.08);
-
-  color: #1a1a1a;   /* អក្សរខ្មៅដូចក្រដាស */
+:root{
+  --primary:   #1B2A5E;
+  --accent:    #F5C518;
+  --danger:    #E03020;
+  --secondary: #1A4DB5;
+  --white:     #FFFFFF;
+  --light-bg:  #F4F6FB;
 }
 
-/* Header inside agreement */
-.agree-card h1,
-.agree-card h2{
-  color: #004182;
-  font-weight: 700;
-  margin-top: 28px;
+/* ✅ GLOBAL: Kill base.html dark card overrides */
+.cardx,
+.card,
+[class*="card"] {
+  background: #FFFFFF !important;
+  color: #1B2A5E !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
-/* Strong / highlight */
-.agree-card strong{
-  color: #054585d0;
+/* ===== Wrapper ===== */
+.agree-wrap{
+  width: min(980px, 96vw);
+  margin: 0 auto;
+  padding: 20px 14px 40px;
+  box-sizing: border-box;
 }
 
-/* HR line */
-.agree-card hr{
-  border: none;
-  height: 2px;
-  background: linear-gradient(
-    to right,
-    #004182,
-    #054585d0
-  );
-  margin: 28px 0;
+/* ===== BASE CARD — WHITE + RED BORDER ===== */
+.cardx{
+  position: relative !important;
+  background: #FFFFFF !important;
+  border-radius: 22px !important;
+  padding: 28px !important;
+  border: 2px solid rgba(224,48,32,.28) !important;
+  box-shadow: 0 16px 48px rgba(27,42,94,.10), 0 0 0 1px rgba(245,197,24,.08) !important;
+  overflow: hidden;
+  margin-bottom: 20px;
+  color: var(--primary) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
-/* Lists spacing */
-.agree-card ol,
-.agree-card ul{
-  padding-left: 20px;
+/* ✅ Force ALL text readable */
+.cardx, .cardx * {
+  color: #1B2A5E !important;
+}
+
+.cardx h1, .cardx h2 {
+  color: #1B2A5E !important;
+  font-weight: 900;
+  margin-top: 20px;
+  margin-bottom: 12px;
+}
+
+.cardx h1 {
+  font-size: 22px;
+  text-align: center;
+  letter-spacing: .05em;
+}
+
+.cardx h2 {
+  font-size: 18px;
+}
+
+.cardx p {
+  color: #475569 !important;
+  line-height: 1.75;
   margin: 12px 0;
 }
 
-.agree-card li{
-  margin-bottom: 8px;
+.cardx strong, .cardx b {
+  color: #1B2A5E !important;
+  font-weight: 900;
 }
 
-  .agree-title{
-    font-size: 20px;
-    font-weight: 900;
-    letter-spacing: .03em;
-    margin: 0 0 8px;
-    text-shadow: 0 0 10px rgba(255,255,255,.20);
-  }
+.cardx ul, .cardx ol {
+  padding-left: 24px;
+  margin: 12px 0;
+}
 
-  .agree-sub{
-    font-size: 12px;
-    opacity: .82;
-    margin: 0 0 14px;
-  }
+.cardx li {
+  color: #475569 !important;
+  margin-bottom: 8px;
+  line-height: 1.7;
+}
 
-  .agree-hr{
-    height: 1px;
-    border: 0;
-    background: rgba(255,255,255,.14);
-    margin: 14px 0;
-  }
+.cardx hr {
+  border: none;
+  height: 2px;
+  background: linear-gradient(to right, rgba(224,48,32,.25), rgba(245,197,24,.35));
+  margin: 24px 0;
+}
 
-  .agree-kv{
-    margin: 0;
-    padding-left: 16px;
-    line-height: 1.65;
-  }
-  .agree-kv li{ margin: 6px 0; }
+/* Title sections */
+.ag-title-wrap {
+  text-align: center;
+  margin-bottom: 16px;
+}
 
-  .agree-p{
-    margin: 10px 0;
-    line-height: 1.75;
-    opacity: .95;
-  }
-
-  .agree-h{
-    margin: 14px 0 8px;
-    font-size: 16px;
-    font-weight: 900;
-  }
-
-  .article-block{
-    margin-top: 10px;
-    padding: 12px 14px;
-    border-radius: 14px;
-    background: rgba(0,0,0,.20);
-    border: 1px solid rgba(255,255,255,.12);
-  }
-
-  .article-item{
-    margin: 10px 0;
-    padding: 12px 12px;
-    border-radius: 14px;
-    background: rgba(255,255,255,.06);
-    border: 1px solid rgba(255,255,255,.10);
-  }
-  .article-item b{
-    font-weight: 900;
-    color: rgba(255,255,255,.98);
-  }
-  .article-item .article-text{
-    margin-top: 6px;
-    line-height: 1.75;
-    opacity: .95;
-    white-space: pre-line;
-  }
-
-  /* bottom long agreement block */
-  .loan-agreement{
-    max-width: 900px;
-    margin: 0 auto;
-    line-height: 1.8;
-  }
-  .loan-agreement h1{
-    text-align: center;
-    margin: 0 0 12px 0;
-    font-size: 20px;
-    font-weight: 950;
-    letter-spacing: .02em;
-  }
-  .loan-agreement h2{
-    margin: 16px 0 8px;
-    font-size: 15px;
-    font-weight: 950;
-  }
-  .loan-agreement p, .loan-agreement li{
-    opacity: .95;
-  }
-  .loan-agreement hr{
-    border: 0;
-    height: 1px;
-    background: rgba(255,255,255,.14);
-    margin: 14px 0;
-  }
-
-  @media (max-width: 560px){
-    .agree-card{ padding: 14px; }
-    .agree-title{ font-size: 18px; }
-    .loan-agreement h1{ font-size: 18px; }
-  }
-
-  .ag-title{
-  text-align:center;         /* ✅ កណ្ដាល */
+.ag-title {
+  display: inline-block;
+  font-size: 20px;
   font-weight: 950;
   letter-spacing: .08em;
-  margin: 0 0 12px 0;
-  font-size: 22px;
-  padding: 10px 12px;
-  display: inline-block;     /* ✅ ឲ្យវាដូច label */
-  border: 1px solid rgba(255,255,255,.18);
-  background: rgba(0,0,0,.18);
-  border-radius: 12px;
+  color: #1B2A5E !important;
+  padding: 10px 20px;
+  border: 2px solid rgba(224,48,32,.30);
+  background: #F4F6FB !important;
+  border-radius: 14px;
+  margin: 0;
 }
 
-/* ✅ ឲ្យ label កណ្ដាលពិតៗក្នុង card */
-.ag-title-wrap{
-  text-align:center;
-  margin-bottom: 6px;
+/* Article items */
+.article-block {
+  margin-top: 14px;
 }
-.art-title{
-  color: #004182;          /* Blue like image 2 */
+
+.article-item {
+  margin: 12px 0;
+  padding: 16px;
+  border-radius: 16px;
+  background: #F4F6FB !important;
+  border: 1.5px solid rgba(27,42,94,.12) !important;
+}
+
+.art-title {
+  color: #1B2A5E !important;
   font-weight: 900;
   letter-spacing: .4px;
   text-transform: uppercase;
+  font-size: 14px;
 }
 
-.art-title:hover{
-  color: #054585d0;
+.article-text {
+  margin-top: 8px;
+  line-height: 1.75;
+  color: #475569 !important;
+  white-space: pre-line;
+}
+
+/* Back button */
+.btn-container {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 26px;
+  border-radius: 999px;
+  background: #FFFFFF;
+  color: var(--primary);
+  font-weight: 900;
+  font-size: 14px;
+  text-decoration: none;
+  border: 2px solid rgba(224,48,32,.30);
+  box-shadow: 0 4px 14px rgba(27,42,94,.12);
+  transition: transform .15s ease;
+}
+
+.back-btn:hover {
+  transform: translateY(-1px);
+}
+
+.back-btn:active {
+  transform: scale(.98);
+}
+
+@media (max-width: 560px) {
+  .cardx {
+    padding: 18px !important;
+  }
+  .ag-title {
+    font-size: 18px;
+    padding: 8px 16px;
+  }
 }
 </style>
 
-<div class="agree-page">
-  <div class="agree-wrap">
+<div class="agree-wrap">
 
-    <!-- =========================
-         TOP: ABOUT US
-         ========================= -->
-    <div class="agree-card">
-      <div class="ag-title-wrap">
-        <h2 class="ag-title">ABOUT US</h2>
-      </div>
-
-      <ul class="agree-kv">
-        <li><b>BESTLOAN FINANCE AND LEASING PHILIPPINES INC.:</b> [BESTLOAN FINANCE AND LEASING PHILIPPINES INC.]</li>
-        <li><b>Registration Date:</b> [July 26, 2006]</li>
-        <li><b>SEC / License / Registration Number:</b> [#CS200611770 / 202]</li>
-        <li><b>Registered Country:</b> [Philippine]</li>
-      </ul>
-
-      <hr class="agree-hr">
-
-      <p class="agree-p">
-        [BESTLOAN FINANCE AND LEASING PHILIPPINES INC.] is a formally established and legally registered financial services organization operating
-        in accordance with the applicable laws, regulations, and regulatory frameworks of [Philippine].
-      </p>
-
-      <p class="agree-p">
-        The Company was officially incorporated on [July 26, 2006] and operates under business registration,
-        financial service license, or regulatory approval number [SEC / LICENSE / REGISTRATION NUMBER], as issued
-        by the relevant governmental or regulatory authority.
-      </p>
-
-      <p class="agree-p">
-        The establishment of [BESTLOAN FINANCE AND LEASING PHILIPPINES INC.] was driven by the growing demand for structured, accountable, and legally
-        compliant financial assistance solutions designed to serve individuals seeking access to short-term and long-term
-        funding options within a regulated framework.
-      </p>
-
-      <p class="agree-p">
-        The Company exists as a lawful business entity with recognized legal standing and conducts its operations in compliance
-        with commercial, financial, consumer protection, and data protection laws applicable within [Philippine].
-      </p>
-
-      <p class="agree-p">
-        The primary nature of the Company’s business is the provision of loan-related and financial facilitation services. These
-        services are structured to ensure operational sustainability, risk management, and legal enforceability.
-      </p>
-
-      <p class="agree-p">
-        The purpose of [BESTLOAN FINANCE AND LEASING PHILIPPINES INC.] is to provide structured access to financial resources while maintaining responsible lending
-        practices, internal risk controls, regulatory compliance, and repayment accountability.
-      </p>
-
-      <p class="agree-p">
-        The mission of the Company is to deliver transparent, disciplined, and structured financial services that support borrower
-        needs while ensuring repayment responsibility, operational continuity, and long-term business sustainability.
-      </p>
-
-      <p class="agree-p">
-        The Company’s vision is to become a scalable, trusted, and compliant financial service provider capable of operating within
-        evolving regulatory environments while maintaining consistent service standards and risk management practices.
-      </p>
-
-      <p class="agree-p">
-        The Company operates under the philosophy that financial access must be structured, borrowing carries responsibility,
-        agreements must be respected, and repayment is mandatory.
-      </p>
-
-      <p class="agree-p">
-        The Company’s services may include loan application intake, identity verification, document validation, risk and eligibility
-        assessment, loan approval or rejection, loan disbursement coordination, repayment schedule administration, account monitoring,
-        and customer communication.
-      </p>
-
-      <p class="agree-p">
-        All applications, requests, and services are subject to internal review and discretion. The Company is not obligated to approve
-        any application and may reject, delay, or suspend services without providing a detailed explanation, except where required by law.
-      </p>
-
-      <p class="agree-p">
-        Users engaging with the Company acknowledge and accept that loans are legally binding obligations, repayment is not optional,
-        and failure to read documentation does not remove responsibility.
-      </p>
-
-      <p class="agree-p">
-        The Company collects, stores, and processes user information for identity verification, compliance checks, operational processing,
-        risk management, and legal enforcement purposes, in accordance with applicable data protection and privacy laws.
-      </p>
-
-      <p class="agree-p">
-        The Company utilizes internal systems and third-party technologies to manage applications, records, communications, and operational
-        workflows. While reasonable security measures are implemented, no electronic system can be guaranteed to be completely risk-free.
-      </p>
-
-      <p class="agree-p">
-        The Company does not provide financial advisory services, investment recommendations, legal consultation, or tax planning advice.
-        All services are transactional in nature.
-      </p>
-
-      <p class="agree-p">
-        The Company reserves the right to modify, update, expand, reduce, or discontinue any part of its services, systems, or operational
-        processes as required by business needs or regulatory changes.
-      </p>
-
-      <p class="agree-p">
-        This About Us section may be updated, revised, expanded, or replaced at any time to reflect changes in operations, regulatory requirements,
-        or business structure. Continued use of the Company’s services constitutes acceptance of such updates.
-      </p>
+  <!-- ===== ABOUT US ===== -->
+  <div class="cardx">
+    <div class="ag-title-wrap">
+      <h2 class="ag-title">ABOUT US</h2>
     </div>
 
-    <!-- =========================
-         MIDDLE: ARTICLE
-         ========================= -->
-    <div class="agree-card">
-      <div class="agree-title">ARTICLE</div>
-      <div class="agree-sub">Terms and conditions (Article 1–12)</div>
+    <ul>
+      <li><b>PIPO FINANCING (PH) INC.:</b> [PIPO FINANCING (PH) INC.]</li>
+      <li><b>Registration Date:</b> [September 4, 2017]</li>
+      <li><b>SEC / License / Registration Number:</b> [CS201729260 / 2526]</li>
+      <li><b>Registered Country:</b> [Philippine]</li>
+    </ul>
 
-      <div class="article-block">
+    <hr>
 
-        <div class="article-item">
-          <p><span class="art-title">Article 1</span><br>
-          <div class="article-text">Loan Form: Use An Unsecured ID Card To Request A Loan.</div>
-        </div>
+    <p>[PIPO FINANCING (PH) INC.] is a formally established and legally registered financial services organization operating in accordance with the applicable laws, regulations, and regulatory frameworks of [Philippine].</p>
 
-        <div class="article-item">
-          <p><span class="art-title">Article 2</span><br>
-          <div class="article-text">Premium Interest Rate: Interest Rates, Fines, Service Charges Or Any Fees.
-Total Not More Than 25% Per Year.</div>
-        </div>
+    <p>The Company was officially incorporated on [September 4, 2017] and operates under business registration, financial service license, or regulatory approval number [SEC / LICENSE / REGISTRATION NUMBER], as issued by the relevant governmental or regulatory authority.</p>
 
-        <div class="article-item">
-          <p><span class="art-title">Article 3</span><br>
-          <div class="article-text">During The Loan Tenure, The Borrower Has To:
+    <p>The establishment of [PIPO FINANCING (PH) INC.] was driven by the growing demand for structured, accountable, and legally compliant financial assistance solutions designed to serve individuals seeking access to short-term and long-term funding options within a regulated framework.</p>
+
+    <p>The Company exists as a lawful business entity with recognized legal standing and conducts its operations in compliance with commercial, financial, consumer protection, and data protection laws applicable within [Philippine].</p>
+
+    <p>The primary nature of the Company's business is the provision of loan-related and financial facilitation services. These services are structured to ensure operational sustainability, risk management, and legal enforceability.</p>
+
+    <p>The purpose of [PIPO FINANCING (PH) INC.] is to provide structured access to financial resources while maintaining responsible lending practices, internal risk controls, regulatory compliance, and repayment accountability.</p>
+
+    <p>The mission of the Company is to deliver transparent, disciplined, and structured financial services that support borrower needs while ensuring repayment responsibility, operational continuity, and long-term business sustainability.</p>
+
+    <p>The Company's vision is to become a scalable, trusted, and compliant financial service provider capable of operating within evolving regulatory environments while maintaining consistent service standards and risk management practices.</p>
+
+    <p>The Company operates under the philosophy that financial access must be structured, borrowing carries responsibility, agreements must be respected, and repayment is mandatory.</p>
+
+    <p>The Company's services may include loan application intake, identity verification, document validation, risk and eligibility assessment, loan approval or rejection, loan disbursement coordination, repayment schedule administration, account monitoring, and customer communication.</p>
+
+    <p>All applications, requests, and services are subject to internal review and discretion. The Company is not obligated to approve any application and may reject, delay, or suspend services without providing a detailed explanation, except where required by law.</p>
+
+    <p>Users engaging with the Company acknowledge and accept that loans are legally binding obligations, repayment is not optional, and failure to read documentation does not remove responsibility.</p>
+
+    <p>The Company collects, stores, and processes user information for identity verification, compliance checks, operational processing, risk management, and legal enforcement purposes, in accordance with applicable data protection and privacy laws.</p>
+
+    <p>The Company utilizes internal systems and third-party technologies to manage applications, records, communications, and operational workflows. While reasonable security measures are implemented, no electronic system can be guaranteed to be completely risk-free.</p>
+
+    <p>The Company does not provide financial advisory services, investment recommendations, legal consultation, or tax planning advice. All services are transactional in nature.</p>
+
+    <p>The Company reserves the right to modify, update, expand, reduce, or discontinue any part of its services, systems, or operational processes as required by business needs or regulatory changes.</p>
+
+    <p>This About Us section may be updated, revised, expanded, or replaced at any time to reflect changes in operations, regulatory requirements, or business structure. Continued use of the Company's services constitutes acceptance of such updates.</p>
+  </div>
+
+  <!-- ===== ARTICLE ===== -->
+  <div class="cardx">
+    <div class="ag-title-wrap">
+      <h2 class="ag-title">ARTICLE</h2>
+    </div>
+    <p style="text-align:center; color:#64748b !important; font-size:13px; margin-top:-8px;">Terms and conditions (Article 1–12)</p>
+
+    <div class="article-block">
+
+      <div class="article-item">
+        <p><span class="art-title">Article 1</span></p>
+        <div class="article-text">Loan Form: Use An Unsecured ID Card To Request A Loan.</div>
+      </div>
+
+      <div class="article-item">
+        <p><span class="art-title">Article 2</span></p>
+        <div class="article-text">Premium Interest Rate: Interest Rates, Fines, Service Charges Or Any Fees. Total Not More Than 25% Per Year.</div>
+      </div>
+
+      <div class="article-item">
+        <p><span class="art-title">Article 3</span></p>
+        <div class="article-text">During The Loan Tenure, The Borrower Has To:
 (1) Pay Interest At The Same Time.
 (2) To Give Capital On Time.
-(3) If It Is Not Possible To Borrow Money From The Account Due To The Borrowers Problem,
-The Borrower Should Cooperate With The Lender To Finalize The Payment.
+(3) If It Is Not Possible To Borrow Money From The Account Due To The Borrowers Problem, The Borrower Should Cooperate With The Lender To Finalize The Payment.
 (4) Comply With All The Terms Of The Contract.</div>
-        </div>
+      </div>
 
-        <div class="article-item">
-          <p><span class="art-title">Article 4</span><br>
-          <div class="article-text">(1)After Signing This Contract, Both The Borrower And The Lender Must Comply With All
-Requirements Of The Contract. If Either Party Breaches The Contract, The Other Party Has The
-Right To Sue In Court. The Party Not Complying With This Will Have To Pay A Fine Of 50
-Percent Of The Installment Amount if it Does Not Object.
+      <div class="article-item">
+        <p><span class="art-title">Article 4</span></p>
+        <div class="article-text">(1)After Signing This Contract, Both The Borrower And The Lender Must Comply With All Requirements Of The Contract. If Either Party Breaches The Contract, The Other Party Has The Right To Sue In Court. The Party Not Complying With This Will Have To Pay A Fine Of 50 Percent Of The Installment Amount if it Does Not Object.
 (2) In The Event That The Credit Transfer Cannot Be Resolved Due To The Problems</div>
-        </div>
+      </div>
 
-        <div class="article-item">
-          <p><span class="art-title">Article 5</span><br>
-          <div class="article-text">Lending: Before Granting A Loan, The Lender Has The Right To Consider The Following
-Matters And Take A Decision To Grant The Loan As A Result Of The Review:
-(1) The Borrower Has Entered Into This Agreement Completion Of Legal Formalities (If Any)
-Relating To The Loan Under The Act, Such As Regulatory Delivery Of Government Permits,
-Approvals, Registrations And Relevant Laws;
+      <div class="article-item">
+        <p><span class="art-title">Article 5</span></p>
+        <div class="article-text">Lending: Before Granting A Loan, The Lender Has The Right To Consider The Following Matters And Take A Decision To Grant The Loan As A Result Of The Review:
+(1) The Borrower Has Entered Into This Agreement Completion Of Legal Formalities (If Any) Relating To The Loan Under The Act, Such As Regulatory Delivery Of Government Permits, Approvals, Registrations And Relevant Laws;
 (2) Whether The Borrower Has Paid The Costs Associated With This Agreement (If Any);
 (3) Whether The Borrower Has Complied With The Loan Terms Specified In This Agreement;
 (4) Whether The Business And Financial Position Of The Borrower Has Changed Adversely;
 (5) If The Borrower Breaches The Terms Specified In This Agreement.</div>
-        </div>
-
-        <div class="article-item">
-          <p><span class="art-title">Article 6</span><br>
-          <div class="article-text">(1) The Borrower Cannot Use The Loan For Illegal Activities. Otherwise, The Lender Reserves
-The Right To Require The Borrower To Repay The Principal And Interest Promptly And The
-Legal Consequences Shall Be Borne By The Borrower.
-(2) The Borrower Shall Repay The Principal And Interest Within The Period Specified in The Contract.
-For The Overdue Portion, The Lender Is Entitled To Recover The Loan And Collect 5% Of The Total Amount Due.</div>
-        </div>
-
-        <div class="article-item">
-          <p><span class="art-title">Article 7</span><br>
-          <div class="article-text">Results from the bank approval, if it is not convenient for each borrower to use the securities as
-collateral for the loan. The company will be exposed to the risk of making loans to borrowers.
-There fore, the financial liquidity of the "borrower" needs to be checked. Borrowers must submit
-a loan amount deposit, which is approximately 10%-20% of the loan amount. (Depending on the
-credit department again) to create a credit history to Borrower s ability to payoff the loan.</div>
-        </div>
-
-        <div class="article-item">
-          <p><span class="art-title">Article 8</span><br>
-          <div class="article-text">Dispute Resolution Both Parties agree to resolve any dispute, controversy, or claim arising out of
-or relating to this Agreement through good faith negotiation. If the negotiations do not result in a
-resolution within thirty (30) days, the dispute shall be submitted to mediation before a mutually
-agreed mediator. If mediation fails to resolve the dispute, the matter shall be finally settled by
-arbitration in accordance with the applicable laws and regulations. The decision of the arbitrator
-shall be final and binding upon both Parties.</div>
-        </div>
-
-        <div class="article-item">
-          <p><span class="art-title">Article 9</span><br>
-          <div class="article-text">Governing Law, This Agreement shall be governed by and construed in accordance with the
-laws of the Republic of the Philippines.
-Any dispute arising from or relating to this Agreement shall be subject to the applicable laws,
-rules, and regulations in force within the Philippines.</div>
-        </div>
-
-        <div class="article-item">
-          <p><span class="art-title">Article 10</span><br>
-          <div class="article-text">Confidentiality and Data Privacy, Both Parties agree to maintain the confidentiality of all
-information exchanged in connection with this Agreement, including personal, financial, and
-transaction-related information.
-The Company shall process and protect personal data in accordance with the Data Privacy Act of
-2012 (Republic Act No. 10173) and other applicable data protection regulations in the Philippines.
-Information shall not be disclosed to third parties without prior written consent, except when
-required by law or by competent government authority.</div>
-        </div>
-
-        <div class="article-item">
-          <p><span class="art-title">Article 11</span><br>
-          <div class="article-text">Amendments and Modifications, No amendment, alteration, or modification of this Agreement
-shall be valid unless made in writing and signed by both Parties.
-The Company may update its policies and procedures to comply with regulatory requirements,
-provided that such updates shall not materially prejudice the rights of the Client without proper notice.</div>
-        </div>
-
-        <div class="article-item">
-          <p><span class="art-title">Article 12</span><br>
-          <div class="article-text">Severability, If any provision of this Agreement is declared invalid, illegal, or unenforceable
-under Philippine law, such provision shall be deemed severed from this Agreement.
-The remaining provisions shall continue to be valid and enforceable to the fullest extent permitted by law.</div>
-        </div>
-
       </div>
-    </div>
 
-    <!-- =========================
-         BOTTOM: YOUR LONG AGREEMENT DIV
-         ========================= -->
-    <div class="agree-card">
-      <div class="loan-agreement" id="loanAgreement" style="max-width: 900px; margin: 0 auto; line-height: 1.6;">
-        <h1 style="text-align:center; margin: 0 0 12px 0;">
-          EXTENDED LOAN USER AGREEMENT, TERMS, CONDITIONS, DISCLOSURES, ACKNOWLEDGMENTS, WAIVERS, AND LEGAL NOTICES
-        </h1>
-
-        <p><strong>Last Updated:</strong> [INSERT DATE]</p>
-
-        <p>
-          This <strong>Extended Loan User Agreement, Terms, Conditions, Disclosures, Acknowledgments, Waivers, and Legal Notices</strong>
-          (the “<strong>Agreement</strong>”) is a legally binding and enforceable contract entered into by and between
-          <strong>[BESTLOAN FINANCE AND LEASING PHILIPPINES INC.]</strong> (the “Company,” “We,” “Us,” or “Our”) and any individual or legal entity who accesses,
-          applies for, receives, guarantees, repays, or otherwise interacts with any loan, financial product, service,
-          website, mobile application, communication channel, or platform operated or provided by the Company
-          (the “User,” “Borrower,” “Applicant,” “Guarantor,” “You,” or “Your”).
-        </p>
-
-        <hr />
-
-        <h2>SECTION 1 — ACCEPTANCE OF TERMS</h2>
-        <ol>
-          <li>
-            By accessing, using, applying for, signing, receiving, or continuing to use any Company service, You expressly acknowledge,
-            confirm, and agree that You have read, understood, accepted, and agreed to be legally bound by all provisions of this Agreement.
-          </li>
-          <li>
-            You acknowledge this Agreement may be lengthy, complex, and repetitive. Such length or repetition does not reduce enforceability.
-          </li>
-          <li>
-            Choosing not to read this Agreement does not relieve You of obligations. “I didn’t know” or “I didn’t read” is not a defense.
-          </li>
-        </ol>
-
-        <h2>SECTION 2 — DEFINITIONS</h2>
-        <ul>
-          <li><strong>“Loan”</strong> means any amount of money disbursed or made available to You, including renewals, extensions, or restructures.</li>
-          <li><strong>“Due Date”</strong> means the date repayment is required, regardless of weekends, holidays, illness, travel, or personal hardship.</li>
-          <li><strong>“Default”</strong> means any failure, delay, avoidance, misrepresentation, or breach, whether intentional or unintentional.</li>
-          <li><strong>“Platform”</strong> includes websites, apps, Telegram bots, SMS, calls, email, and any other channel used by the Company.</li>
-          <li><strong>“Fees”</strong> include processing, service, administrative, late fees, penalty interest, and recovery costs where permitted by law.</li>
-        </ul>
-
-        <h2>SECTION 3 — ELIGIBILITY & USER REPRESENTATIONS</h2>
-        <ol>
-          <li>You confirm You are legally capable of entering a binding contract in <strong>[Philippine]</strong>.</li>
-          <li>
-            You confirm all information You provide (identity, income, contacts, guarantor info, documents) is true, accurate, complete,
-            and kept up-to-date.
-          </li>
-          <li>
-            Any false, misleading, incomplete, or outdated information may result in rejection, suspension, cancellation, immediate repayment demand,
-            or lawful recovery action.
-          </li>
-        </ol>
-
-        <h2>SECTION 4 — LOAN APPLICATION & APPROVAL</h2>
-        <ol>
-          <li>Submitting an application does not guarantee approval.</li>
-          <li>The Company may request additional documents (ID, selfie, signature, guarantor proof, income proof, bank/wallet details).</li>
-          <li>The Company may verify information through manual checks, databases, and lawful third parties.</li>
-          <li>The Company may approve, reject, delay, cancel, or suspend any application at its sole discretion unless prohibited by law.</li>
-        </ol>
-
-        <h2>SECTION 5 — LOAN AMOUNT, INTEREST, FEES, AND CHARGES</h2>
-        <ol>
-          <li>Loan amount, interest rate, fees, penalties, and schedule are determined by the Company and the specific loan product.</li>
-          <li>
-            Interest may be calculated daily, weekly, monthly, or using other methods, including compounding, as permitted by law and disclosed to You.
-          </li>
-          <li>Fees may include: processing, administrative, platform/service fees, late fees, penalty interest, and recovery/legal costs.</li>
-          <li>All fees are non-refundable unless mandatory law requires otherwise.</li>
-        </ol>
-
-        <h2>SECTION 6 — REPAYMENT OBLIGATIONS</h2>
-        <ol>
-          <li>You agree to repay the Loan in full, including all interest, fees, and penalties by the due dates.</li>
-          <li>
-            Repayment remains required regardless of personal circumstances, missed notifications, device issues, or inability to access the Platform.
-          </li>
-          <li>Failure to receive reminders does not excuse late payment.</li>
-        </ol>
-
-        <h2>SECTION 7 — LATE PAYMENT, DEFAULT, AND RECOVERY</h2>
-        <ol>
-          <li>Late payments may result in late fees, penalty interest, service restrictions, and account flags.</li>
-          <li>
-            A Loan may be considered in Default if a payment is overdue, if You provide false information, avoid communication,
-            or breach any term of this Agreement.
-          </li>
-          <li>
-            Upon Default, the Company may take lawful recovery actions, including contacting You and/or your guarantor, restricting services,
-            and initiating legal procedures where permitted.
-          </li>
-        </ol>
-
-        <h2>SECTION 8 — GUARANTOR RESPONSIBILITY</h2>
-        <ol>
-          <li>If You provide a guarantor, You confirm You have the guarantor’s informed permission to share their details.</li>
-          <li>
-            The guarantor may be jointly and severally liable, meaning the Company may seek repayment from the borrower, the guarantor,
-            or both, as allowed by law and the guarantor agreement.
-          </li>
-        </ol>
-
-        <h2>SECTION 9 — DATA COLLECTION, PRIVACY, AND CONSENT</h2>
-        <ol>
-          <li>
-            You authorize the Company to collect, store, and process data necessary for verification, compliance, risk assessment,
-            customer support, and lawful recovery.
-          </li>
-          <li>
-            Data may include: identity details, images, signatures, contact information, device/IP data, communication logs, and repayment history.
-          </li>
-          <li>
-            Data may be shared with service providers, legal authorities, regulators, or recovery partners where lawful and necessary.
-          </li>
-          <li>
-            The Company will take reasonable security measures; however, no system can guarantee absolute security.
-          </li>
-        </ol>
-
-        <h2>SECTION 10 — COMMUNICATION CONSENT</h2>
-        <ol>
-          <li>
-            You consent to being contacted via phone calls, SMS, email, messaging apps, and in-app notifications for verification,
-            reminders, notices, and recovery communications where permitted by law.
-          </li>
-          <li>Contact may occur at reasonable times, and may be increased during overdue or Default status.</li>
-        </ol>
-
-        <h2>SECTION 11 — USER CONDUCT</h2>
-        <p>You agree not to:</p>
-        <ul>
-          <li>Provide false information or forged documents.</li>
-          <li>Threaten, harass, or abuse staff, partners, or agents.</li>
-          <li>Attempt to manipulate repayment records or bypass Platform controls.</li>
-          <li>Use the service for unlawful activity.</li>
-        </ul>
-
-        <h2>SECTION 12 — SUSPENSION, TERMINATION, AND CONTINUING OBLIGATIONS</h2>
-        <ol>
-          <li>The Company may suspend, restrict, or terminate accounts for policy violations, fraud risk, compliance needs, or Default.</li>
-          <li>Termination does not cancel or reduce outstanding debt. All repayment obligations survive termination.</li>
-        </ol>
-
-        <h2>SECTION 13 — DISCLAIMER OF WARRANTIES</h2>
-        <p>
-          All services are provided <strong>“AS IS”</strong> and <strong>“AS AVAILABLE”</strong>. The Company makes no warranties regarding uninterrupted service,
-          approval outcomes, processing times, or suitability for any particular purpose, except where required by law.
-        </p>
-
-        <h2>SECTION 14 — LIMITATION OF LIABILITY</h2>
-        <p>
-          To the maximum extent permitted by law, the Company shall not be liable for indirect, incidental, consequential, special, or punitive damages,
-          including loss of income, profit, opportunity, reputation, or data.
-        </p>
-
-        <h2>SECTION 15 — INDEMNIFICATION</h2>
-        <p>
-          You agree to indemnify and hold harmless the Company from claims, losses, damages, liabilities, and expenses arising from Your breach of this Agreement,
-          misuse of the Platform, unlawful activity, or violation of third-party rights.
-        </p>
-
-        <h2>SECTION 16 — GOVERNING LAW & DISPUTE RESOLUTION</h2>
-        <ol>
-          <li>This Agreement is governed by the laws of <strong>[Philippine]</strong>.</li>
-          <li>
-            You agree to attempt good-faith resolution by contacting support at <strong>[CONTACT]</strong> before initiating formal proceedings, where permitted.
-          </li>
-        </ol>
-
-        <h2>SECTION 17 — MODIFICATIONS</h2>
-        <p>
-          The Company may update this Agreement at any time. Continued use of services after updates constitutes acceptance of the revised terms,
-          except where mandatory law requires a different process.
-        </p>
-
-        <h2>SECTION 18 — SEVERABILITY</h2>
-        <p>
-          If any provision is held invalid or unenforceable, the remaining provisions remain in full force and effect.
-        </p>
-
-        <h2>SECTION 19 — ENTIRE AGREEMENT</h2>
-        <p>
-          This Agreement constitutes the entire agreement between You and the Company regarding the services and supersedes prior communications,
-          representations, or understandings, unless expressly stated in writing by authorized Company officers.
-        </p>
-
-        <h2>SECTION 20 — FINAL ACKNOWLEDGMENT</h2>
-        <p>
-          By clicking <strong>“I Agree”</strong>, signing, or receiving loan funds, You confirm that You had the opportunity to read this Agreement,
-          You understand it creates legal obligations, and You agree to be bound by it in full.
-        </p>
-
-        <hr />
+      <div class="article-item">
+        <p><span class="art-title">Article 6</span></p>
+        <div class="article-text">(1) The Borrower Cannot Use The Loan For Illegal Activities. Otherwise, The Lender Reserves The Right To Require The Borrower To Repay The Principal And Interest Promptly And The Legal Consequences Shall Be Borne By The Borrower.
+(2) The Borrower Shall Repay The Principal And Interest Within The Period Specified in The Contract. For The Overdue Portion, The Lender Is Entitled To Recover The Loan And Collect 5% Of The Total Amount Due.</div>
       </div>
-    </div>
 
+      <div class="article-item">
+        <p><span class="art-title">Article 7</span></p>
+        <div class="article-text">Results from the bank approval, if it is not convenient for each borrower to use the securities as collateral for the loan. The company will be exposed to the risk of making loans to borrowers. There fore, the financial liquidity of the "borrower" needs to be checked. Borrowers must submit a loan amount deposit, which is approximately 10%-20% of the loan amount. (Depending on the credit department again) to create a credit history to Borrower s ability to payoff the loan.</div>
+      </div>
+
+      <div class="article-item">
+        <p><span class="art-title">Article 8</span></p>
+        <div class="article-text">Dispute Resolution Both Parties agree to resolve any dispute, controversy, or claim arising out of or relating to this Agreement through good faith negotiation. If the negotiations do not result in a resolution within thirty (30) days, the dispute shall be submitted to mediation before a mutually agreed mediator. If mediation fails to resolve the dispute, the matter shall be finally settled by arbitration in accordance with the applicable laws and regulations. The decision of the arbitrator shall be final and binding upon both Parties.</div>
+      </div>
+
+      <div class="article-item">
+        <p><span class="art-title">Article 9</span></p>
+        <div class="article-text">Governing Law, This Agreement shall be governed by and construed in accordance with the laws of the Republic of the Philippines. Any dispute arising from or relating to this Agreement shall be subject to the applicable laws, rules, and regulations in force within the Philippines.</div>
+      </div>
+
+      <div class="article-item">
+        <p><span class="art-title">Article 10</span></p>
+        <div class="article-text">Confidentiality and Data Privacy, Both Parties agree to maintain the confidentiality of all information exchanged in connection with this Agreement, including personal, financial, and transaction-related information. The Company shall process and protect personal data in accordance with the Data Privacy Act of 2012 (Republic Act No. 10173) and other applicable data protection regulations in the Philippines. Information shall not be disclosed to third parties without prior written consent, except when required by law or by competent government authority.</div>
+      </div>
+
+      <div class="article-item">
+        <p><span class="art-title">Article 11</span></p>
+        <div class="article-text">Amendments and Modifications, No amendment, alteration, or modification of this Agreement shall be valid unless made in writing and signed by both Parties. The Company may update its policies and procedures to comply with regulatory requirements, provided that such updates shall not materially prejudice the rights of the Client without proper notice.</div>
+      </div>
+
+      <div class="article-item">
+        <p><span class="art-title">Article 12</span></p>
+        <div class="article-text">Severability, If any provision of this Agreement is declared invalid, illegal, or unenforceable under Philippine law, such provision shall be deemed severed from this Agreement. The remaining provisions shall continue to be valid and enforceable to the fullest extent permitted by law.</div>
+      </div>
+
+    </div>
   </div>
+
+  <!-- ===== EXTENDED AGREEMENT ===== -->
+  <div class="cardx">
+    <h1>EXTENDED LOAN USER AGREEMENT, TERMS, CONDITIONS, DISCLOSURES, ACKNOWLEDGMENTS, WAIVERS, AND LEGAL NOTICES</h1>
+
+    <p><strong>Last Updated:</strong> [INSERT DATE]</p>
+
+    <p>This <strong>Extended Loan User Agreement, Terms, Conditions, Disclosures, Acknowledgments, Waivers, and Legal Notices</strong> (the "<strong>Agreement</strong>") is a legally binding and enforceable contract entered into by and between <strong>[PIPO FINANCING (PH) INC.]</strong> (the "Company," "We," "Us," or "Our") and any individual or legal entity who accesses, applies for, receives, guarantees, repays, or otherwise interacts with any loan, financial product, service, website, mobile application, communication channel, or platform operated or provided by the Company (the "User," "Borrower," "Applicant," "Guarantor," "You," or "Your").</p>
+
+    <hr>
+
+    <h2>SECTION 1 — ACCEPTANCE OF TERMS</h2>
+    <ol>
+      <li>By accessing, using, applying for, signing, receiving, or continuing to use any Company service, You expressly acknowledge, confirm, and agree that You have read, understood, accepted, and agreed to be legally bound by all provisions of this Agreement.</li>
+      <li>You acknowledge this Agreement may be lengthy, complex, and repetitive. Such length or repetition does not reduce enforceability.</li>
+      <li>Choosing not to read this Agreement does not relieve You of obligations. "I didn't know" or "I didn't read" is not a defense.</li>
+    </ol>
+
+    <h2>SECTION 2 — DEFINITIONS</h2>
+    <ul>
+      <li><strong>"Loan"</strong> means any amount of money disbursed or made available to You, including renewals, extensions, or restructures.</li>
+      <li><strong>"Due Date"</strong> means the date repayment is required, regardless of weekends, holidays, illness, travel, or personal hardship.</li>
+      <li><strong>"Default"</strong> means any failure, delay, avoidance, misrepresentation, or breach, whether intentional or unintentional.</li>
+      <li><strong>"Platform"</strong> includes websites, apps, Telegram bots, SMS, calls, email, and any other channel used by the Company.</li>
+      <li><strong>"Fees"</strong> include processing, service, administrative, late fees, penalty interest, and recovery costs where permitted by law.</li>
+    </ul>
+
+    <h2>SECTION 3 — ELIGIBILITY & USER REPRESENTATIONS</h2>
+    <ol>
+      <li>You confirm You are legally capable of entering a binding contract in <strong>[Philippine]</strong>.</li>
+      <li>You confirm all information You provide (identity, income, contacts, guarantor info, documents) is true, accurate, complete, and kept up-to-date.</li>
+      <li>Any false, misleading, incomplete, or outdated information may result in rejection, suspension, cancellation, immediate repayment demand, or lawful recovery action.</li>
+    </ol>
+
+    <h2>SECTION 4 — LOAN APPLICATION & APPROVAL</h2>
+    <ol>
+      <li>Submitting an application does not guarantee approval.</li>
+      <li>The Company may request additional documents (ID, selfie, signature, guarantor proof, income proof, bank/wallet details).</li>
+      <li>The Company may verify information through manual checks, databases, and lawful third parties.</li>
+      <li>The Company may approve, reject, delay, cancel, or suspend any application at its sole discretion unless prohibited by law.</li>
+    </ol>
+
+    <h2>SECTION 5 — LOAN AMOUNT, INTEREST, FEES, AND CHARGES</h2>
+    <ol>
+      <li>Loan amount, interest rate, fees, penalties, and schedule are determined by the Company and the specific loan product.</li>
+      <li>Interest may be calculated daily, weekly, monthly, or using other methods, including compounding, as permitted by law and disclosed to You.</li>
+      <li>Fees may include: processing, administrative, platform/service fees, late fees, penalty interest, and recovery/legal costs.</li>
+      <li>All fees are non-refundable unless mandatory law requires otherwise.</li>
+    </ol>
+
+    <h2>SECTION 6 — REPAYMENT OBLIGATIONS</h2>
+    <ol>
+      <li>You agree to repay the Loan in full, including all interest, fees, and penalties by the due dates.</li>
+      <li>Repayment remains required regardless of personal circumstances, missed notifications, device issues, or inability to access the Platform.</li>
+      <li>Failure to receive reminders does not excuse late payment.</li>
+    </ol>
+
+    <h2>SECTION 7 — LATE PAYMENT, DEFAULT, AND RECOVERY</h2>
+    <ol>
+      <li>Late payments may result in late fees, penalty interest, service restrictions, and account flags.</li>
+      <li>A Loan may be considered in Default if a payment is overdue, if You provide false information, avoid communication, or breach any term of this Agreement.</li>
+      <li>Upon Default, the Company may take lawful recovery actions, including contacting You and/or your guarantor, restricting services, and initiating legal procedures where permitted.</li>
+    </ol>
+
+    <h2>SECTION 8 — GUARANTOR RESPONSIBILITY</h2>
+    <ol>
+      <li>If You provide a guarantor, You confirm You have the guarantor's informed permission to share their details.</li>
+      <li>The guarantor may be jointly and severally liable, meaning the Company may seek repayment from the borrower, the guarantor, or both, as allowed by law and the guarantor agreement.</li>
+    </ol>
+
+    <h2>SECTION 9 — DATA COLLECTION, PRIVACY, AND CONSENT</h2>
+    <ol>
+      <li>You authorize the Company to collect, store, and process data necessary for verification, compliance, risk assessment, customer support, and lawful recovery.</li>
+      <li>Data may include: identity details, images, signatures, contact information, device/IP data, communication logs, and repayment history.</li>
+      <li>Data may be shared with service providers, legal authorities, regulators, or recovery partners where lawful and necessary.</li>
+      <li>The Company will take reasonable security measures; however, no system can guarantee absolute security.</li>
+    </ol>
+
+    <h2>SECTION 10 — COMMUNICATION CONSENT</h2>
+    <ol>
+      <li>You consent to being contacted via phone calls, SMS, email, messaging apps, and in-app notifications for verification, reminders, notices, and recovery communications where permitted by law.</li>
+      <li>Contact may occur at reasonable times, and may be increased during overdue or Default status.</li>
+    </ol>
+
+    <h2>SECTION 11 — USER CONDUCT</h2>
+    <p>You agree not to:</p>
+    <ul>
+      <li>Provide false information or forged documents.</li>
+      <li>Threaten, harass, or abuse staff, partners, or agents.</li>
+      <li>Attempt to manipulate repayment records or bypass Platform controls.</li>
+      <li>Use the service for unlawful activity.</li>
+    </ul>
+
+    <h2>SECTION 12 — SUSPENSION, TERMINATION, AND CONTINUING OBLIGATIONS</h2>
+    <ol>
+      <li>The Company may suspend, restrict, or terminate accounts for policy violations, fraud risk, compliance needs, or Default.</li>
+      <li>Termination does not cancel or reduce outstanding debt. All repayment obligations survive termination.</li>
+    </ol>
+
+    <h2>SECTION 13 — DISCLAIMER OF WARRANTIES</h2>
+    <p>All services are provided <strong>"AS IS"</strong> and <strong>"AS AVAILABLE"</strong>. The Company makes no warranties regarding uninterrupted service, approval outcomes, processing times, or suitability for any particular purpose, except where required by law.</p>
+
+    <h2>SECTION 14 — LIMITATION OF LIABILITY</h2>
+    <p>To the maximum extent permitted by law, the Company shall not be liable for indirect, incidental, consequential, special, or punitive damages, including loss of income, profit, opportunity, reputation, or data.</p>
+
+    <h2>SECTION 15 — INDEMNIFICATION</h2>
+    <p>You agree to indemnify and hold harmless the Company from claims, losses, damages, liabilities, and expenses arising from Your breach of this Agreement, misuse of the Platform, unlawful activity, or violation of third-party rights.</p>
+
+    <h2>SECTION 16 — GOVERNING LAW & DISPUTE RESOLUTION</h2>
+    <ol>
+      <li>This Agreement is governed by the laws of <strong>[Philippine]</strong>.</li>
+      <li>You agree to attempt good-faith resolution by contacting support at <strong>[CONTACT]</strong> before initiating formal proceedings, where permitted.</li>
+    </ol>
+
+    <h2>SECTION 17 — MODIFICATIONS</h2>
+    <p>The Company may update this Agreement at any time. Continued use of services after updates constitutes acceptance of the revised terms, except where mandatory law requires a different process.</p>
+
+    <h2>SECTION 18 — SEVERABILITY</h2>
+    <p>If any provision is held invalid or unenforceable, the remaining provisions remain in full force and effect.</p>
+
+    <h2>SECTION 19 — ENTIRE AGREEMENT</h2>
+    <p>This Agreement constitutes the entire agreement between You and the Company regarding the services and supersedes prior communications, representations, or understandings, unless expressly stated in writing by authorized Company officers.</p>
+
+    <h2>SECTION 20 — FINAL ACKNOWLEDGMENT</h2>
+    <p>By clicking <strong>"I Agree"</strong>, signing, or receiving loan funds, You confirm that You had the opportunity to read this Agreement, You understand it creates legal obligations, and You agree to be bound by it in full.</p>
+
+    <hr>
+
+    <div class="btn-container">
+      <a class="back-btn" href="/profile/">← Back to Profile</a>
+    </div>
+  </div>
+
 </div>
+
 {% endblock %}

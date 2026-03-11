@@ -1,391 +1,481 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Quick Loan{% endblock %}
 
 {% block content %}
 <style>
-  .wrap{ align-items:flex-start; }
+@font-face {
+  font-family: 'Ovelion';
+  src: url("{% static 'fonts/Ovelion-Regular.ttf' %}") format('truetype');
+}
+body, body * { font-family: 'Ovelion', sans-serif !important; }
 
-  .page{
-    width: min(520px, 94vw);
-    margin: 0 auto;
-    padding: 14px 14px 24px;
-    box-sizing: border-box;
-  }
-  /* =========================
-   QUICK LOAN = CONTACT US WHITE CARDS + BLUE TEXT
-   (PUT THIS AT THE BOTTOM OF <style>)
-   ========================= */
+:root{
+  --primary:   #1B2A5E;
+  --accent:    #F5C518;
+  --danger:    #E03020;
+  --secondary: #1A4DB5;
+  --white:     #FFFFFF;
+  --light-bg:  #F4F6FB;
+}
 
-/* ✅ White luxury card style (same as contactus) */
-.cardx{
-  position: relative !important;
-  overflow: hidden !important;
-
-  background: linear-gradient(
-      180deg,
-      #ffffff 0%,
-      #f8fafc 45%,
-      #eef2f7 75%,
-      #ffffff 100%
-  ) !important;
-
-  border-radius: 18px !important;
-  border: 2px solid rgba(212,175,55,.85) !important;
-
-  box-shadow:
-    0 20px 45px rgba(0,0,0,.12),
-    0 0 0 1px rgba(255,255,255,.9) inset !important;
-
-  margin-bottom: 16px !important;
-  padding: 18px !important;
-
+/* ✅ GLOBAL: Kill base.html dark card overrides */
+.cardx,
+.card,
+[class*="card"] {
+  background: #FFFFFF !important;
+  color: #1B2A5E !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
 
-/* glow */
-.cardx::before{
-  content:"" !important;
-  position:absolute !important;
-  inset:0 !important;
-  pointer-events:none !important;
-  opacity:.75 !important;
-  background:
-    radial-gradient(circle at 90% 90%, rgba(212,175,55,.25), transparent 55%),
-    radial-gradient(circle at 10% 10%, rgba(0,65,130,.08), transparent 60%) !important;
+/* ===== Page wrapper ===== */
+.page{
+  width: min(520px, 94vw);
+  margin: 0 auto;
+  padding: 20px 14px 40px;
+  box-sizing: border-box;
 }
 
-/* shine */
-.cardx::after{
-  content:"" !important;
-  position:absolute !important;
-  inset:0 !important;
-  pointer-events:none !important;
-  opacity:.6 !important;
-  background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,0) 55%) !important;
-}
-
-/* keep content above overlays */
-.cardx > *{
+/* ===== WHITE CARD — same as Wallet ===== */
+.cardx{
   position: relative !important;
-  z-index: 1 !important;
-}
-
-/* ✅ Blue text inside cards */
-.cardx, .cardx *{
-  color:#0b2f55 !important;
-  text-shadow: none !important;
-}
-
-/* ===== inputs on white card ===== */
-.cardx input[type="number"]{
-  background: rgba(11,47,85,.06) !important;
-  border: 1px solid rgba(11,47,85,.18) !important;
-  color:#0b2f55 !important;
-}
-.cardx input[type="number"]::placeholder{
-  color: rgba(11,47,85,.55) !important;
-}
-.cardx input[type="number"]:focus{
-  border-color: rgba(0,65,130,.75) !important;
-  box-shadow: 0 0 0 3px rgba(5,69,133,.22) !important;
-}
-
-/* ===== summary divider on white card ===== */
-.summary{
-  border-top: 1px solid rgba(11,47,85,.16) !important;
-}
-.summary .k{ opacity:.75 !important; }
-.summary .v{ font-weight: 950 !important; }
-
-/* ===== term buttons on white card ===== */
-.term-btn{
-  border:1px solid rgba(11,47,85,.18) !important;
-  background: rgba(11,47,85,.06) !important;
-  color:#0b2f55 !important;
-}
-.term-btn.active{
-  background: linear-gradient(90deg, #004182, #054585d0) !important;
-  color:#fff !important;
-  border-color: rgba(0,65,130,.65) !important;
-}
-
-/* ===== status pill on white card ===== */
-.mini-pill{
-  border: 1px solid rgba(11,47,85,.18) !important;
-  background: rgba(11,47,85,.06) !important;
-  color:#0b2f55 !important;
-}
-
-/* ===== timeline on white card ===== */
-.dot{
-  border:1px solid rgba(11,47,85,.20) !important;
-  background: rgba(11,47,85,.06) !important;
-  color:#0b2f55 !important;
-}
-.dot.active{
-  background: #004182 !important;
-  color:#fff !important;
-  border-color: rgba(0,65,130,.65) !important;
-}
-.line{
-  background: rgba(11,47,85,.20) !important;
-}
-.line.active{
-  background: rgba(0,65,130,.85) !important;
-}
-.step-labels, .step-labels *{
-  color: rgba(11,47,85,.78) !important;
-}
-
-/* ===== View contract button ===== */
-.status-btn{
-  border:1px solid rgba(11,47,85,.18) !important;
-  background: rgba(11,47,85,.06) !important;
-  color:#0b2f55 !important;
-}
-
-  .cardx{
-  position: relative;
-  background: rgba(0, 0, 0, 0.788);
-  border-radius: 18px;
-  border: 2px solid rgba(192, 192, 192, 0.904);
-  padding: 16px;
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(22px);
-  box-shadow: 0 0 10px rgba(10, 10, 9, 0.788), 0 14px 10px rgba(0, 0, 0, 0.815);
+  background: #FFFFFF !important;
+  border-radius: 22px !important;
+  padding: 20px !important;
+  border: 2px solid rgba(224,48,32,.28) !important;
+  box-shadow: 0 16px 48px rgba(27,42,94,.10), 0 0 0 1px rgba(245,197,24,.08) !important;
   overflow: hidden;
   margin-bottom: 14px;
-}
-.cardx label,
-.cardx .k,
-.cardx .status-title,
-.cardx .status-sub{
-  color:#004182;
+  color: var(--primary) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
-.summary .v{
-  color:#004182;
+/* ✅ Force readable text */
+.cardx label,
+.cardx .k,
+.cardx .field {
+  color: #1B2A5E !important;
 }
-  /* Back button shape like picture */
+
+.cardx .v {
+  color: #1B2A5E !important;
+  font-weight: 900;
+}
+
+.cardx .muted,
+.cardx .hint {
+  color: #64748b !important;
+}
+
+/* ===== Back button ===== */
+.top-actions {
+  margin-bottom: 14px;
+}
+
 .back-btn{
-  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
-  height: 42px;
-  padding: 0 22px 0 28px;   /* left a bit bigger */
-  border-radius: 12px;
-
-  background: #e7e7e7;
-  color: #111827;
-  font-weight: 800;
+  height: 44px;
+  padding: 0 26px;
+  border-radius: 999px;
+  background: #FFFFFF;
+  color: var(--primary);
+  font-weight: 900;
+  font-size: 14px;
   text-decoration: none;
-
-  border: 1px solid rgba(0,0,0,.18);
-  box-shadow:
-    0 6px 14px rgba(0,0,0,.18),
-    inset 0 1px 0 rgba(255,255,255,.65);
+  border: 2px solid rgba(224,48,32,.30);
+  box-shadow: 0 4px 14px rgba(27,42,94,.12);
+  transition: transform .15s ease;
 }
 
-
-
-/* hover/active */
 .back-btn:hover{
   transform: translateY(-1px);
 }
+
 .back-btn:active{
-  transform: translateY(0px);
-  opacity: .92;
+  transform: scale(.98);
 }
 
-/* Mobile adjustments */
-@media (max-width:520px){
-  .top-actions{ padding: 10px 12px 0; }
-  .top-actions-line{ margin: 10px 12px 0; }
-  .back-btn{ height: 40px; padding: 0 18px 0 24px; font-size: 13px; }
-  .back-btn::before{
-    left: -13px;
-    border-top: 20px solid transparent;
-    border-bottom: 20px solid transparent;
-    border-right: 13px solid #e7e7e7;
-  }
+/* ===== Form fields ===== */
+.field {
+  margin-bottom: 14px;
 }
 
-  input[type="number"]{
-    width:100%;
-    height:40px;
-    min-height:40px;
-    max-height:40px;
-    resize:none;
-    box-sizing:border-box;
-  }
-  input[type="number"]:focus{
+.field label {
+  display: block;
+  font-weight: 900;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: var(--primary) !important;
+}
+
+input[type="number"]{
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 14px;
+  border: 1.5px solid rgba(27,42,94,.15) !important;
+  background: #F4F6FB !important;
+  color: #1B2A5E !important;
+  font-weight: 700;
+  box-sizing: border-box;
+  transition: all .2s ease;
+}
+
+input[type="number"]::placeholder {
+  color: #94a3b8 !important;
+}
+
+input[type="number"]:focus {
   outline: none;
-  border: 1px solid rgba(0,65,130,.85);
-  box-shadow: 0 0 0 3px rgba(5,69,133,.25);
-}
-  input[readonly]{ opacity:.92; }
-
-  .term-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:10px;
-  margin-top:10px;
-}
-@media(max-width:520px){
-  .term-grid{ grid-template-columns:repeat(2,1fr); }
-}
-  .term-btn{
-    padding:12px 0;
-    border-radius:999px;
-    border:1px solid rgba(255,255,255,.22);
-    background:rgba(255,255,255,.10);
-    color:#fff;
-    font-weight:800;
-    cursor:pointer;
-    transition: transform .08s ease, opacity .2s ease;
-  }
-  .term-btn:active{ transform:scale(.98); }
-  .term-btn.active{
-  background: linear-gradient(90deg, #004182, #054585d0);
-  border-color: rgba(0,65,130,.65);
-}
-  .term-btn:disabled{
-    opacity:.55;
-    cursor:not-allowed;
-    transform:none !important;
-  }
-
-  .summary{
-    margin-top: 10px;
-    border-top: 1px solid rgba(255,255,255,.14);
-    padding-top: 10px;
-    display:grid;
-    gap: 6px;
-    font-size: 14px;
-  }
-  .summary .row{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap: 10px;
-  }
-  .summary .k{ opacity:.80; }
-  .summary .v{ font-weight: 900; }
-
-  .cta{ margin-top: 12px; width: 100%; }
-  .hint{ margin-top:8px; opacity:.85; }
-
-  /* ===== Application Status UI ===== */
-  .status-head{
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    gap:12px;
-    margin-bottom:10px;
-  }
-  .status-title{
-    font-size:22px;
-    font-weight:950;
-    margin:0;
-    color:#fff;
-  }
-  .status-sub{
-    margin-top:6px;
-    opacity:.85;
-    line-height:1.35;
-  }
-  .mini-pill{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    padding: 7px 10px;
-    border-radius:999px;
-    font-weight:950;
-    font-size:12px;
-    border: 1px solid rgba(255,255,255,.14);
-    background: rgba(0,0,0,.16);
-    color:#fff;
-    white-space: nowrap;
-  }
-  .mini-pill.is-rejected{
-  background: rgba(255, 44, 44, .18);
-  border: 1px solid rgba(255, 44, 44, .65);
-  color: #ff4a4a;
-  box-shadow: 0 10px 26px rgba(255, 44, 44, .12);
+  border-color: rgba(224,48,32,.40) !important;
+  box-shadow: 0 0 0 3px rgba(224,48,32,.08) !important;
+  background: #fff !important;
 }
 
-  .status-btn{
-    flex:0 0 auto;
-    text-decoration:none;
-    display:inline-flex;
-    align-items:center;
-    gap:10px;
-    padding:10px 12px;
-    border-radius:14px;
-    border:1px solid rgba(255,255,255,.12);
-    background: rgba(0,0,0,.18);
-    color:#fff;
-    font-weight:950;
-    letter-spacing:.02em;
-    cursor:pointer;
-  }
+input[readonly] {
+  opacity: .85;
+  cursor: not-allowed;
+}
 
-  .step-row{ display:flex; align-items:center; gap:10px; margin-top:10px; }
-  .dot{
-    width:34px; height:34px; border-radius:999px;
-    display:flex; align-items:center; justify-content:center;
-    font-weight:950;
-    border:1px solid rgba(255,255,255,.18);
-    background:rgba(0,0,0,.18);
-    color:rgba(255,255,255,.75);
-  }
-  .dot.active{
-  background: rgba(0,65,130,.22);
-  border-color: rgba(0,65,130,.60);
-  color:#fff;
+/* ===== Term buttons grid ===== */
+.term-grid{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 10px;
 }
-  .line{
-    flex:1; height:3px; border-radius:999px;
-    background:rgba(255,255,255,.18);
-  }
-  .line.active{ background: rgba(0,65,130,.75); }
-  .step-labels{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:10px;
-    margin-top:10px;
-    font-size:12px;
-    color:rgba(255,255,255,.78);
-  }
-  .step-labels.three{
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  text-align:center;
-  margin-top:8px;
-  font-size:12px;
-  opacity:.85;
-}
-.reject-alert{
-  margin-top:12px;
-  border-radius:16px;
-  padding:14px;
-  border:1px solid rgba(255,60,60,.45);
-  background: rgba(255,60,60,.12);
-}
-.reject-alert .ra-title{ font-weight:900; }
-.reject-alert .ra-text{ opacity:.9; margin-top:6px; }
 
-#goApply{
+@media(max-width: 520px){
+  .term-grid { 
+    grid-template-columns: repeat(2, 1fr); 
+  }
+  .page {
+    padding: 16px 12px 40px;
+  }
+  .back-btn {
+    height: 40px;
+    padding: 0 20px;
+    font-size: 13px;
+  }
+}
+
+.term-btn{
+  padding: 12px 0;
+  border-radius: 999px;
+  border: 1.5px solid rgba(27,42,94,.18);
+  background: #F4F6FB;
+  color: var(--primary);
+  font-weight: 900;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+
+.term-btn:hover {
+  border-color: rgba(27,42,94,.30);
+  background: #e8ecf4;
+}
+
+.term-btn:active {
+  transform: scale(.98);
+}
+
+.term-btn.active{
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  color: #fff;
+  border-color: var(--primary);
+  box-shadow: 0 6px 18px rgba(27,42,94,.25);
+}
+
+.term-btn:disabled{
+  opacity: .55;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* ===== Summary box ===== */
+.summary{
+  margin-top: 14px;
+  border-radius: 14px;
+  padding: 14px 16px;
+  border: 1.5px solid rgba(245,197,24,.35);
+  background: rgba(245,197,24,.08);
+  color: var(--primary) !important;
+}
+
+.summary .row{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.summary .row:last-child {
+  margin-bottom: 0;
+}
+
+.summary .k {
+  color: #64748b !important;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.summary .v {
+  font-weight: 900;
+  color: var(--primary) !important;
+  font-size: 14px;
+}
+
+/* ===== CTA Button ===== */
+.cta {
+  margin-top: 14px;
+  width: 100%;
+  height: 48px;
+  border-radius: 999px;
   border: 0 !important;
-  background: linear-gradient(90deg, #004182, #054585d0) !important;
-  box-shadow: 0 18px 45px rgba(0,0,0,.40) !important;
+  background: linear-gradient(90deg, var(--primary), var(--secondary)) !important;
+  box-shadow: 0 10px 30px rgba(27,42,94,.30) !important;
+  color: #fff !important;
+  font-size: 15px !important;
+  font-weight: 900 !important;
+  cursor: pointer;
+  transition: all .2s ease;
 }
 
-#goApply:disabled{
-  opacity: .65 !important;
+.cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 36px rgba(27,42,94,.35) !important;
+}
+
+.cta:active {
+  transform: scale(.98);
+}
+
+.cta:disabled {
+  opacity: .55 !important;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.hint {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #64748b !important;
+  font-weight: 600;
+}
+
+/* ===== Application Status Card ===== */
+#statusCard {
+  background: #FFFFFF !important;
+  border: 2px solid rgba(224,48,32,.28) !important;
+  box-shadow: 0 16px 48px rgba(27,42,94,.10), 0 0 0 1px rgba(245,197,24,.08) !important;
+}
+
+.status-head{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.status-title{
+  font-size: 20px;
+  font-weight: 950;
+  margin: 0;
+  color: var(--primary) !important;
+}
+
+.status-sub{
+  margin-top: 6px;
+  font-size: 13px;
+  color: #64748b !important;
+  line-height: 1.4;
+}
+
+/* ===== Mini pill ===== */
+.mini-pill{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 12px;
+  border: 1.5px solid rgba(27,42,94,.20);
+  background: #F4F6FB;
+  color: var(--primary);
+  white-space: nowrap;
+}
+
+.mini-pill.is-rejected{
+  background: rgba(224,48,32,.12) !important;
+  border-color: rgba(224,48,32,.45) !important;
+  color: #dc2626 !important;
+}
+
+/* ===== Reject alert ===== */
+.reject-alert{
+  margin-top: 12px;
+  border-radius: 14px;
+  padding: 14px;
+  border: 1.5px solid rgba(224,48,32,.40);
+  background: rgba(224,48,32,.08);
+}
+
+.reject-alert .ra-title {
+  font-weight: 900;
+  color: #dc2626 !important;
+}
+
+.reject-alert .ra-text {
+  margin-top: 6px;
+  color: #7f1d1d !important;
+  font-size: 13px;
+}
+
+/* ===== Step indicators ===== */
+.step-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.dot{
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 14px;
+  flex: 0 0 auto;
+  transition: all .3s ease;
+}
+
+/* Step colors (inactive = dimmed) */
+#s1 {
+  background: rgba(255,215,0,.12);
+  border: 2px solid rgba(255,215,0,.3);
+  color: rgba(255,215,0,.55);
+}
+
+#s2 {
+  background: rgba(147,51,234,.12);
+  border: 2px solid rgba(147,51,234,.3);
+  color: rgba(167,139,250,.55);
+}
+
+#s3 {
+  background: rgba(34,197,94,.12);
+  border: 2px solid rgba(34,197,94,.3);
+  color: rgba(74,222,128,.55);
+}
+
+/* Active state */
+#s1.active{
+  background: rgba(255,215,0,.22);
+  border-color: rgba(255,215,0,.85);
+  color: #FFD700;
+  box-shadow: 0 0 14px rgba(255,215,0,.45), inset 0 1px 0 rgba(255,255,255,.15);
+}
+
+#s2.active{
+  background: rgba(147,51,234,.28);
+  border-color: rgba(167,139,250,.85);
+  color: #c084fc;
+  box-shadow: 0 0 14px rgba(147,51,234,.5), inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+#s3.active{
+  background: rgba(34,197,94,.22);
+  border-color: rgba(74,222,128,.9);
+  color: #4ade80;
+  box-shadow: 0 0 14px rgba(34,197,94,.45), inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+/* Rejected state */
+.dot.rejected{
+  background: rgba(239,68,68,.18) !important;
+  border: 2px solid rgba(239,68,68,.75) !important;
+  color: #ef4444 !important;
+  box-shadow: 0 0 12px rgba(239,68,68,.38) !important;
+}
+
+/* Lines between steps */
+.line{
+  flex: 1;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(27,42,94,.12);
+  transition: background .3s ease;
+}
+
+#l1.active {
+  background: linear-gradient(90deg, #FFD700, #9333EA);
+}
+
+#l2.active {
+  background: linear-gradient(90deg, #9333EA, #22c55e);
+}
+
+.line.rejected {
+  background: #ef4444 !important;
+}
+
+/* Step labels */
+.step-labels.three{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  text-align: center;
+  margin-top: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .03em;
+}
+
+.step-labels.three div:nth-child(1) {
+  color: rgba(255,215,0,.8);
+}
+
+.step-labels.three div:nth-child(2) {
+  color: rgba(167,139,250,.8);
+}
+
+.step-labels.three div:nth-child(3) {
+  color: rgba(74,222,128,.8);
+}
+
+/* Status button */
+.status-btn{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 14px;
+  border: 1.5px solid rgba(27,42,94,.20);
+  background: #F4F6FB;
+  color: var(--primary);
+  font-weight: 900;
+  text-decoration: none;
+  transition: all .2s ease;
+  margin-top: 12px;
+}
+
+.status-btn:hover {
+  background: #e8ecf4;
+  border-color: rgba(27,42,94,.30);
+  transform: translateY(-1px);
+}
+
+.status-btn:active {
+  transform: scale(.98);
 }
 </style>
 
@@ -394,55 +484,63 @@
   <!-- ===== Card 1: Amount/Term ===== -->
   <div class="cardx">
     <div class="top-actions">
-      <a class="back-btn" href="{% url 'dashboard' %}">
-        Back
-      </a>
+      <a class="back-btn" href="{% url 'dashboard' %}">← Back</a>
     </div>
-    <div class="top-actions-line"></div>
+
     <div class="field">
-      <label>Loan amount (Min 80,000 • Max 5,000,000)</label>
+      <label>Loan amount (Min ₱90,000 · Max ₱5,000,000)</label>
       <input
         type="number"
         id="qAmount"
-        min="80000"
+        min="90000"
         max="5000000"
-        placeholder="Enter amount"
+        placeholder="Enter amount (Min ₱90,000 - Max ₱5,000,000)"
         {% if loan %}readonly{% endif %}
       >
     </div>
 
-    <div class="field" style="margin-top:12px;">
+    <div class="field">
       <label>Loan terms</label>
       <input type="hidden" id="qTerm">
 
       <div class="term-grid">
-  <button type="button" class="term-btn" data-term="6" {% if loan %}disabled{% endif %}>6</button>
-  <button type="button" class="term-btn" data-term="12" {% if loan %}disabled{% endif %}>12</button>
-  <button type="button" class="term-btn" data-term="24" {% if loan %}disabled{% endif %}>24</button>
-  <button type="button" class="term-btn" data-term="36" {% if loan %}disabled{% endif %}>36</button>
-</div>
+        <button type="button" class="term-btn" data-term="12" {% if loan %}disabled{% endif %}>12</button>
+        <button type="button" class="term-btn" data-term="18" {% if loan %}disabled{% endif %}>18</button>
+        <button type="button" class="term-btn" data-term="24" {% if loan %}disabled{% endif %}>24</button>
+        <button type="button" class="term-btn" data-term="30" {% if loan %}disabled{% endif %}>30</button>
+      </div>
 
-      <div class="muted hint" id="qHint">Choose months</div>
+      <div class="hint" id="qHint">Choose months</div>
     </div>
 
     <div class="summary" aria-live="polite">
       <div class="row"><div class="k">Amount of loan</div><div class="v" id="qSumAmount">—</div></div>
-      <div class="row"><div class="k">Interest rate</div><div class="v">0.5%</div></div>
+      <div class="row"><div class="k">Interest rate</div><div class="v">0.3% per month</div></div>
       <div class="row"><div class="k">Loan period</div><div class="v" id="qSumTerm">—</div></div>
       <div class="row"><div class="k">Monthly repayment</div><div class="v" id="qSumMonthly">—</div></div>
+      <div class="row"><div class="k">Total payment</div><div class="v" id="qSumTotal">—</div></div>
+      {% if loan %}
+      <div class="row" style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(27,42,94,.12);">
+        <div class="k">Status</div>
+        <span style="padding:5px 14px;border-radius:999px;font-size:12px;font-weight:900;
+                     background:rgba(27,42,94,.12);border:1.5px solid rgba(27,42,94,.25);color:#1B2A5E;">
+          SUBMITTED
+        </span>
+      </div>
+      {% endif %}
     </div>
 
-    <button class="btn btn-primary cta" type="button" id="goApply" style="opacity:.65" disabled>
+    <button class="btn btn-primary cta" type="button" id="goApply" disabled>
       Continue to Application
     </button>
   </div>
 
-  <!-- ===== Card 2: Application Status (HIDDEN until: loan exists + payment method locked) ===== -->
+  <!-- ===== Card 2: Application Status ===== -->
   <div class="cardx" id="statusCard" style="display:none;">
     <div class="status-head">
       <div>
         <h2 class="status-title">Application Status</h2>
-        <div class="muted status-sub" id="statusText">
+        <div class="status-sub" id="statusText">
           Our team is reviewing your documents. Please wait.
         </div>
       </div>
@@ -468,10 +566,10 @@
       <div>Approved</div>
     </div>
 
-    <div style="margin-top:12px;">
-      <a class="status-btn" href="{% url 'contract' %}">View contract →</a>
-    </div>
+    <a class="status-btn" href="{% url 'contract' %}">View contract →</a>
   </div>
+
+</div>
 
 <script>
   const amountEl = document.getElementById("qAmount");
@@ -481,26 +579,28 @@
   const outAmount = document.getElementById("qSumAmount");
   const outTerm = document.getElementById("qSumTerm");
   const outMonthly = document.getElementById("qSumMonthly");
+  const outTotal = document.getElementById("qSumTotal");
 
   const btns = document.querySelectorAll(".term-btn");
   const goBtn = document.getElementById("goApply");
 
   function fmt(n){
-    try { return Number(n).toLocaleString(); } catch (e) { return String(n); }
+    try { return Number(n).toLocaleString("en-US", {minimumFractionDigits:2, maximumFractionDigits:2}); } catch (e) { return String(n); }
   }
 
   function update(){
     const amount = Number(amountEl?.value || 0);
     const term = Number(termEl?.value || 0);
 
-    if (outAmount) outAmount.textContent = amount > 0 ? ("PHP " + fmt(amount)) : "—";
+    if (outAmount) outAmount.textContent = amount > 0 ? ("₱" + fmt(amount)) : "—";
     if (outTerm) outTerm.textContent = term > 0 ? (term + " months") : "—";
 
-    const rate = 0.005; // 0.5%
+    const rate = 0.003; // 0.3% per month
     if(amount > 0 && term > 0){
-      const total = amount + (amount * rate * term);
-      const monthly = total / term;
-      if (outMonthly) outMonthly.textContent = "PHP " + fmt(Math.round(monthly));
+      const monthly = amount * rate * Math.pow(1 + rate, term) / (Math.pow(1 + rate, term) - 1);
+      const total = monthly * term;
+      if (outMonthly) outMonthly.textContent = "₱" + fmt(monthly);
+      if (outTotal) outTotal.textContent = "₱" + fmt(total);
 
       {% if not loan %}
         goBtn.disabled = false;
@@ -508,9 +608,10 @@
       {% endif %}
     } else {
       if (outMonthly) outMonthly.textContent = "—";
+      if (outTotal) outTotal.textContent = "—";
       {% if not loan %}
         goBtn.disabled = true;
-        goBtn.style.opacity = ".65";
+        goBtn.style.opacity = ".55";
       {% endif %}
     }
   }
@@ -549,13 +650,13 @@
 
     goBtn.textContent = "Submitted";
     goBtn.disabled = true;
-    goBtn.style.opacity = ".65";
+    goBtn.style.opacity = ".55";
   {% else %}
     goBtn.addEventListener("click", ()=>{
       const amount = amountEl?.value || "";
       const term = termEl?.value || "";
       if(!amount || !term) return;
-      window.location.href = "{% url 'loan_apply' %}?amount=" + encodeURIComponent(amount) + "&term=" + encodeURIComponent(term);
+      window.location.href = "{% url 'loan_info' %}?amount=" + encodeURIComponent(amount) + "&term=" + encodeURIComponent(term);
     });
   {% endif %}
 
@@ -563,52 +664,69 @@
 
   // ===== Status Tracker (poll API) =====
   function stepFromStatus(st){
-  const s = String(st || "").toUpperCase().trim();
-  if(s === "PENDING") return 1;
-  if(s === "REVIEW") return 2;
-  if(s === "APPROVED") return 3;
-  if(s === "PAID") return 3;      // ✅ Paid is final step (3)
-  return 1;
-}
+    const s = String(st || "").toUpperCase().trim();
+    if(s === "PENDING") return 1;
+    if(s === "REVIEW") return 2;
+    if(s === "APPROVED") return 3;
+    if(s === "PAID") return 3;
+    return 1;
+  }
 
-function applyStep(n, label){
-  const dots = [null, "s1", "s2", "s3"];
-  const lines = [null, "l1", "l2"];
+  function applyStep(n, label){
+    const dots = [null, "s1", "s2", "s3"];
+    const lines = [null, "l1", "l2"];
+    const isRejected = String(label || "").toUpperCase().trim() === "REJECTED";
 
-  for(let i=1;i<=3;i++){
-    const d = document.getElementById(dots[i]);
-    if(d){
-      const isDone = i < n;
-      const isActive = i <= n;
-
-      d.classList.toggle("active", isActive);
-
-      // ✅ Completed = ✓, and FINAL (step 3) when active also = ✓
-      if(isDone || (i === 3 && n === 3)){
-        d.textContent = "✓";
-      }else{
-        d.textContent = String(i);
+    for(let i=1;i<=3;i++){
+      const d = document.getElementById(dots[i]);
+      if(d){
+        if(isRejected){
+          d.classList.remove("active");
+          d.classList.add("rejected");
+          d.textContent = "✕";
+        } else {
+          d.classList.remove("rejected");
+          const isDone = i < n;
+          const isActive = i <= n;
+          d.classList.toggle("active", isActive);
+          if(isDone || (i === 3 && n === 3)){ d.textContent = "✓"; }
+          else { d.textContent = String(i); }
+        }
+      }
+      if(i<=2){
+        const ln = document.getElementById(lines[i]);
+        if(ln){
+          ln.classList.toggle("rejected", isRejected);
+          ln.classList.toggle("active", !isRejected && i < n);
+        }
       }
     }
 
-    if(i<=2){
-      const ln = document.getElementById(lines[i]);
-      if(ln) ln.classList.toggle("active", i < n);
+    const labels3 = document.querySelector(".step-labels.three");
+    if(labels3){
+      const divs = labels3.querySelectorAll("div");
+      if(divs[2]){
+        divs[2].textContent = isRejected ? "Rejected" : "Approved";
+        divs[2].style.color = isRejected ? "#ef4444" : "";
+      }
+    }
+
+    const rejectAlert = document.getElementById("rejectAlert");
+    if(rejectAlert) rejectAlert.style.display = isRejected ? "block" : "none";
+
+    const pill = document.getElementById("statusPill");
+    if(pill) pill.textContent = String(label || "PENDING").toUpperCase();
+
+    const text = document.getElementById("statusText");
+    const s = String(label || "").toUpperCase().trim();
+    if(text){
+      if(s === "REJECTED") text.textContent = "Rejected. Please contact company department.";
+      else if(s === "REVIEW") text.textContent = "Initial approval in progress. Please wait.";
+      else if(s === "APPROVED") text.textContent = "Final approval. Almost done.";
+      else if(s === "PAID") text.textContent = "Success Paid. Your loan has been completed.";
+      else text.textContent = "Our team is reviewing your documents. Please wait.";
     }
   }
-
-  const pill = document.getElementById("statusPill");
-  if (pill) pill.textContent = String(label || "PENDING").toUpperCase();
-
-  const text = document.getElementById("statusText");
-  const s = String(label || "").toUpperCase().trim();
-  if(text){
-    if(s === "REVIEW") text.textContent = "Initial approval in progress. Please wait.";
-    else if(s === "APPROVED") text.textContent = "Final approval. Almost done.";
-    else if(s === "PAID") text.textContent = "Success Paid. Your loan has been completed.";
-    else text.textContent = "Our team is reviewing your documents. Please wait.";
-  }
-}
 
   async function pollLoanStatus(){
     try{
@@ -619,7 +737,6 @@ function applyStep(n, label){
 
       const card = document.getElementById("statusCard");
 
-      // ✅ ONLY show when backend says show=True
       if(!j || !j.ok || !j.show){
         if(card) card.style.display = "none";
         return;
@@ -627,13 +744,11 @@ function applyStep(n, label){
 
       if(card) card.style.display = "block";
       const pill = document.getElementById("statusPill");
-const isRejected = String(j.status || "").toUpperCase() === "REJECTED";
-if (pill) pill.classList.toggle("is-rejected", isRejected);
+      const isRejected = String(j.status || "").toUpperCase() === "REJECTED";
+      if (pill) pill.classList.toggle("is-rejected", isRejected);
 
       if(String(j.status || "").toUpperCase() === "REJECTED"){
-        applyStep(1, "REJECTED");
-        const t = document.getElementById("statusText");
-        if (t) t.textContent = "Rejected. Please contact company department.";
+        applyStep(0, "REJECTED");
         return;
       }
 
@@ -646,7 +761,7 @@ if (pill) pill.classList.toggle("is-rejected", isRejected);
 
   pollLoanStatus();
   setInterval(pollLoanStatus, 10000);
-  // ✅ If redirected from payment save ( ?done=1 ), show Status card immediately
+
   const params = new URLSearchParams(window.location.search);
   const fromDone = params.get("done") === "1";
   if(fromDone){

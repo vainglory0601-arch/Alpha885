@@ -4,809 +4,299 @@
 
 {% block content %}
 <style>
-  
-
-/* Back button shape like picture */
-/* ✅ Top actions wrapper for Back button */
-.top-actions{
-  margin-top: 12px;         /* space from above */
-  display: flex;
-  justify-content: flex-start;
+@font-face {
+  font-family: 'Ovelion';
+  src: url("{% static 'fonts/Ovelion-Regular.ttf' %}") format('truetype');
 }
-.back-btn{
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+body, body * { font-family: 'Ovelion', sans-serif !important; }
 
-  height: 42px;
-  padding: 0 22px 0 28px;   /* left a bit bigger */
-  border-radius: 12px;
-
-  background: #13111185;
-  color: #ffffffc9;
-  font-weight: 800;
-  text-decoration: none;
-
-  border: 1px solid rgba(189, 189, 189, 0.164);
-  box-shadow:
-    0 6px 14px rgba(0,0,0,.18),
-    inset 0 1px 0 rgba(255,255,255,.65);
-}
-/* hover/active */
-.back-btn:hover{
-  transform: translateY(-1px);
-}
-.back-btn:active{
-  transform: translateY(0px);
-  opacity: .92;
+:root{
+  --primary:   #1B2A5E;
+  --accent:    #F5C518;
+  --danger:    #E03020;
+  --secondary: #1A4DB5;
+  --white:     #FFFFFF;
+  --light-bg:  #F4F6FB;
 }
 
-/* Mobile adjustments */
-@media (max-width:520px){
-  .top-actions{ padding: 10px 12px 0; }
-  .top-actions-line{ margin: 10px 12px 0; }
-  .back-btn{ height: 40px; padding: 0 18px 0 24px; font-size: 13px; }
-  .back-btn::before{
-    left: -13px;
-    border-top: 20px solid transparent;
-    border-bottom: 20px solid transparent;
-    border-right: 13px solid #e7e7e7;
-  }
-}
-/* Center alert same width as wallet cards */
-.status-alert{
-  width: min(520px, 94vw);
-  margin: 0 auto 14px;     /* center + space bottom */
-  padding: 12px 16px;
-  border-radius: 999px;
-  text-align: center;
-  font-weight: 900;
-  letter-spacing: .4px;
-  box-sizing: border-box;
+/* ✅ GLOBAL: Kill base.html dark card overrides */
+.cardx,
+.card,
+[class*="card"]:not(.wallet-card) {
+  background: #FFFFFF !important;
+  color: #1B2A5E !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
-.status-danger{
-  background: #dc2626;
-  color: #fff;
-}
-.status-danger{ background:#dc2626; color:#fff; }
-  /* ===== Account Status Badge (Shared) ===== */
-  .status-badge{
-  display: flex;
-  align-items: center;
-  justify-content: center;   /* ⭐ center អក្សរ */
-  text-align: center;
-
-  padding: 12px 18px;
-  border-radius: 999px;
-  font-weight: 800;
-  font-size: 14px;
-  letter-spacing: .4px;
-  margin-bottom: 12px;
-}
-
-
-/* ACTIVE */
-.status-active{
-  background: #16a34a;
-  color: #fff;
-}
-
-/* FROZEN / ERROR / REJECT */
-.status-danger{
-  background: #dc2626;
-  color: #fff;
-}
-  /* wrapper center same as cards */
-  .w-wrap{
+/* ===== Wrapper ===== */
+.w-wrap{
   width: min(520px, 94vw);
   margin: 0 auto;
-  padding-top: 20px;   /* ✅ space top 10–12px */
-}
-
-/* alert banner */
-.status-alert{
-  width: 100%;
-  margin-bottom: 14px;
-  padding: 12px 16px;
-  border-radius: 999px;
-  text-align: center;
-  font-weight: 900;
-  letter-spacing: .4px;
+  padding: 20px 14px 40px;
   box-sizing: border-box;
 }
 
-.status-danger{
-  background: #dc2626;
-  color: #fff;
-}
-.status-success{
-  background:#16a34a;
-  color:#fff;
-}
-.status-warn{
-  background:#eab308;
-  color:#111;
-}
-  .cardx{
-  position: relative;
-
-  background: rgba(0, 0, 0, 0.788);
-
-  border-radius: 18px;
-  border: 2px solid rgba(192, 192, 192, 0.904);
-
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-
-  box-shadow: 0 0 10px rgba(10, 10, 9, 0.788),
-              0 14px 10px rgba(0, 0, 0, 0.815);
-
-  overflow: hidden;
-  margin-bottom: 16px;
-  padding: 18px;
-}
-
-/* =========================
-   ✅ DASHBOARD PROFILE CARD STYLE (DIAMOND)
-   Use: class="cardx card-diamond"
-   ========================= */
-.cardx.card-diamond{
-  position: relative;
-  background: linear-gradient(135deg,
-    #004182 0%,
-    #053a66 45%,
-    #0b2f55 70%,
-    #d4af37 100%) !important;
-
-  border: 2px solid rgba(212,175,55,.90) !important;
-  border-radius: 18px !important;
-
-  box-shadow: 0 18px 46px rgba(0,0,0,.55),
-              0 0 0 1px rgba(255,255,255,.10) inset !important;
-
-  overflow: hidden;
-}
-
-/* stripes + light spots */
-.cardx.card-diamond::before{
-  content:"";
-  position:absolute;
-  inset:-40px;
-  pointer-events:none;
-  opacity:.22;
-  background:
-    repeating-linear-gradient(
-      135deg,
-      rgba(255,255,255,.22) 0px,
-      rgba(255,255,255,.22) 10px,
-      rgba(255,255,255,0)   10px,
-      rgba(255,255,255,0)   26px
-    ),
-    radial-gradient(circle at 18% 22%, rgba(125,211,252,.20), transparent 60%),
-    radial-gradient(circle at 85% 78%, rgba(212,175,55,.18), transparent 62%);
-}
-
-/* shine sweep */
-.cardx.card-diamond::after{
-  content:"";
-  position:absolute; inset:0;
-  pointer-events:none;
-  opacity:.55;
-  background: linear-gradient(120deg,
-    transparent 0%,
-    rgba(255,255,255,.22) 50%,
-    transparent 100%);
-  transform: translateX(-120%);
-  animation: diamondShine 3.6s ease-in-out infinite;
-}
-
-@keyframes diamondShine{
-  0%,55%{ transform: translateX(-120%); }
-  100%{ transform: translateX(120%); }
-}
-
-/* keep content above overlays */
-.cardx.card-diamond > *{
-  position: relative;
-  z-index: 2;
-}
-
-/* ✅ make text white on diamond card */
-.cardx.card-diamond,
-.cardx.card-diamond *{
-  color:#fff !important;
-  text-shadow: 0 1px 0 rgba(0,0,0,.35), 0 10px 22px rgba(0,0,0,.35);
-}
-
-/* inputs inside diamond card */
-.cardx.card-diamond .num-input{
-  background: rgba(0,0,0,.18) !important;
-  border: 1px solid rgba(255,255,255,.18) !important;
-  color:#fff !important;
-}
-.cardx.card-diamond .num-input::placeholder{
-  color: rgba(255,255,255,.65) !important;
-}
-  /* ✅ Wallet top card same color as WITHDRAW NOW button */
-/* ✅ Wallet top card = SAME as other cardx */
-.cardx.wallet-card{
-  background: #004182 !important;
-  border: 2px solid rgba(192, 192, 192, 0.904) !important;
-
-  backdrop-filter: blur(22px) !important;
-  -webkit-backdrop-filter: blur(22px) !important;
-
-  box-shadow: 0 0 10px rgba(10, 10, 9, 0.788),
-              0 14px 10px rgba(0, 0, 0, 0.815) !important;
-}
-/* =========================
-   ✅ WALLET TOP CARD = DASHBOARD PROFILE-LIKE STRIPES
-   (no animation)
-   ========================= */
-.cardx.wallet-card{
+/* ===== BASE CARD — WHITE + RED BORDER (FORCE override base.html dark) ===== */
+.cardx{
   position: relative !important;
-  overflow: hidden !important;
+  background: #FFFFFF !important;
+  border-radius: 22px !important;
+  padding: 18px !important;
+  border: 2px solid rgba(224,48,32,.28) !important;
+  box-shadow: 0 16px 48px rgba(27,42,94,.10), 0 0 0 1px rgba(245,197,24,.08) !important;
+  overflow: hidden;
+  margin-bottom: 14px;
+  color: var(--primary) !important;
+  /* ✅ Kill any dark glass/blur from base.html */
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
-/* stripes + soft shine */
-.cardx.wallet-card::before{
-  content:"";
-  position:absolute;
-  inset:-40px;
-  pointer-events:none;
-  opacity:.22;
+/* ✅ Force ALL text inside white cards readable */
+.cardx .title  { color: #1B2A5E !important; }
+.cardx .sub    { color: #64748b !important; }
+.cardx .hint   { color: #64748b !important; }
+.cardx .muted  { color: #64748b !important; }
+.cardx .tl-text{ color: #1B2A5E !important; }
+.cardx .fw     { color: #1B2A5E !important; }
+.cardx label   { color: #1B2A5E !important; }
+.cardx p       { color: #475569 !important; }
 
-  /* diagonal stripe texture */
-  background:
-    repeating-linear-gradient(
-      135deg,
-      rgba(255,255,255,.22) 0px,
-      rgba(255,255,255,.22) 10px,
-      rgba(255,255,255,0)   10px,
-      rgba(255,255,255,0)   26px
-    ),
-    /* subtle light spots like dashboard */
-    radial-gradient(circle at 18% 22%, rgba(125,211,252,.20), transparent 60%),
-    radial-gradient(circle at 85% 78%, rgba(212,175,55,.18), transparent 62%);
+/* ===== TOP BALANCE CARD — Navy gradient (keep premium feel) ===== */
+.cardx.wallet-card{
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
+  border: 2px solid rgba(245,197,24,.40) !important;
+  box-shadow: 0 18px 48px rgba(27,42,94,.35) !important;
+  color: #fff !important;
 }
-
-/* top glossy shine */
-.cardx.wallet-card::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  opacity:.55;
-  background: linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,0) 45%);
-}
-
-/* keep content above overlays */
-.cardx.wallet-card > *{
-  position: relative;
-  z-index: 1;
-}
-.cardx.wallet-card .sub,
+.cardx.wallet-card .title{ color: #fff !important; }
+.cardx.wallet-card .sub{ color: rgba(255,255,255,.75) !important; }
 .cardx.wallet-card .pill{
-  background: rgba(0,0,0,.22);
-  border-color: rgba(255,255,255,.14);
-}
-  .row{
-    display:flex; align-items:center; justify-content:space-between; gap:12px;
-  }
-  .title{ font-weight:950; font-size:18px; }
-  .sub{ font-size:12px; opacity:.75; margin-top:2px; }
-  .pill{
-    padding:6px 12px; border-radius:999px;
-    border:1px solid rgba(255,255,255,.12);
-    background: rgba(0,0,0,.25);
-    font-weight:900; font-size:12px;
-    white-space:nowrap;
-  }
-
-  /* Inputs (number) */
-  .num-input{
-    width: 100%;
-    margin-top: 10px;
-    padding: 12px 14px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,.18);
-    background: rgba(0,0,0,.18);
-    color: #fff;
-    outline: none;
-    font-size: 14px;
-  }
-  .num-input::placeholder{ color: rgba(255,255,255,.45); }
-  .num-input:focus{
-  border-color: rgba(0,65,130,.75); /* #004182 */
-  box-shadow: 0 0 0 3px rgba(5,69,133,.35); /* #054585d0 느낌 */
-  background: rgba(0,0,0,.22);
+  background: rgba(0,0,0,.22) !important;
+  border-color: rgba(255,255,255,.18) !important;
+  color: #fff !important;
 }
 
-  /* Withdraw NOW button (Quick Loan style) */
-  .big-btn{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:10px;
-    height:54px;
-    border-radius:999px;
-    text-decoration:none;
-    font-weight:950;
-    letter-spacing:.10em;
-    text-transform:uppercase;
-    color:#fff;
-    background: linear-gradient(90deg, #004182, #054585d0);
-    box-shadow: 0 18px 45px rgba(0,0,0,.40);
-    border:0;
-    width:100%;
-    cursor:pointer;
-    transition: opacity .2s ease, transform .08s ease, filter .2s ease;
-  }
-  .big-btn:active{ transform: scale(.99); }
-  .big-btn .dot{
-    width:32px; height:32px;
-    border-radius:999px;
-    background: rgba(0,0,0,.22);
-    display:flex; align-items:center; justify-content:center;
-    border:1px solid rgba(255,255,255,.10);
-  }
-
-  /* Disabled state */
-  .big-btn[disabled]{
-    opacity:.45;
-    cursor:not-allowed;
-    filter: grayscale(.25);
-  }
-
-  .hint{
-    margin-top: 10px;
-    font-size: 12px;
-    opacity: .75;
-  }
-
-  /* Timeline */
-  .timeline{ margin-top: 12px; display:none; }
-  .tl-item{ display:flex; align-items:center; gap:12px; padding:10px 0; }
-  .tl-bullet{
-    width:34px; height:34px;
-    border-radius:999px;
-    background: rgba(0,0,0,.22);
-    border:1px solid rgba(255,255,255,.10);
-    display:flex; align-items:center; justify-content:center;
-    flex:0 0 auto;
-  }
-  .tl-bullet.on{
-  background:#004182;
-  border-color: rgba(255,255,255,.18);
+/* ===== Row layout ===== */
+.row{
+  display:flex; align-items:center;
+  justify-content:space-between; gap:12px;
 }
 
-/* ✅ rejected must ALWAYS win even if .on exists */
+/* ===== Text ===== */
+.title{ font-weight:950; font-size:18px; color: var(--primary); }
+.sub{ font-size:12px; color: #64748b; margin-top:2px; }
+
+/* ===== Pill badge ===== */
+.pill{
+  padding:6px 12px; border-radius:999px;
+  border: 1.5px solid rgba(224,48,32,.25) !important;
+  background: #F4F6FB !important;
+  color: #1B2A5E !important;
+  font-weight:900; font-size:12px;
+  white-space:nowrap;
+}
+
+/* ===== Inputs ===== */
+.num-input{
+  width: 100%; margin-top: 10px;
+  padding: 12px 14px; border-radius: 14px;
+  border: 1.5px solid rgba(27,42,94,.15) !important;
+  background: #F4F6FB !important;
+  color: #1B2A5E !important;
+  outline: none; font-size: 14px; font-weight: 700;
+  box-sizing: border-box;
+}
+.num-input::placeholder{ color: #94a3b8 !important; }
+.num-input:focus{
+  border-color: rgba(224,48,32,.40) !important;
+  box-shadow: 0 0 0 3px rgba(224,48,32,.08) !important;
+  background: #fff !important;
+}
+
+/* ===== Hint text ===== */
+.hint{
+  margin-top: 8px; font-size: 12px;
+  color: #64748b !important; font-weight: 600;
+}
+
+/* ===== WITHDRAW NOW button — Navy gradient ===== */
+.big-btn{
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  height:52px; border-radius:999px; text-decoration:none;
+  font-weight:950; letter-spacing:.10em; text-transform:uppercase;
+  font-size: 14px;
+  color:#fff;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  box-shadow: 0 10px 30px rgba(27,42,94,.30);
+  border: 2px solid rgba(192,192,192,.40);
+  width:100%; cursor:pointer;
+  transition: opacity .2s ease, transform .08s ease;
+}
+.big-btn:active{ transform: scale(.99); }
+.big-btn .dot{
+  width:32px; height:32px; border-radius:999px;
+  background: rgba(255,255,255,.15);
+  display:flex; align-items:center; justify-content:center;
+  border:1px solid rgba(255,255,255,.20);
+}
+.big-btn[disabled]{
+  opacity:.40; cursor:not-allowed;
+}
+
+/* ===== Alert box ===== */
+#statusAlert{
+  width: 100%; margin-bottom: 14px;
+  padding: 12px 16px; border-radius: 14px;
+  text-align: center; font-weight: 900;
+  letter-spacing: .4px; box-sizing: border-box;
+  font-size: 13px;
+}
+#formAlert{
+  display:none; margin: 10px 0 4px;
+  padding: 10px 14px; border-radius: 12px;
+  border: 1.5px solid rgba(224,48,32,.35);
+  background: rgba(224,48,32,.08);
+  color: var(--danger);
+  font-weight:900; font-size:12px;
+  text-align: center;
+}
+
+.status-danger{ background:#dc2626; color:#fff; }
+.status-success{ background:#16a34a; color:#fff; }
+.status-warn{ background:#eab308; color:#111; }
+
+/* ===== Timeline ===== */
+.timeline{ margin-top: 14px; display:none; }
+.tl-item{ display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom: 1px solid rgba(27,42,94,.06); }
+.tl-item:last-child{ border-bottom: none; }
+.tl-bullet{
+  width:36px; height:36px; border-radius:999px;
+  background: rgba(27,42,94,.10);
+  border: 2px solid rgba(27,42,94,.15);
+  display:flex; align-items:center; justify-content:center; flex:0 0 auto;
+}
+.tl-bullet.on{
+  background: var(--primary);
+  border-color: rgba(27,42,94,.30);
+}
 .tl-bullet.rejected,
 .tl-bullet.on.rejected{
-  background:#dc2626 !important;
-  border-color: rgba(255,255,255,.18) !important;
+  background: #dc2626 !important;
+  border-color: rgba(220,38,38,.40) !important;
 }
-  .tl-bullet.rej{
-    background: rgba(239,68,68,.22);
-    border-color: rgba(239,68,68,.55);
-  }
-  /* rejected style (ONLY last tick) */
-.tl-bullet.rejected{
-  background: rgba(239,68,68,.25);
-  border-color: rgba(239,68,68,.6);
+.tl-bullet svg{ width:18px; height:18px; fill:#fff; opacity:.95; }
+
+/* off state icon — navy tint */
+.tl-bullet:not(.on):not(.rejected) svg{ opacity:.35; fill: var(--primary); }
+
+.tl-text{ font-weight:900; color: var(--primary); font-size:14px; }
+.tl-text.rejected{ color:#dc2626; font-weight:950; }
+.tl-text.success{ color:#16a34a; font-weight:950; }
+.muted{ font-size:12px; color:#64748b; margin-top:2px; }
+
+/* ===== Withdrawal list rows ===== */
+.list-row{
+  display:flex; justify-content:space-between; gap:12px;
+  padding:10px 0;
+  border-bottom: 1px solid rgba(27,42,94,.07);
+  font-size:13px;
 }
-.tl-text.rejected{
-  color:#ef4444;
-}
-/* icons toggle */
-.tl-bullet .ico-ok{ display:block; }
-.tl-bullet .ico-x{ display:none; }
+.list-row:last-child{ border-bottom: none; }
+.list-row .fw{ font-weight:900; color: var(--primary); }
 
-.tl-bullet.rejected .ico-ok{ display:none; }
-.tl-bullet.rejected .ico-x{ display:block; }
-
-/* ✅ success icon */
-.tl-bullet svg{
-  width:18px; height:18px;
-  fill:#fff;
-  opacity:.98;
-}
-
-/* ❌ rejected: strong red */
-.tl-bullet.rejected{
-  background:#dc2626;                 /* ✅ strong red */
-  border-color: rgba(255,255,255,.18);
-}
-
-/* rejected text strong red */
-.tl-text.rejected{
-  color:#dc2626;
-  font-weight: 950;
-}
-
-  .tl-text.rej{ color: #ffb4b4; }
-  .muted.rej{ color: rgba(255,170,170,.85); opacity:1; }
-  .tl-bullet svg{ width:18px; height:18px; fill:#fff; opacity:.95; }
-  .tl-text{ font-weight:900; }
-  .muted{ font-size:12px; opacity:.75; margin-top:2px; }
-
-  .list-row{
-    display:flex; justify-content:space-between; gap:12px;
-    padding:10px 0;
-    border-bottom: 1px solid rgba(255,255,255,.08);
-    font-size:13px;
-  }
-  /* Alert spacing control */
-  #formAlert{
-  display:flex;
-  align-items:center;      /* vertical center */
-  justify-content:center;  /* horizontal center */
-  text-align:center;       /* text center */
-}
-/* =========================
-   FIX ICON SWITCH (b3 only)
-   ========================= */
-
-/* Default: show ✅, hide ❌ */
-#b3 .ico-ok{ display:block !important; }
-#b3 .ico-x{ display:none !important; }
-
-/* When rejected: hide ✅, show ❌ */
-#b3.rejected .ico-ok{ display:none !important; }
-#b3.rejected .ico-x{ display:block !important; }
-
-/* When success: show ✅, hide ❌ */
-#b3.success .ico-ok{ display:block !important; }
-#b3.success .ico-x{ display:none !important; }
-
-/* =========================
-   ✅ QUICK LOAN CARD PATTERN (DIAGONAL STRIPES)
-   - no animation
-   - left->right OR right->left
-   ========================= */
-
-/* 1) apply to ONLY quick-loan cards you choose */
-.cardx.loan-card{
-  position: relative !important;
-  overflow: hidden !important;
-
-  /* base blue like your culture */
-  background: linear-gradient(90deg, #004182, #054585) !important;
-  border: 2px solid rgba(212,175,55,.90) !important;  /* gold border */
-  box-shadow: 0 0 10px rgba(10,10,9,.78),
-              0 14px 10px rgba(0,0,0,.82) !important;
-}
-
-/* 2) stripes overlay (default = LEFT -> RIGHT) */
-.cardx.loan-card::before{
-  content:"";
-  position:absolute;
-  inset:-40px;
-  pointer-events:none;
-  opacity:.22;
-
-  /* ✅ diagonal stripes (left->right) */
-  background:
-    repeating-linear-gradient(
-      135deg,
-      rgba(255,255,255,.18) 0px,
-      rgba(255,255,255,.18) 10px,
-      rgba(255,255,255,0)   10px,
-      rgba(255,255,255,0)   24px
-    ),
-    /* soft gold wash */
-    radial-gradient(circle at 85% 25%, rgba(212,175,55,.35), transparent 55%),
-    radial-gradient(circle at 15% 80%, rgba(125,211,252,.22), transparent 60%);
-}
-/* =========================
-   ✅ CARD STYLE = WHITE LUXURY
-   Clean White + Gold Glow
-   ========================= */
-
-.cardx.currency-style{
-  position: relative !important;
-  overflow: hidden !important;
-
-  background: linear-gradient(
-      180deg,
-      #ffffff 0%,
-      #f8fafc 45%,
-      #eef2f7 75%,
-      #ffffff 100%
-  ) !important;
-
-  border: 2px solid rgba(212,175,55,.85) !important;
-
-  box-shadow:
-      0 20px 45px rgba(0,0,0,.12),
-      0 0 0 1px rgba(255,255,255,.9) inset !important;
-}
-
-/* soft gold glow bottom right */
-.cardx.currency-style::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  background:
-    radial-gradient(circle at 90% 90%, rgba(212,175,55,.25), transparent 55%),
-    radial-gradient(circle at 10% 10%, rgba(0,65,130,.08), transparent 60%);
-  opacity:.75;
-}
-
-/* soft white shine top */
-.cardx.currency-style::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  background: linear-gradient(
-      180deg,
-      rgba(255,255,255,.9),
-      rgba(255,255,255,0) 55%
-  );
-  opacity:.6;
-}
-
-/* dark text for white card */
-.cardx.currency-style,
-.cardx.currency-style *{
-  color:#0b2f55 !important;  /* deep blue text */
-}
-
-/* keep content above glow */
-.cardx.currency-style > *{
-  position:relative;
-  z-index:1;
-}
-/* =========================
-   ✅ WALLET PAGE: GLOBAL WHITE TEXT + SHINE
-   ========================= */
-.w-wrap,
-.w-wrap *{
-  color:#fff !important;
-  text-shadow: 0 1px 0 rgba(0,0,0,.35), 0 8px 20px rgba(0,0,0,.35);
-}
-
-/* BUT: keep currency-style card readable (dark text on white card) */
-.cardx.currency-style,
-.cardx.currency-style *{
-  color:#0b2f55 !important;
-  text-shadow: none !important;
-}
-
-/* Inputs & placeholder */
-.num-input{
-  color:#fff !important;
-}
-.num-input::placeholder{
-  color: rgba(255,255,255,.65) !important;
-}
-
-/* Pills / small chips */
-.pill{
-  color:#fff !important;
-}
-
-/* =========================
-   ✅ APPLY WHITE-LUXURY STYLE TO ONLY 3 CARDS
-   (NOT wallet-card)
-   ========================= */
-
-/* 1) Withdrawal amount card */
-.cardx.withdraw-card{}
-
-/* 2) OTP card */
-.cardx.otp-card{}
-
-/* 3) Withdraw button + timeline card */
-.cardx.withdraw-action-card{}
-
-/* Make these 3 cards use the white-luxury style */
-.cardx.withdraw-card,
-.cardx.otp-card,
-.cardx.withdraw-action-card{
-  /* reuse your white-luxury look */
-  position: relative !important;
-  overflow: hidden !important;
-
-  background: linear-gradient(
-      180deg,
-      #ffffff 0%,
-      #f8fafc 45%,
-      #eef2f7 75%,
-      #ffffff 100%
-  ) !important;
-
-  border: 2px solid rgba(212,175,55,.85) !important;
-
-  box-shadow:
-      0 20px 45px rgba(0,0,0,.12),
-      0 0 0 1px rgba(255,255,255,.9) inset !important;
-}
-
-/* glow overlay for these 3 cards */
-.cardx.withdraw-card::before,
-.cardx.otp-card::before,
-.cardx.withdraw-action-card::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  background:
-    radial-gradient(circle at 90% 90%, rgba(212,175,55,.25), transparent 55%),
-    radial-gradient(circle at 10% 10%, rgba(0,65,130,.08), transparent 60%);
-  opacity:.75;
-}
-
-.cardx.withdraw-card::after,
-.cardx.otp-card::after,
-.cardx.withdraw-action-card::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,0) 55%);
-  opacity:.6;
-}
-
-/* content above overlays */
-.cardx.withdraw-card > *,
-.cardx.otp-card > *,
-.cardx.withdraw-action-card > *{
-  position:relative;
-  z-index:1;
-}
-
-/* Make text INSIDE these 3 cards dark (because card is white) */
-.cardx.withdraw-card,
-.cardx.withdraw-card *,
-.cardx.otp-card,
-.cardx.otp-card *,
-.cardx.withdraw-action-card,
-.cardx.withdraw-action-card *{
-  color:#0b2f55 !important;
-  text-shadow: none !important;
-}
-
-/* inputs inside white cards should be dark */
-.cardx.withdraw-card .num-input,
-.cardx.otp-card .num-input{
-  background: rgba(11,47,85,.06) !important;
-  border-color: rgba(11,47,85,.18) !important;
-  color:#0b2f55 !important;
-}
-.cardx.withdraw-card .num-input::placeholder,
-.cardx.otp-card .num-input::placeholder{
-  color: rgba(11,47,85,.55) !important;
-}
-/* ✅ Wallet Back button = White (visible on white cards) */
+/* ===== Back button ===== */
+.top-actions{ margin-top: 6px; display: flex; justify-content: flex-start; }
 .back-btn{
-  background: #ffffff !important;
-  color: #0b2f55 !important;                 /* blue text */
-  border: 2px solid rgba(11,47,85,.22) !important;
-
-  box-shadow: 0 10px 22px rgba(0,0,0,.14),
-              0 0 0 1px rgba(255,255,255,.9) inset !important;
-
-  font-weight: 950 !important;
-  text-decoration: none !important;
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 44px; padding: 0 26px; border-radius: 999px;
+  background: #FFFFFF;
+  color: var(--primary);
+  font-weight: 900; font-size: 14px;
+  text-decoration: none;
+  border: 2px solid rgba(224,48,32,.30);
+  box-shadow: 0 4px 14px rgba(27,42,94,.12);
+  transition: transform .15s ease;
 }
+.back-btn:hover{ transform: translateY(-1px); }
+.back-btn:active{ transform: scale(.98); opacity:.92; }
 
-.back-btn:hover{
-  transform: translateY(-1px);
-  box-shadow: 0 14px 28px rgba(0,0,0,.16),
-              0 0 0 1px rgba(255,255,255,.9) inset !important;
+@media (max-width:520px){
+  .w-wrap{ padding: 16px 12px 40px; }
+  .back-btn{ height: 40px; padding: 0 20px; font-size: 13px; }
 }
-
-.back-btn:active{
-  transform: scale(.98);
-  opacity: 1 !important;
-}
-
-/* (Optional) if you add arrow later */
-.back-btn::before{
-  border-right-color: #ffffff !important;
-}
-
 </style>
 
-<div class="w-wrap ovelion">
+<div class="w-wrap">
 
-  <!-- Card 1: Balance -->
+  <!-- Status alert -->
+  <div id="statusAlert" style="display:none;"></div>
 
-  <div id="statusAlert"
-     class="status-alert"
-     style="display:none;"
-     data-msg="{{ request.user.status_message|default:''|escapejs }}"
-     {% if request.user.status_message %}data-lock="1"{% endif %}></div>
-  <div class="cardx card-diamond">
+  <!-- ===== Card 1: Balance (Navy — premium feel) ===== -->
+  <div class="cardx wallet-card">
     <div class="row">
       <div>
         <div class="title">Wallet</div>
         <div class="sub">Balance (PHP)</div>
       </div>
-      <div class="pill">Last transaction - Today</div>
+      <div class="pill">Last transaction – Today</div>
     </div>
-
-    <div style="margin-top:12px; font-size:28px; font-weight:950;">
-  <span style="font-family:'Inter', system-ui, sans-serif; font-weight:700;">₱</span> <span data-balance>{{ request.user.balance|default:"0.00" }}</span>
-</div>
+    <div style="margin-top:14px; font-size:30px; font-weight:950; color:#fff; letter-spacing:.02em;">
+      PHP <span data-balance>{{ request.user.balance|default:"0.00" }}</span>
+    </div>
   </div>
 
-  <!-- ✅ NEW Card: Withdrawal Amount (above OTP) -->
-  <div class="cardx currency-style">
+  <!-- ===== Card 2: Withdrawal Amount ===== -->
+  <div class="cardx">
     <div class="row">
       <div>
-        <div class="title" style="font-size:16px;">Withdrawal amount</div>
+        <div class="title" style="font-size:15px;">Withdrawal amount</div>
         <div class="sub">Enter amount you want to withdraw</div>
       </div>
       <div class="pill">PHP</div>
     </div>
-
     <input
-      id="amountInput"
-      class="num-input"
-      type="number"
-      inputmode="decimal"
-      min="0"
-      step="0.01"
-      placeholder="0.00"
-      autocomplete="off"
+      id="amountInput" class="num-input"
+      type="number" inputmode="decimal"
+      min="0" step="0.01" placeholder="0.00" autocomplete="off"
     />
     <div class="hint" id="amountHint">Max: PHP 0.00</div>
   </div>
 
-  <!-- ✅ UPDATED Card: OTP Code (now input number) -->
-  <div class="cardx currency-style">
+  <!-- ===== Card 3: OTP Code ===== -->
+  <div class="cardx">
     <div class="row">
       <div>
-        <div class="title" style="font-size:16px;">OTP Code</div>
-        <div class="sub"></div>
+        <div class="title" style="font-size:15px;">OTP Code</div>
+        <div class="sub">One-time password sent to your phone</div>
       </div>
       <div class="pill">OTP</div>
     </div>
-
     <input
-      id="otpInput"
-      class="num-input"
-      type="number"
-      inputmode="numeric"
-      min="0"
-      step="1"
-      placeholder="Enter OTP"
-      autocomplete="one-time-code"
+      id="otpInput" class="num-input"
+      type="number" inputmode="numeric"
+      min="0" step="1" placeholder="Enter OTP" autocomplete="one-time-code"
     />
     <div class="hint">OTP is required to confirm withdrawal.</div>
   </div>
 
-  <!-- Card 3: Withdraw -->
-  <div class="cardx currency-style">
+  <!-- ===== Card 4: Withdraw button + timeline ===== -->
+  <div class="cardx">
     <form method="post" action="{% url 'withdraw_create' %}" style="margin:0;" id="withdrawForm">
       {% csrf_token %}
-
       <input type="hidden" name="amount" id="amountHidden" value="">
       <input type="hidden" name="otp" id="otpHidden" value="">
 
-      <div id="formAlert" style="
-        display:none;
-        margin: 10px 2px 0;
-        padding: 10px 12px;
-        border-radius: 12px;
-        border: 1px solid rgba(239,68,68,.55);
-        background: rgba(245, 6, 6, 0.486);
-        color:#f1dada;
-        font-weight:900;
-        font-size:12px;">
-      </div>
+      <div id="formAlert"></div>
 
-      <button class="big-btn" type="button" id="withdrawBtn" disabled>WITHDRAW NOW</button>
-      <div class="hint" id="btnHint">Enter a valid amount to enable withdraw.</div>
+      <button class="big-btn" type="button" id="withdrawBtn" disabled>
+        WITHDRAW NOW
+      </button>
+      <div class="hint" id="btnHint" style="text-align:center;">Enter a valid amount to enable withdraw.</div>
     </form>
 
-    <!-- Timeline (3 steps only) -->
+    <!-- Timeline -->
     <div class="timeline" id="timelineBox">
       <div class="tl-item">
         <div class="tl-bullet" id="b1">
@@ -817,7 +307,6 @@
           <div class="muted">Your request is being reviewed</div>
         </div>
       </div>
-
       <div class="tl-item">
         <div class="tl-bullet" id="b2">
           <svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
@@ -827,33 +316,30 @@
           <div class="muted">We are processing your withdrawal</div>
         </div>
       </div>
-
       <div class="tl-item">
-  <div class="tl-bullet" id="b3">
-    <!-- ONE ICON ONLY (JS will change path) -->
-    <svg id="b3Icon" viewBox="0 0 24 24">
-      <path id="b3Path" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"></path>
-    </svg>
-  </div>
-  <div class="tl-text" id="t3">Withdrawal Successfully</div>
-</div>
+        <div class="tl-bullet" id="b3">
+          <svg id="b3Icon" viewBox="0 0 24 24">
+            <path id="b3Path" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"></path>
+          </svg>
+        </div>
+        <div class="tl-text" id="t3">Withdrawal Successfully</div>
+      </div>
     </div>
-  </div> <!-- ✅ close withdraw card -->
+  </div>
 
-  <!-- List -->
-  <div class="cardx currency-style">
-    <div class="row" style="margin-bottom:8px;">
-      <div class="title" style="font-size:16px;">Last withdrawals</div>
+  <!-- ===== Card 5: Last withdrawals ===== -->
+  <div class="cardx">
+    <div class="row" style="margin-bottom:12px;">
+      <div class="title" style="font-size:15px;">Last withdrawals</div>
       <div class="pill">{{ withdrawals|length }}</div>
     </div>
 
     {% for w in withdrawals %}
       <div class="list-row">
         <div>
-          <div style="font-weight:900;">PHP {{ w.amount }} {{ w.currency }}</div>
+          <div class="fw">PHP {{ w.amount }} {{ w.currency }}</div>
           <div class="muted">{{ w.created_at }}</div>
         </div>
-
         {% if forloop.first %}
           <div class="pill" data-wstatus="{{ w.status }}">{{ w.get_status_display }}</div>
         {% else %}
@@ -861,34 +347,30 @@
         {% endif %}
       </div>
     {% empty %}
-      <div class="muted">No withdrawals yet.</div>
+      <div class="muted" style="padding: 8px 0;">No withdrawals yet.</div>
     {% endfor %}
   </div>
 
   <!-- Back -->
   <div class="top-actions">
-    <a class="back-btn" href="{% url 'dashboard' %}">Back</a>
+    <a class="back-btn" href="{% url 'dashboard' %}">← Back</a>
   </div>
-  <div class="top-actions-line"></div>
 
-</div> <!-- ✅ close .w-wrap -->
+</div>
 
 <script>
 (function(){
   const form = document.getElementById("withdrawForm");
   const btn  = document.getElementById("withdrawBtn");
-
   const amountInput  = document.getElementById("amountInput");
   const otpInput     = document.getElementById("otpInput");
   const amountHidden = document.getElementById("amountHidden");
   const otpHidden    = document.getElementById("otpHidden");
-
   const timeline = document.getElementById("timelineBox");
   const b1 = document.getElementById("b1");
   const b2 = document.getElementById("b2");
   const b3 = document.getElementById("b3");
   const t3 = document.getElementById("t3");
-
   const alertBox = document.getElementById("formAlert");
 
   function getCookie(name){
@@ -900,78 +382,32 @@
   function show(){ if(timeline) timeline.style.display = "block"; }
   function hide(){ if(timeline) timeline.style.display = "none"; }
 
-  // ✅ SVG templates (replace icon 100%)
-  const OK_SVG = `
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"></path>
-    </svg>
-  `;
-  const X_SVG = `
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M18.3 5.7 12 12l6.3 6.3-1.4 1.4L10.6 13.4 4.3 19.7 2.9 18.3 9.2 12 2.9 5.7 4.3 4.3l6.3 6.3 6.3-6.3z"></path>
-    </svg>
-  `;
+  const OK_SVG = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"></path></svg>`;
+  const X_SVG  = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.3 5.7 12 12l6.3 6.3-1.4 1.4L10.6 13.4 4.3 19.7 2.9 18.3 9.2 12 2.9 5.7 4.3 4.3l6.3 6.3 6.3-6.3z"></path></svg>`;
 
-  // =========================
-  // TIMELINE ENGINE
-  // =========================
-  let _uiStage = 0;
-  let _lockUntil = 0;
-  let _currentWdId = null;
-  let _submittedAt = 0;
-
+  let _uiStage = 0, _lockUntil = 0, _currentWdId = null, _submittedAt = 0;
   function lockUI(ms){ _lockUntil = Date.now() + (ms || 0); }
   function isLocked(){ return Date.now() < _lockUntil; }
-
-  function setIconOK(){
-    if(!b3) return;
-    b3.innerHTML = OK_SVG; // ✅ replace icon fully
-  }
-  function setIconX(){
-    if(!b3) return;
-    b3.innerHTML = X_SVG;  // ✅ replace icon fully
-  }
+  function setIconOK(){ if(b3) b3.innerHTML = OK_SVG; }
+  function setIconX(){  if(b3) b3.innerHTML = X_SVG; }
 
   function resetTimeline(){
     [b1,b2,b3].forEach(el=>{
       if(!el) return;
       el.classList.remove("on","success","rejected");
-      el.style.background = "";
-      el.style.borderColor = "";
+      el.style.background = ""; el.style.borderColor = "";
     });
     setIconOK();
-
-    if(t3){
-      t3.classList.remove("success","rejected");
-      t3.textContent = "Withdrawal Successfully";
-    }
-
+    if(t3){ t3.classList.remove("success","rejected"); t3.textContent = "Withdrawal Successfully"; }
     _uiStage = 0;
   }
 
   function paintStage(stage){
-    if(stage <= 0){
-      hide();
-      resetTimeline();
-      return;
-    }
-
+    if(stage <= 0){ hide(); resetTimeline(); return; }
     show();
-
-    [b1,b2,b3].forEach(el=>{
-      if(!el) return;
-      el.classList.remove("on","success","rejected");
-      el.style.background = "";
-      el.style.borderColor = "";
-    });
-
+    [b1,b2,b3].forEach(el=>{ if(!el) return; el.classList.remove("on","success","rejected"); el.style.background=""; el.style.borderColor=""; });
     setIconOK();
-
-    if(t3){
-      t3.classList.remove("success","rejected");
-      t3.textContent = "Withdrawal Successfully";
-    }
-
+    if(t3){ t3.classList.remove("success","rejected"); t3.textContent = "Withdrawal Successfully"; }
     if(stage >= 1 && b1) b1.classList.add("on");
     if(stage >= 2 && b2) b2.classList.add("on");
     _uiStage = stage;
@@ -979,306 +415,105 @@
 
   function paintFinalRejected(){
     show();
-    if(b1) b1.classList.add("on");
-    if(b2) b2.classList.add("on");
-
-    if(b3){
-      b3.classList.remove("on","success");
-      b3.classList.add("rejected");
-      b3.style.setProperty("background", "#dc2626", "important");
-      b3.style.setProperty("border-color", "rgba(255,255,255,.18)", "important");
-
-      // ✅ 100% force X
-      setIconX();
-      void b3.offsetHeight;
-      setIconX();
-    }
-
-    if(t3){
-      t3.classList.add("rejected");
-      t3.textContent = "Rejected";
-    }
-
+    if(b1) b1.classList.add("on"); if(b2) b2.classList.add("on");
+    if(b3){ b3.classList.remove("on","success"); b3.classList.add("rejected"); b3.style.setProperty("background","#dc2626","important"); b3.style.setProperty("border-color","rgba(255,255,255,.18)","important"); setIconX(); void b3.offsetHeight; setIconX(); }
+    if(t3){ t3.classList.add("rejected"); t3.textContent = "Rejected"; }
     _uiStage = 3;
   }
 
   function paintFinalPaid(){
     show();
-    if(b1) b1.classList.add("on");
-    if(b2) b2.classList.add("on");
-
-    if(b3){
-      b3.classList.remove("rejected");
-      b3.classList.add("success");
-      b3.style.setProperty("background", "#16a34a", "important");
-      b3.style.setProperty("border-color", "rgba(255,255,255,.18)", "important");
-
-      // ✅ force ✓
-      setIconOK();
-      void b3.offsetHeight;
-      setIconOK();
-    }
-
-    if(t3){
-      t3.classList.remove("rejected");
-      t3.classList.add("success");
-      t3.textContent = "Withdrawal Successfully";
-    }
-
+    if(b1) b1.classList.add("on"); if(b2) b2.classList.add("on");
+    if(b3){ b3.classList.remove("rejected"); b3.classList.add("success"); b3.style.setProperty("background","#16a34a","important"); b3.style.setProperty("border-color","rgba(255,255,255,.18)","important"); setIconOK(); void b3.offsetHeight; setIconOK(); }
+    if(t3){ t3.classList.remove("rejected"); t3.classList.add("success"); t3.textContent = "Withdrawal Successfully"; }
     _uiStage = 3;
   }
 
   function setStatusFromDB(raw, sid){
     const s = (raw || "").toLowerCase().trim();
     const known = ["reviewed","processing","paid","payment_sent","rejected"];
-
-    if(!known.includes(s)){
-      paintStage(0);
-      return;
-    }
-
-    // ✅ new withdraw id -> reset so it updates freely
-    if(sid && _currentWdId !== sid){
-      _currentWdId = sid;
-      _uiStage = 0;
-      _lockUntil = 0;
-      resetTimeline();
-    }
-
+    if(!known.includes(s)){ paintStage(0); return; }
+    if(sid && _currentWdId !== sid){ _currentWdId = sid; _uiStage = 0; _lockUntil = 0; resetTimeline(); }
+    const justSubmitted = _submittedAt && (Date.now() - _submittedAt) < 8000;
     const stageMap = { reviewed:1, processing:2, paid:3, payment_sent:3, rejected:3 };
     const stage = stageMap[s] || 0;
-
-    const justSubmitted = _submittedAt && (Date.now() - _submittedAt) < 8000;
     if(justSubmitted && stage < _uiStage) return;
-
     if(s === "reviewed"){ paintStage(1); return; }
     if(s === "processing"){ paintStage(2); return; }
     if(s === "paid" || s === "payment_sent"){ paintStage(2); paintFinalPaid(); return; }
     if(s === "rejected"){ paintStage(2); paintFinalRejected(); return; }
   }
 
-  function playSubmitAnimation(){
-    show();
-    paintStage(1);
-    setTimeout(()=> paintStage(2), 450);
-  }
+  function playSubmitAnimation(){ show(); paintStage(1); setTimeout(()=> paintStage(2), 450); }
 
-  // =========================
-  // POLLING
-  // =========================
   let _wdPoll = null;
-
   async function pullWithdrawStatus(){
     try{
       const r = await fetch("{% url 'latest_withdraw_status' %}", { cache:"no-store" });
       const data = await r.json().catch(()=>null);
       if(!data || data.ok !== true) return;
-
-      if(!data.has){
-        paintStage(0);
-        _currentWdId = null;
-        return;
-      }
-
-      const sid = data.id;
-      const s = (data.status || "").toLowerCase().trim();
-
+      if(!data.has){ paintStage(0); _currentWdId = null; return; }
       const latest = document.querySelector(".pill[data-wstatus]");
-      if(latest){
-        latest.dataset.wstatus = s;
-        latest.textContent = data.label || data.status || "";
-      }
-
-      setStatusFromDB(s, sid);
+      if(latest){ latest.dataset.wstatus = data.status; latest.textContent = data.label || data.status || ""; }
+      setStatusFromDB(data.status, data.id);
     }catch(e){}
   }
 
-  function startPolling(){
-    if(_wdPoll) return;
-    _wdPoll = setInterval(pullWithdrawStatus, 2000);
-    pullWithdrawStatus();
-  }
-
+  function startPolling(){ if(_wdPoll) return; _wdPoll = setInterval(pullWithdrawStatus, 2000); pullWithdrawStatus(); }
   const init = document.querySelector(".pill[data-wstatus]")?.dataset.wstatus || "";
   setStatusFromDB(init, null);
   startPolling();
 
-  // =========================
-  // FORM + BUTTON (same behavior)
-  // =========================
-  function showAlert(msg){
-    if(!alertBox) return;
-    alertBox.textContent = msg;
-    alertBox.style.display = "block";
-  }
-  function clearAlert(){
-    if(!alertBox) return;
-    alertBox.textContent = "";
-    alertBox.style.display = "none";
-  }
-
-  function getBalance(){
-    const t = (document.querySelector("[data-balance]")?.textContent || "0").replace(/,/g,"").trim();
-    return parseFloat(t) || 0;
-  }
-
-  function syncHidden(){
-    if(amountHidden) amountHidden.value = (amountInput?.value || "").trim();
-    if(otpHidden) otpHidden.value = (otpInput?.value || "").trim();
-  }
-
+  function showAlert(msg){ if(!alertBox) return; alertBox.textContent = msg; alertBox.style.display = "block"; }
+  function clearAlert(){ if(!alertBox) return; alertBox.textContent = ""; alertBox.style.display = "none"; }
+  function getBalance(){ const t=(document.querySelector("[data-balance]")?.textContent||"0").replace(/,/g,"").trim(); return parseFloat(t)||0; }
+  function syncHidden(){ if(amountHidden) amountHidden.value=(amountInput?.value||"").trim(); if(otpHidden) otpHidden.value=(otpInput?.value||"").trim(); }
   function updateBtn(){
-    const bal = getBalance();
-    const amt = parseFloat((amountInput?.value || "").trim()) || 0;
-    const otp = (otpInput?.value || "").trim();
-    const ok = (amt > 0 && amt <= bal && otp.length > 0);
-
-    if(btn){
-      btn.disabled = !ok;
-      btn.style.opacity = ok ? "1" : "0.45";
-      btn.style.pointerEvents = ok ? "auto" : "none";
-    }
+    const bal=getBalance(), amt=parseFloat((amountInput?.value||"").trim())||0, otp=(otpInput?.value||"").trim();
+    const ok=(amt>0&&amt<=bal&&otp.length>0);
+    if(btn){ btn.disabled=!ok; btn.style.opacity=ok?"1":"0.40"; btn.style.pointerEvents=ok?"auto":"none"; }
     syncHidden();
   }
-
-  amountInput && amountInput.addEventListener("input", ()=>{ clearAlert(); updateBtn(); });
-  otpInput && otpInput.addEventListener("input", ()=>{ clearAlert(); updateBtn(); });
+  amountInput && amountInput.addEventListener("input",()=>{ clearAlert(); updateBtn(); });
+  otpInput && otpInput.addEventListener("input",()=>{ clearAlert(); updateBtn(); });
   updateBtn();
 
   let locked = false;
-
   btn && btn.addEventListener("click", async ()=>{
-    if(locked) return;
-    clearAlert();
-
-    const bal = getBalance();
-    const amountRaw = (amountInput?.value || "").trim();
-    const otpRaw = (otpInput?.value || "").trim();
-    const amount = parseFloat(amountRaw) || 0;
-
-    if(!amountRaw || amount <= 0){ showAlert("Please enter withdrawal amount."); return; }
-    if(amount > bal){ showAlert("Amount exceeds your balance."); return; }
+    if(locked) return; clearAlert();
+    const bal=getBalance(), amountRaw=(amountInput?.value||"").trim(), otpRaw=(otpInput?.value||"").trim(), amount=parseFloat(amountRaw)||0;
+    if(!amountRaw||amount<=0){ showAlert("Please enter withdrawal amount."); return; }
+    if(amount>bal){ showAlert("Amount exceeds your balance."); return; }
     if(!otpRaw){ showAlert("Please enter OTP code."); return; }
-
-    hide();
-    resetTimeline();
-
-    // 1) verify OTP
+    hide(); resetTimeline();
     try{
-      const verifyForm = new FormData();
-      verifyForm.append("otp", otpRaw);
-
-      const vr = await fetch("{% url 'verify_withdraw_otp' %}", {
-        method: "POST",
-        headers: { "X-CSRFToken": CSRF, "X-Requested-With": "XMLHttpRequest" },
-        body: verifyForm
-      });
-
-            const vdata = await vr.json().catch(()=>null);
-      if(!vdata || vdata.ok !== true){
-        // ✅ បង្ហាញ message ត្រឹមត្រូវតាមប្រភេទ error
-        const err = vdata.error || "";
-        if(err === "otp_already_used"){
-          showAlert(vdata.message || "This OTP has already been used. Please request a new one.");
-        } else {
-          showAlert("Wrong OTP code.");
-        }
+      const verifyForm=new FormData(); verifyForm.append("otp",otpRaw);
+      const vr=await fetch("{% url 'verify_withdraw_otp' %}",{ method:"POST", headers:{"X-CSRFToken":CSRF,"X-Requested-With":"XMLHttpRequest"}, body:verifyForm });
+      const vdata=await vr.json().catch(()=>null);
+      if(!vdata||vdata.ok!==true){ showAlert("Wrong OTP code."); return; }
+    }catch(e){ showAlert("Network error. Try again."); return; }
+    syncHidden(); locked=true; btn.disabled=true; btn.style.opacity="0.6";
+    try{
+      const res=await fetch("{% url 'withdraw_create' %}",{ method:"POST", headers:{"X-Requested-With":"XMLHttpRequest","X-CSRFToken":CSRF}, body:new FormData(form) });
+      const data=await res.json().catch(()=>null);
+      if(!data||data.ok!==true){
+        locked=false; updateBtn(); hide(); resetTimeline();
+        const err=data&&data.error;
+        if(err==="amount_required") showAlert("Please enter withdrawal amount.");
+        else if(err==="exceed") showAlert("Amount exceeds your balance.");
+        else if(err==="insufficient") showAlert("No balance available.");
+        else if(err==="otp_wrong") showAlert("Wrong OTP code.");
+        else if(err==="account_not_active") showAlert("Your account is not ACTIVE. Please contact company department.");
+        else showAlert("Request failed. Try again.");
         return;
       }
-    }catch(e){
-      showAlert("Network error. Try again.");
-      return;
-    }
-
-      // 2) create withdraw
-    syncHidden();
-    locked = true;
-    btn.disabled = true;
-    btn.style.opacity = "0.6";
-
-    try{
-      const res = await fetch("{% url 'withdraw_create' %}", {
-        method: "POST",
-        headers: { "X-Requested-With": "XMLHttpRequest", "X-CSRFToken": CSRF },
-        body: new FormData(form)
-      });
-
-      const data = await res.json().catch(()=>null);
-
-      if(!data || data.ok !== true){
-        locked = false;
-        updateBtn();
-        hide();
-        resetTimeline();
-
-        const err = data && data.error;
-        if(err === "amount_required") showAlert("Please enter withdrawal amount.");
-        else if(err === "exceed") showAlert("Amount exceeds your balance.");
-        else if(err === "insufficient") showAlert("No balance available.");
-        else if(err === "otp_wrong") showAlert("Wrong OTP code.");
-        else if(err === "otp_already_used") showAlert(data.message || "This OTP has already been used. Please request a new one.");
-        else if(err === "account_not_active") showAlert("Your account is not ACTIVE. Please contact company department.");
-        else showAlert("Request failed. Try again.");
-        
-        return;  // ✅ ត្រូវការ return នៅទីនេះ
-      }
-
-      // ✅ Success code starts here (outside if block)
-      _submittedAt = Date.now();
-      lockUI(8000);
-      playSubmitAnimation();
-
-      // ✅ ការពារ OTP reuse - clear input ភ្លាម
-      if(otpInput){
-        otpInput.value = "";
-        otpInput.placeholder = "Enter new OTP";
-      }
-      if(otpHidden) otpHidden.value = "";
-
-      // ✅ Disable button វិញ
-      updateBtn();
-
-      const latest = document.querySelector(".pill[data-wstatus]");
-      if(latest){
-        latest.dataset.wstatus = "processing";
-        latest.textContent = "Processing";
-      }
-
-      _uiStage = 2;
-
-    }catch(e){
-      locked = false;
-      updateBtn();
-      hide();
-      resetTimeline();
-      showAlert("Network error. Try again.");
-    }
+      _submittedAt=Date.now(); lockUI(8000); playSubmitAnimation();
+      const latest=document.querySelector(".pill[data-wstatus]");
+      if(latest){ latest.dataset.wstatus="processing"; latest.textContent="Processing"; }
+      _uiStage=2;
+    }catch(e){ locked=false; updateBtn(); hide(); resetTimeline(); showAlert("Network error. Try again."); }
   });
-
 })();
 </script>
-<script>
-(function(){
-  const el = document.getElementById("statusAlert");
-  if(!el) return;
 
-  const msg = (el.dataset.msg || "").trim();
-  if(!msg) return;
-
-  el.textContent = msg;
-  el.style.display = "block";
-
-  // reset
-  el.classList.remove("status-danger","status-success","status-warn");
-
-  // auto color
-  const m = msg.toLowerCase();
-  const isGreen  = m.includes("approved") || m.includes("success") || m.includes("active");
-  const isYellow = m.includes("maintenance") || m.includes("invalid") || m.includes("warning");
-
-  if(isGreen) el.classList.add("status-success");
-  else if(isYellow) el.classList.add("status-warn");
-  else el.classList.add("status-danger");
-})();
-</script>
 {% endblock %}

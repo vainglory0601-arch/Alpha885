@@ -408,6 +408,63 @@ html, body{
               0 14px 10px rgba(0,0,0,.82) !important;
 }
 
+/* ✅ FOOTER CREDIT - បង្ហាញនៅគ្រប់ទំព័រ */
+.site-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(90deg, #1B2A5E 0%, #1A4DB5 100%);
+  padding: 10px 0;
+  text-align: center;
+  z-index: 999;
+  border-top: 1px solid rgba(245, 197, 24, 0.3);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
+}
+
+.footer-credit {
+  margin: 0;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  opacity: 0.9;
+  font-family: "Ovelion", sans-serif !important;
+}
+
+/* Animation for footer */
+@keyframes footerFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 0.9;
+    transform: translateY(0);
+  }
+}
+
+.site-footer {
+  animation: footerFadeIn 0.8s ease-out;
+}
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+  .site-footer {
+    padding: 8px 0;
+  }
+  .footer-credit {
+    font-size: 10px;
+    letter-spacing: 0.5px;
+  }
+}
+
+/* បន្ថែម padding ក្រោម body ដើម្បីមិនឲ្យ footer បាំង content */
+body {
+  padding-bottom: calc(var(--bar-h) + var(--bar-gap) + 40px) !important;
+}
+
 </style>
 {% endblock %}
 </head>
@@ -416,6 +473,11 @@ html, body{
 <div class="wrap page-enter" id="pageRoot">
   {% block content %}{% endblock %}
 </div>
+
+<!-- ✅ FOOTER CREDIT - បង្ហាញនៅគ្រប់ទំព័រ -->
+<footer class="site-footer">
+  <p class="footer-credit">© 2026 PIPO FINANCING INC.</p>
+</footer>
 
 <script>
 // Back navigation handling: prefer history back; fallback to /dashboard/. Used globally.

@@ -1,690 +1,299 @@
-  {% extends "base.html" %}
-  {% load static %}
-  {% block title %}Profile{% endblock %}
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Profile{% endblock %}
 
-  {% block content %}
-  <style>
-    /* ✅ Apply Ovillon to ALL text on this page */
-    body, body *{
-    font-family: "Ovelion", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
-  }
+{% block content %}
+<style>
+@font-face {
+  font-family: 'Ovelion';
+  src: url("{% static 'fonts/Ovelion-Regular.ttf' %}") format('truetype');
+}
+body, body * { font-family: 'Ovelion', sans-serif !important; }
 
-    /* Back button shape like picture */
-    .back-btn{
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+:root{
+  --primary:   #1B2A5E;
+  --accent:    #F5C518;
+  --danger:    #E03020;
+  --secondary: #1A4DB5;
+  --white:     #FFFFFF;
+  --light-bg:  #F4F6FB;
+}
 
-      height: 42px;
-      padding: 0 22px 0 28px;   /* left a bit bigger */
-      border-radius: 12px;
+/* ✅ Kill base.html dark overrides globally */
+.cardx, .p-btn, .card {
+  background: #FFFFFF !important;
+  color: #1B2A5E !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
 
-      background: #13111185;
-      color: #ffffffc9;
-      font-weight: 800;
-      text-decoration: none;
+/* ===== Page wrapper ===== */
+.p-wrap{
+  width: min(520px, 94vw);
+  margin: 0 auto;
+  padding: 20px 14px 60px;
+  box-sizing: border-box;
+}
 
-      border: 1px solid rgba(189, 189, 189, 0.164);
-      box-shadow:
-        0 6px 14px rgba(0,0,0,.18),
-        inset 0 1px 0 rgba(255,255,255,.65);
-    }
-    /* ✅ Profile Back button = White (visible on white cards) */
-  .back-btn{
-    background: #ffffff !important;
-    color: #0b2f55 !important;                 /* blue text */
-    border: 2px solid rgba(11,47,85,.22) !important;
+/* ===== Profile top card — Navy gradient ===== */
+.card-profile{
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
+  border: 2px solid rgba(245,197,24,.40) !important;
+  box-shadow: 0 18px 48px rgba(27,42,94,.35) !important;
+  border-radius: 22px !important;
+  padding: 20px !important;
+  margin-bottom: 18px;
+  overflow: hidden;
+  position: relative !important;
+}
+.card-profile::before, .card-profile::after { display: none !important; }
+.card-profile, .card-profile * { color: #fff !important; text-shadow: none !important; }
 
-    box-shadow: 0 10px 22px rgba(0,0,0,.14),
-                0 0 0 1px rgba(255,255,255,.9) inset !important;
+.head{ display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.h-title{ font-weight: 950; font-size: 20px; color: #fff !important; }
+.h-sub{ font-size: 12px; color: rgba(255,255,255,.80) !important; margin-top: 2px; }
+.amount{ font-size: 28px; font-weight: 950; color: #fff !important; margin-top: 10px; letter-spacing: .02em; }
+.status-badge{ padding: 5px 14px; border-radius: 999px; font-weight: 950; font-size: 12px; letter-spacing: .05em; }
+.status-active{ background: #16a34a !important; color: #fff !important; box-shadow: 0 4px 12px rgba(22,163,74,.35); }
 
-    font-weight: 950 !important;
-    text-decoration: none !important;
-  }
-
-  /* keep your hover/active feeling */
-  .back-btn:hover{
-    transform: translateY(-1px);
-    box-shadow: 0 14px 28px rgba(0,0,0,.16),
-                0 0 0 1px rgba(255,255,255,.9) inset !important;
-  }
-
-  .back-btn:active{
-    transform: scale(.98);
-    opacity: 1 !important;
-  }
-
-  /* (Optional) if you later add arrow shape ::before, make it white too */
-  .back-btn::before{
-    border-right-color: #ffffff !important;
-  }
-    .back-btn:hover{ transform: translateY(-1px); }
-    .back-btn:active{ transform: translateY(0px); opacity: .92; }
-
-    @media (max-width:520px){
-      .top-actions{ padding: 10px 12px 0; }
-      .top-actions-line{ margin: 10px 12px 0; }
-      .back-btn{ height: 40px; padding: 0 18px 0 24px; font-size: 13px; }
-      .back-btn::before{
-        left: -13px;
-        border-top: 20px solid transparent;
-        border-bottom: 20px solid transparent;
-        border-right: 13px solid #e7e7e7;
-      }
-    }
-    .wrap{
-      align-items:flex-start !important;
-      justify-content:center !important;
-      padding-top:72px !important;
-    }
-    .p-wrap{
-      width: min(520px, 94vw);
-      margin: 0 auto;
-      padding: 14px;
-      box-sizing: border-box;
-    }
-
-    /* ===== cards ===== */
-    .cardx{
-    position: relative;
-
-    background: rgba(0, 0, 0, 0.788);
-
-    border-radius: 18px;
-    border: 2px solid rgba(192, 192, 192, 0.904);
-
-    backdrop-filter: blur(22px);
-    -webkit-backdrop-filter: blur(22px);
-
-    box-shadow: 0 0 10px rgba(10, 10, 9, 0.788),
-                0 14px 10px rgba(0, 0, 0, 0.815);
-
-    overflow: hidden;
-    margin-bottom: 16px;
-    padding: 18px;
-  }
-    .head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:12px;
-    }
-    .h-title{
-      font-weight:950;
-      font-size:18px;
-      letter-spacing:.02em;
-    }
-    .h-sub{
-      font-size:12px;
-      opacity:.75;
-      margin-top:2px;
-    }
-    .mini{
-      padding:6px 12px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.10);
-      background: #1e2222a1;
-      color:#fafafa;
-      font-weight:850;
-      font-size:12px;
-      white-space:nowrap;
-    }
-
-    .menu{
-      display:grid;
-      gap:12px;
-    }
-    /* ✅ Menu cards (Credit Score -> Logout) = SAME as profile card */
-  .p-btn{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
-    padding:14px 14px;
-    text-decoration:none;
-    color:#fff;
-
-    position: relative;
-    background: rgba(0, 0, 0, 0.788);
-    border-radius: 18px;
-    border: 2px solid rgba(192, 192, 192, 0.904);
-
-    backdrop-filter: blur(22px);
-    -webkit-backdrop-filter: blur(22px);
-
-    box-shadow: 0 0 10px rgba(10, 10, 9, 0.788),
-                0 14px 10px rgba(0, 0, 0, 0.815);
-
-    overflow:hidden;
-
-    transition: transform .08s ease, opacity .2s ease;
-    margin-bottom:12px;
-  }
-  .p-btn:active{ transform: scale(.99); }
-    .p-btn:active{ transform: none; }
-
-    .left{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      min-width:0;
-    }
-    .ico{
-      width:42px;
-      height:42px;
-      border-radius:14px;
-      background: rgba(255,255,255,.10);
-      border:1px solid rgba(255,255,255,.10);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      flex: 0 0 auto;
-    }
-    .ico svg{ width:20px; height:20px; fill:#fff; opacity:.95; }
-
-    .txt{ min-width:0; }
-    .t1{
-      font-weight:950;
-      font-size:14px;
-      letter-spacing:.02em;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .t2{
-      font-size:12px;
-      opacity:.75;
-      margin-top:2px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .chev{
-      width:30px;
-      height:30px;
-      border-radius:999px;
-      background: rgba(0,0,0,.20);
-      border:1px solid rgba(255,255,255,.14);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      flex:0 0 auto;
-    }
-    .chev svg{ width:16px; height:16px; fill:#fff; opacity:.95; }
-
-    /* ===== Logout Confirm Modal ===== */
-    .logout-modal{
-      position:fixed;
-      inset:0;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      background: rgba(0,0,0,.62);
-      z-index:9999;
-      padding: 18px 14px;
-      box-sizing:border-box;
-    }
-    .logout-modal.show{ display:flex; }
-
-    .logout-box{
-      width:min(420px, 92vw);
-      background: rgba(25,25,25,.92);
-      border:1px solid rgba(255,255,255,.14);
-      border-radius: 18px;
-      box-shadow: 0 24px 60px rgba(0,0,0,.55);
-      overflow:hidden;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 16px;
-    }
-    .logout-title{
-      font-weight: 950;
-      letter-spacing:.2px;
-      font-size:16px;
-      margin-bottom:6px;
-    }
-    .logout-text{
-      font-size:13px;
-      opacity:.9;
-      line-height:1.45;
-      margin-bottom:14px;
-    }
-    .logout-actions{
-      display:flex;
-      gap:10px;
-      justify-content:flex-end;
-    }
-    .btn-cancel{
-      height:40px;
-      padding:0 16px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.22);
-      background: rgba(255,255,255,.08);
-      color:#fff;
-      font-weight: 900;
-      cursor:pointer;
-    }
-    .btn-confirm{
-    height:40px;
-    padding:0 16px;
-    border-radius:999px;
-    border:0;
-    font-weight: 900;
-    cursor:pointer;
-    background: linear-gradient(90deg, #004182, #054585d0);
-    color:#e6f1ff;
-    box-shadow: 0 12px 30px rgba(0,0,0,.35);
-  }
-
-  .btn-confirm:active{
-    transform: scale(.98);
-  }
-  </style>
-
-  <div class="p-wrap">
-  <div id="statusAlert"
-     class="status-alert"
-     style="display:none;"
-     data-msg="{{ request.user.status_message|default:''|escapejs }}"
-     {% if request.user.status_message %}data-lock="1"{% endif %}></div>
-
-  <style>
-  /* Profile page alert style (use GLOBAL status colors) */
-  .status-alert{
-    width: 100%;
-    margin: 0 0 12px;     /* ❗ remove auto center causing weird offset */
-    padding: 12px 16px;
-    border-radius: 999px;
-    text-align: center;
-    font-weight: 900;
-    letter-spacing: .4px;
-    box-sizing: border-box;
-  }
-  /* ✅ COLORS (same as wallet) */
-  .status-danger{ background:#dc2626; color:#fff; }
-  .status-success{ background:#16a34a; color:#fff; }
-  .status-warn{ background:#eab308; color:#111; }
-  .p-wrap .status-alert{
-    width: 100%;          /* ✅ match card width */
-  }
-  /* =========================
-    ✅ PROFILE MENU = WHITE (same as wallet white cards)
-    ========================= */
-  .p-btn{
-    position: relative !important;
-    overflow: hidden !important;
-
-    background: linear-gradient(
-        180deg,
-        #ffffff 0%,
-        #f8fafc 45%,
-        #eef2f7 75%,
-        #ffffff 100%
-    ) !important;
-
-    border: 2px solid rgba(212,175,55,.85) !important;
-
-    box-shadow:
-        0 20px 45px rgba(0,0,0,.12),
-        0 0 0 1px rgba(255,255,255,.9) inset !important;
-  }
-
-  /* glow */
-  .p-btn::before{
-    content:"" !important;
-    position:absolute !important;
-    inset:0 !important;
-    pointer-events:none !important;
-    opacity:.75 !important;
-    border-radius: 18px !important;
-
-    background:
-      radial-gradient(circle at 90% 90%, rgba(212,175,55,.25), transparent 55%),
-      radial-gradient(circle at 10% 10%, rgba(0,65,130,.08), transparent 60%) !important;
-  }
-
-  /* top shine */
-  .p-btn::after{
-    content:"" !important;
-    position:absolute !important;
-    inset:0 !important;
-    pointer-events:none !important;
-    opacity:.6 !important;
-    border-radius: 18px !important;
-
-    background: linear-gradient(
-        180deg,
-        rgba(255,255,255,.9),
-        rgba(255,255,255,0) 55%
-    ) !important;
-  }
-
-  /* content above overlays */
-  .p-btn > *{
-    position: relative !important;
-    z-index: 1 !important;
-  }
-
-  /* text inside menu cards must be dark (white card) */
-  .p-btn,
-  .p-btn *{
-    color:#0b2f55 !important;
-    text-shadow: none !important;
-  }
-
-  /* icons/chips */
-  .p-btn .ico{
-    background: rgba(11,47,85,.06) !important;
-    border-color: rgba(11,47,85,.14) !important;
-  }
-  .p-btn .ico svg,
-  .p-btn .chev svg{
-    fill:#0b2f55 !important;
-    opacity:.95 !important;
-  }
-  .p-btn .chev{
-    background: rgba(11,47,85,.06) !important;
-    border-color: rgba(11,47,85,.14) !important;
-  }
-  .p-btn .t2{
-    opacity:.75 !important;
-  }
-/* ✅ Dashboard Diamond Card Style */
-.cardx.card-diamond{
-  position: relative;
-  background: linear-gradient(135deg,
-    #004182 0%,
-    #053a66 45%,
-    #0b2f55 70%,
-    #d4af37 100%) !important;
-
-  border: 2px solid rgba(212,175,55,.90) !important;
-  border-radius: 18px !important;
-
-  box-shadow: 0 18px 46px rgba(0,0,0,.55),
-              0 0 0 1px rgba(255,255,255,.10) inset !important;
-
+/* ===== Menu cards — WHITE + RED BORDER ===== */
+.p-btn{
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  padding: 14px !important;
+  text-decoration: none !important;
+  position: relative !important;
+  background: #FFFFFF !important;
+  border-radius: 22px !important;
+  border: 2px solid rgba(224,48,32,.28) !important;
+  box-shadow: 0 8px 24px rgba(27,42,94,.08), 0 0 0 1px rgba(245,197,24,.06) !important;
   overflow: hidden !important;
+  margin-bottom: 12px !important;
+  color: #1B2A5E !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transition: transform .08s ease, box-shadow .2s ease;
 }
+.p-btn::before, .p-btn::after { display: none !important; }
+.p-btn:hover{ transform: translateY(-1px); box-shadow: 0 12px 32px rgba(27,42,94,.14) !important; }
+.p-btn:active{ transform: scale(.99); }
+.p-btn, .p-btn * { color: #1B2A5E !important; text-shadow: none !important; }
 
-.cardx.card-diamond::before{
-  content:"";
-  position:absolute;
-  inset:-40px;
-  pointer-events:none;
-  opacity:.22;
-  background:
-    repeating-linear-gradient(
-      135deg,
-      rgba(255,255,255,.22) 0px,
-      rgba(255,255,255,.22) 10px,
-      rgba(255,255,255,0)   10px,
-      rgba(255,255,255,0)   26px
-    ),
-    radial-gradient(circle at 18% 22%, rgba(125,211,252,.20), transparent 60%),
-    radial-gradient(circle at 85% 78%, rgba(212,175,55,.18), transparent 62%);
+/* ===== Left section ===== */
+.left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+
+/* ===== Icon ===== */
+.ico{
+  width: 42px; height: 42px; border-radius: 14px; flex: 0 0 auto;
+  background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
+  display: flex; align-items: center; justify-content: center;
+  border: none !important;
 }
+.ico svg { width: 20px; height: 20px; fill: #fff !important; opacity: .95; }
 
-.cardx.card-diamond::after{
-  content:"";
-  position:absolute; inset:0;
-  pointer-events:none;
-  opacity:.55;
-  background: linear-gradient(120deg,
-    transparent 0%,
-    rgba(255,255,255,.22) 50%,
-    transparent 100%);
-  transform: translateX(-120%);
-  animation: diamondShine 3.6s ease-in-out infinite;
+/* ===== Text ===== */
+.txt { min-width: 0; }
+.t1{ font-weight: 950; font-size: 14px; color: #1B2A5E !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.t2{ font-size: 12px; color: #64748b !important; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ===== Chevron ===== */
+.chev{
+  width: 30px; height: 30px; border-radius: 999px; flex: 0 0 auto;
+  background: rgba(27,42,94,.08) !important;
+  border: 1px solid rgba(27,42,94,.12) !important;
+  display: flex; align-items: center; justify-content: center;
 }
+.chev svg { width: 16px; height: 16px; fill: #1B2A5E !important; opacity: .75; }
 
-@keyframes diamondShine{
-  0%,55%{ transform: translateX(-120%); }
-  100%{ transform: translateX(120%); }
+/* ===== Status alert ===== */
+.status-alert{
+  width: 100%; margin: 0 0 14px;
+  padding: 12px 16px; border-radius: 999px;
+  text-align: center; font-weight: 900; letter-spacing: .4px;
+  box-sizing: border-box; font-size: 13px;
 }
+.status-danger{ background: #dc2626 !important; color: #fff !important; }
+.status-success{ background: #16a34a !important; color: #fff !important; }
+.status-warn{ background: #eab308 !important; color: #111 !important; }
 
-.cardx.card-diamond > *{
-  position: relative;
-  z-index: 2;
+/* ===== Back button ===== */
+.top-actions{ margin-top: 6px; display: flex; justify-content: flex-start; }
+.back-btn{
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 44px; padding: 0 26px; border-radius: 999px;
+  background: #FFFFFF !important; color: #1B2A5E !important;
+  font-weight: 900; font-size: 14px; text-decoration: none;
+  border: 2px solid rgba(224,48,32,.30) !important;
+  box-shadow: 0 4px 14px rgba(27,42,94,.12);
+  transition: transform .15s ease;
 }
+.back-btn:hover{ transform: translateY(-1px); }
+.back-btn:active{ transform: scale(.98); }
 
-/* ✅ White text inside diamond */
-.cardx.card-diamond,
-.cardx.card-diamond *{
-  color:#fff !important;
-  text-shadow: 0 1px 0 rgba(0,0,0,.35), 0 10px 22px rgba(0,0,0,.35) !important;
+/* ===== Logout Modal ===== */
+.logout-modal{
+  position: fixed; inset: 0; display: none;
+  align-items: center; justify-content: center;
+  background: rgba(0,0,0,.62); z-index: 9999;
+  padding: 18px 14px; box-sizing: border-box;
 }
-/* ✅ FORCE Logout Modal text = WHITE */
-#logoutModal .logout-box,
-#logoutModal .logout-box *{
-  color:#fff !important;
-  text-shadow: 0 1px 0 rgba(0,0,0,.35) !important;
+.logout-modal.show{ display: flex; }
+.logout-box{
+  width: min(420px, 92vw);
+  background: rgba(25,25,25,.92);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.55);
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
-
-/* optional: make title stronger */
-#logoutModal .logout-title{
-  color:#fff !important;
-  font-weight: 950 !important;
+.logout-title{ font-weight: 950; font-size: 16px; color: #fff !important; margin-bottom: 8px; }
+.logout-text{ font-size: 13px; color: rgba(255,255,255,.90) !important; line-height: 1.5; margin-bottom: 16px; }
+.logout-actions{ display: flex; gap: 10px; justify-content: flex-end; }
+.btn-cancel{
+  height: 40px; padding: 0 16px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.22);
+  background: rgba(255,255,255,.08); color: #fff !important;
+  font-weight: 900; cursor: pointer;
 }
-
-/* optional: make body text a bit softer */
-#logoutModal .logout-text{
-  color: rgba(255,255,255,.92) !important;
+.btn-confirm{
+  height: 40px; padding: 0 16px; border-radius: 999px; border: 0;
+  font-weight: 900; cursor: pointer;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  color: #fff !important;
+  box-shadow: 0 8px 20px rgba(27,42,94,.30);
 }
+.btn-confirm:active{ transform: scale(.98); }
 
-/* ✅ Cancel button keep white text */
-#logoutModal .btn-cancel{
-  color:#fff !important;
+@media (max-width:520px){
+  .p-wrap{ padding: 16px 12px 60px; }
+  .back-btn{ height: 40px; padding: 0 20px; font-size: 13px; }
 }
-  </style>
+</style>
 
-    <div class="cardx card-diamond" id="profile-currency-section">
-      <div class="head">
-        <div>
-          <div class="h-title">Profile</div>
-          <div class="h-sub">Account: {{ request.user.phone }}</div>
-        </div>
+<div class="p-wrap">
 
-        {% if request.user.account_status|upper == "ACTIVE" %}
-          <span id="accStatusBadge"
-            class="status-badge {% if request.user.account_status|lower == 'active' %}status-active{% else %}status-danger{% endif %}">
-            {{ request.user.account_status|upper }}
-          </span>
-        {% endif %}
+  <!-- Status alert -->
+  <div id="statusAlert" class="status-alert" style="display:none;"
+    data-msg="{{ request.user.status_message|default:''|escapejs }}"
+    {% if request.user.status_message %}data-lock="1"{% endif %}></div>
+
+  <!-- ===== Profile header card — Navy ===== -->
+  <div class="card-profile">
+    <div class="head">
+      <div>
+        <div class="h-title">Profile</div>
+        <div class="h-sub">Account: {{ request.user.phone }}</div>
       </div>
+      {% if request.user.account_status|upper == "ACTIVE" %}
+        <span class="status-badge status-active">ACTIVE</span>
+      {% endif %}
+    </div>
+    <div class="amount">₱ <span data-balance>{{ request.user.balance|default:"0.00" }}</span></div>
+  </div>
 
-      <div style="font-size:12px; opacity:.85;">
-        <div class="amount">₱ <span data-balance>{{ request.user.balance|default:"0.00" }}</span></div>
+  <!-- ===== Menu ===== -->
+  <div class="menu">
+
+    <a class="p-btn" href="/credit-score/">
+      <div class="left">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 19h16v2H4zM6 17V7h3v10H6zm5 0V4h3v13h-3zm5 0v-9h3v9h-3z"/></svg></div>
+        <div class="txt"><div class="t1">Credit Score</div><div class="t2">View your score &amp; level</div></div>
       </div>
-    </div>
+      <div class="chev"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+    </a>
 
-    <div class="menu" id="menu">
-      <a class="p-btn" href="/credit-score/">
-        <div class="left">
-          <div class="ico" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 19h16v2H4zM6 17V7h3v10H6zm5 0V4h3v13h-3zm5 0v-9h3v9h-3z"/></svg>
-          </div>
-          <div class="txt">
-            <div class="t1">Credit Score</div>
-            <div class="t2">View your score & level</div>
-          </div>
-        </div>
-        <div class="chev" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
-        </div>
-      </a>
+    <a class="p-btn" href="/loan-info/">
+      <div class="left">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M6 2h9l3 3v17H6V2zm9 1.5V6h2.5L15 3.5zM8 9h8v2H8V9zm0 4h8v2H8v-2zm0 4h6v2H8v-2z"/></svg></div>
+        <div class="txt"><div class="t1">Information</div><div class="t2">Application status &amp; steps</div></div>
+      </div>
+      <div class="chev"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+    </a>
 
-      <a class="p-btn" href="/loan-apply/">
-        <div class="left">
-          <div class="ico" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M6 2h9l3 3v17H6V2zm9 1.5V6h2.5L15 3.5zM8 9h8v2H8V9zm0 4h8v2H8v-2zm0 4h6v2H8v-2z"/></svg>
-          </div>
-          <div class="txt">
-            <div class="t1">Loan Application</div>
-            <div class="t2">Apply & track your status</div>
-          </div>
-        </div>
-        <div class="chev" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
-        </div>
-      </a>
+    <a class="p-btn" href="/transactions/">
+      <div class="left">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M7 7h14v4H7V7zM3 6h3v6H3V6zm4 9h14v4H7v-4zM3 14h3v6H3v-6z"/></svg></div>
+        <div class="txt"><div class="t1">Transactions</div><div class="t2">History of deposits &amp; withdrawals</div></div>
+      </div>
+      <div class="chev"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+    </a>
 
-      <a class="p-btn" href="/transactions/">
-        <div class="left">
-          <div class="ico" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M7 7h14v4H7V7zM3 6h3v6H3V6zm4 9h14v4H7v-4zM3 14h3v6H3v-6z"/></svg>
-          </div>
-          <div class="txt">
-            <div class="t1">Transactions</div>
-            <div class="t2">History of deposits & withdrawals</div>
-          </div>
-        </div>
-        <div class="chev" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
-        </div>
-      </a>
+    <a class="p-btn" href="{% url 'agreement' %}">
+      <div class="left">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M6 2h9l3 3v17H6V2zm9 1.5V6h2.5L15 3.5zM8 9h8v2H8V9zm0 4h8v2H8v-2zm0 4h6v2H8v-2z"/></svg></div>
+        <div class="txt"><div class="t1">Agreement</div><div class="t2">Terms, conditions &amp; disclosures</div></div>
+      </div>
+      <div class="chev"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+    </a>
 
-      <a class="p-btn" href="{% url 'payment_method' %}">
-        <div class="left">
-          <div class="ico" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M3 7h18v10H3V7zm2 2v2h14V9H5zm0 4v2h6v-2H5z"/></svg>
-          </div>
-          <div class="txt">
-            <div class="t1">Payment Method</div>
-            <div class="t2">Add payout details</div>
-          </div>
-        </div>
-        <div class="chev" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
-        </div>
-      </a>
-      
-      <a class="p-btn" href="{% url 'agreement' %}">
-        <div class="left">
-          <div class="ico" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
-              <path d="M6 2h9l3 3v17H6V2zm9 1.5V6h2.5L15 3.5zM8 9h8v2H8V9zm0 4h8v2H8v-2zm0 4h6v2H8v-2z"/>
-            </svg>
-          </div>
-          <div class="txt">
-            <div class="t1">Agreement</div>
-            <div class="t2">Terms, conditions & disclosures</div>
-          </div>
-        </div>
-        <div class="chev" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
-        </div>
-      </a>
+    <a class="p-btn" href="/payment-schedule/">
+      <div class="left">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M7 2v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7zm14 8H3V8h18v2z"/></svg></div>
+        <div class="txt"><div class="t1">Payment Schedule</div><div class="t2">Installments &amp; due dates</div></div>
+      </div>
+      <div class="chev"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+    </a>
 
-      <a class="p-btn" href="/payment-schedule/">
-        <div class="left">
-          <div class="ico" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M7 2v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7zm14 8H3V8h18v2z"/></svg>
-          </div>
-          <div class="txt">
-            <div class="t1">Payment Schedule</div>
-            <div class="t2">Installments & due dates</div>
-          </div>
-        </div>
-        <div class="chev" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
-        </div>
-      </a>
+    <a class="p-btn" href="#" id="logoutBtn">
+      <div class="left">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M10 17l1.4-1.4-2.6-2.6H20v-2H8.8l2.6-2.6L10 7l-7 7 7 7zM4 4h7V2H4a2 2 0 0 0-2 2v6h2V4zm0 18h7v-2H4v-6H2v6a2 2 0 0 0 2 2z"/></svg></div>
+        <div class="txt"><div class="t1">Logout</div><div class="t2">Securely exit your account</div></div>
+      </div>
+      <div class="chev"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+    </a>
 
-      <!-- ✅ Logout button => open confirm modal -->
-      <a class="p-btn" href="#" id="logoutBtn" aria-label="Logout">
-        <div class="left">
-          <div class="ico" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M10 17l1.4-1.4-2.6-2.6H20v-2H8.8l2.6-2.6L10 7l-7 7 7 7zM4 4h7V2H4a2 2 0 0 0-2 2v6h2V4zm0 18h7v-2H4v-6H2v6a2 2 0 0 0 2 2z"/></svg>
-          </div>
-          <div class="txt">
-            <div class="t1">Logout</div>
-            <div class="t2">Securely exit your account</div>
-          </div>
-        </div>
-        <div class="chev" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
-        </div>
-      </a>
-    </div>
+  </div>
 
-    <!-- TOP ACTIONS -->
-    <div class="top-actions">
-      <a class="back-btn" href="{% url 'dashboard' %}">Back</a>
-    </div>
-    <div class="top-actions-line"></div>
+  <!-- Back -->
+  <div class="top-actions">
+    <a class="back-btn" href="{% url 'dashboard' %}">← Back</a>
+  </div>
 
-    <!-- ✅ Logout Confirm Modal -->
-    <div id="logoutModal" class="logout-modal" aria-hidden="true">
-      <div class="logout-box" role="dialog" aria-modal="true" aria-label="Confirm Logout">
-        <div class="logout-title">Confirm Logout</div>
-        <div class="logout-text">Are you sure you want to logout?</div>
-
-        <div class="logout-actions">
-          <button type="button" class="btn-cancel" id="logoutCancel">Cancel</button>
-
-          <form method="post" action="/logout/" style="margin:0;">
-            {% csrf_token %}
-            <button type="submit" class="btn-confirm" id="logoutConfirm">Logout</button>
-          </form>
-        </div>
+  <!-- Logout Modal -->
+  <div id="logoutModal" class="logout-modal" aria-hidden="true">
+    <div class="logout-box" role="dialog" aria-modal="true">
+      <div class="logout-title">Confirm Logout</div>
+      <div class="logout-text">Are you sure you want to logout?</div>
+      <div class="logout-actions">
+        <button type="button" class="btn-cancel" id="logoutCancel">Cancel</button>
+        <form method="post" action="/logout/" style="margin:0;">
+          {% csrf_token %}
+          <button type="submit" class="btn-confirm">Logout</button>
+        </form>
       </div>
     </div>
   </div>
 
-  <script>
-    (function(){
-      const btn = document.getElementById("logoutBtn");
-      const modal = document.getElementById("logoutModal");
-      const cancel = document.getElementById("logoutCancel");
-      if(!btn || !modal) return;
+</div>
 
-      function openModal(e){
-        if(e) e.preventDefault();
-        modal.classList.add("show");
-        modal.setAttribute("aria-hidden","false");
-      }
-      function closeModal(){
-        modal.classList.remove("show");
-        modal.setAttribute("aria-hidden","true");
-      }
-
-      btn.addEventListener("click", openModal);
-      if(cancel) cancel.addEventListener("click", closeModal);
-
-      modal.addEventListener("click", (e) => {
-        if(e.target === modal) closeModal();
-      });
-
-      document.addEventListener("keydown", (e) => {
-        if(e.key === "Escape") closeModal();
-      });
-    })();
-  </script>
-  <script>
+<script>
 (function(){
+  const btn = document.getElementById("logoutBtn");
+  const modal = document.getElementById("logoutModal");
+  const cancel = document.getElementById("logoutCancel");
+  if(btn && modal){
+    btn.addEventListener("click", e => { e.preventDefault(); modal.classList.add("show"); modal.setAttribute("aria-hidden","false"); });
+    cancel && cancel.addEventListener("click", () => { modal.classList.remove("show"); modal.setAttribute("aria-hidden","true"); });
+    modal.addEventListener("click", e => { if(e.target===modal){ modal.classList.remove("show"); } });
+    document.addEventListener("keydown", e => { if(e.key==="Escape") modal.classList.remove("show"); });
+  }
   const el = document.getElementById("statusAlert");
-  if(!el) return;
-
-  const msg = (el.dataset.msg || "").trim();
-  if(!msg) return;
-
-  el.textContent = msg;
-  el.style.display = "block";
-
-  // reset
-  el.classList.remove("status-danger","status-success","status-warn");
-
-  // auto color by keywords (edit if you want)
-  const m = msg.toLowerCase();
-  const isGreen  = m.includes("approved") || m.includes("success") || m.includes("active");
-  const isYellow = m.includes("maintenance") || m.includes("invalid") || m.includes("warning");
-
-  if(isGreen) el.classList.add("status-success");
-  else if(isYellow) el.classList.add("status-warn");
-  else el.classList.add("status-danger");
+  if(el){
+    const msg = (el.dataset.msg || "").trim();
+    if(msg){
+      el.textContent = msg; el.style.display = "block";
+      el.classList.remove("status-danger","status-success","status-warn");
+      const m = msg.toLowerCase();
+      if(m.includes("approved")||m.includes("success")||m.includes("active")) el.classList.add("status-success");
+      else if(m.includes("maintenance")||m.includes("warning")) el.classList.add("status-warn");
+      else el.classList.add("status-danger");
+    }
+  }
 })();
 </script>
-  {% endblock %}
+
+{% endblock %}

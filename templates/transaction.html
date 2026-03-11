@@ -1,182 +1,195 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Transactions{% endblock %}
 
 {% block content %}
 <style>
-
-.tx-page, .tx-page *{
-  font-family: "Ovelion", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+@font-face {
+  font-family: 'Ovelion';
+  src: url("{% static 'fonts/Ovelion-Regular.ttf' %}") format('truetype');
 }
-  /* Blue theme override (Transactions page) */
-  .btn-primary{
-    border: 0 !important;
-    background: linear-gradient(90deg, #004182, #054585d0) !important;
-    color: #ffffff !important;
-    box-shadow: 0 12px 30px rgba(0,0,0,.35) !important;
-  }
-  .btn-primary:active{ transform: scale(.98); }
+body, body * { font-family: 'Ovelion', sans-serif !important; }
 
-  /* Balance badge */
-  .badge{
-    background: linear-gradient(90deg, #004182, #054585d0) !important;
-    color: #e6f1ff !important;
-    border: 1px solid rgba(255,255,255,.18) !important;
-    box-shadow: 0 6px 18px rgba(0,0,0,.35);
-  }
+:root{
+  --primary:   #1B2A5E;
+  --accent:    #F5C518;
+  --danger:    #E03020;
+  --secondary: #1A4DB5;
+  --white:     #FFFFFF;
+  --light-bg:  #F4F6FB;
+}
 
-  /* List style like wallet */
-  .tx-wrap{ width: min(520px, 94vw); margin: 0 auto; padding-top: 20px; }
-  .tx-card{
-    background: rgba(9, 10, 10, 0.788);
-    border-radius: 18px;
-    padding: 18px;
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    box-shadow: 0 3px 4px rgba(245, 245, 245, 0.55), inset 0 1px 0 rgba(163, 157, 157, 0.918);
-    overflow: hidden;
-  }
-  .row{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
-  .title{ font-weight:950; font-size:18px; }
-  .sub{ font-size:12px; opacity:.75; margin-top:2px; }
+/* ✅ GLOBAL: Kill base.html dark card overrides */
+.cardx,
+.card,
+[class*="card"]:not(.wallet-card) {
+  background: #FFFFFF !important;
+  color: #1B2A5E !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
 
-  .list-row{
-    display:flex; justify-content:space-between; gap:12px;
-    padding:10px 0;
-    border-bottom: 1px solid rgba(255,255,255,.08);
-    font-size:13px;
-  }
-  .pill{
-    padding:6px 12px; border-radius:999px;
-    border:1px solid rgba(255,255,255,.12);
-    background: rgba(0,0,0,.25);
-    font-weight:900; font-size:12px;
-    white-space:nowrap;
-  }
-  /* ✅ status colors */
-  .pill-success{
-    background: rgba(34,197,94,.20);
-    border-color: rgba(34,197,94,.45);
-    color: #eafff1;
-  }
-  .pill-danger{
-    background: rgba(239,68,68,.20);
-    border-color: rgba(239,68,68,.45);
-    color: #ffecec;
-  }
+/* ===== Wrapper ===== */
+.w-wrap{
+  width: min(520px, 94vw);
+  margin: 0 auto;
+  padding: 20px 14px 40px;
+  box-sizing: border-box;
+}
 
-  .muted{ font-size:12px; opacity:.75; margin-top:2px; }
-  /* =========================
-   ✅ TRANSACTIONS = WHITE CARD (wallet-style)
-   ========================= */
-
-.tx-card{
+/* ===== BASE CARD — WHITE + RED BORDER (same as Wallet) ===== */
+.cardx{
   position: relative !important;
-  overflow:hidden !important;
-
-  background: linear-gradient(180deg,#ffffff 0%,#f8fafc 45%,#eef2f7 75%,#ffffff 100%) !important;
-
-  border-radius: 18px !important;
-  border: 2px solid rgba(212,175,55,.85) !important;
-
-  box-shadow: 0 20px 45px rgba(0,0,0,.12),
-              0 0 0 1px rgba(255,255,255,.9) inset !important;
-
-  backdrop-filter: blur(14px) !important;
-  -webkit-backdrop-filter: blur(14px) !important;
+  background: #FFFFFF !important;
+  border-radius: 22px !important;
+  padding: 18px !important;
+  border: 2px solid rgba(224,48,32,.28) !important;
+  box-shadow: 0 16px 48px rgba(27,42,94,.10), 0 0 0 1px rgba(245,197,24,.08) !important;
+  overflow: hidden;
+  margin-bottom: 14px;
+  color: var(--primary) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
-.tx-card::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  background:
-    radial-gradient(circle at 90% 90%, rgba(212,175,55,.25), transparent 55%),
-    radial-gradient(circle at 10% 10%, rgba(0,65,130,.08), transparent 60%);
-  opacity:.75;
-}
-.tx-card::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,0) 55%);
-  opacity:.6;
-}
-.tx-card > *{ position:relative; z-index:1; }
+/* ✅ Force ALL text inside white cards readable */
+.cardx .title  { color: #1B2A5E !important; }
+.cardx .sub    { color: #64748b !important; }
+.cardx .hint   { color: #64748b !important; }
+.cardx .muted  { color: #64748b !important; }
+.cardx .fw     { color: #1B2A5E !important; }
+.cardx label   { color: #1B2A5E !important; }
+.cardx p       { color: #475569 !important; }
 
-/* all text inside -> blue */
-.tx-page, .tx-page *{
-  color:#0b2f55 !important;
-  text-shadow:none !important;
-}
-.tx-page .sub, .tx-page .muted{
-  color: rgba(11,47,85,.72) !important;
+/* ===== Row layout ===== */
+.row{
+  display:flex; align-items:center;
+  justify-content:space-between; gap:12px;
 }
 
-/* Balance badge -> blue pill */
-.tx-page .badge{
-  background: linear-gradient(90deg, #004182, #054585d0) !important;
-  color:#e6f1ff !important;
-  border: 1px solid rgba(255,255,255,.18) !important;
-  box-shadow: 0 10px 24px rgba(0,0,0,.18) !important;
-}
+/* ===== Text ===== */
+.title{ font-weight:950; font-size:18px; color: var(--primary); }
+.sub{ font-size:12px; color: #64748b; margin-top:2px; }
 
-/* list divider -> light */
-.list-row{
-  border-bottom: 1px solid rgba(11,47,85,.10) !important;
-}
-
-/* status pills keep colors but match white page */
+/* ===== Pill badge ===== */
 .pill{
-  border: 1px solid rgba(11,47,85,.12) !important;
-  background: rgba(11,47,85,.06) !important;
-  color:#0b2f55 !important;
+  padding:6px 12px; border-radius:999px;
+  border: 1.5px solid rgba(224,48,32,.25) !important;
+  background: #F4F6FB !important;
+  color: #1B2A5E !important;
+  font-weight:900; font-size:12px;
+  white-space:nowrap;
 }
+
+/* ===== Status pill colors ===== */
 .pill-success{
   background: rgba(34,197,94,.12) !important;
-  border-color: rgba(34,197,94,.30) !important;
-  color: #106a2d !important;
+  border: 1.5px solid rgba(34,197,94,.35) !important;
+  color: #15803d !important;
 }
+
 .pill-danger{
-  background: rgba(239,68,68,.12) !important;
-  border-color: rgba(239,68,68,.30) !important;
-  color: #9f1d1d !important;
-}
-/* ✅ Back button on WHITE card (visible, not blending) */
-.btn-ghost{
-  background: #ffffff !important;
-  color: #0b2f55 !important;                 /* blue text */
-  border: 2px solid rgba(11,47,85,.22) !important;
-  box-shadow: 0 10px 22px rgba(0,0,0,.14),
-              0 0 0 1px rgba(255,255,255,.9) inset !important;
+  background: rgba(224,48,32,.12) !important;
+  border: 1.5px solid rgba(224,48,32,.35) !important;
+  color: #dc2626 !important;
 }
 
-.btn-ghost:hover{
+/* ===== List rows ===== */
+.list-row{
+  display:flex; justify-content:space-between; gap:12px;
+  padding:10px 0;
+  border-bottom: 1px solid rgba(27,42,94,.07);
+  font-size:13px;
+}
+.list-row:last-child{ border-bottom: none; }
+.list-row .fw{ font-weight:900; color: var(--primary); }
+.muted{ font-size:12px; color:#64748b; margin-top:2px; }
+
+/* ===== Buttons ===== */
+.btn-container{
+  margin-top: 14px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.back-btn{
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center;
+  height: 44px; 
+  padding: 0 26px; 
+  border-radius: 999px;
+  background: #FFFFFF;
+  color: var(--primary);
+  font-weight: 900; 
+  font-size: 14px;
+  text-decoration: none;
+  border: 2px solid rgba(224,48,32,.30);
+  box-shadow: 0 4px 14px rgba(27,42,94,.12);
+  transition: transform .15s ease;
+}
+
+.back-btn:hover{ 
+  transform: translateY(-1px); 
+}
+
+.back-btn:active{ 
+  transform: scale(.98); 
+  opacity:.92; 
+}
+
+.dashboard-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 26px;
+  border-radius: 999px;
+  color: #fff;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  box-shadow: 0 10px 30px rgba(27,42,94,.30);
+  border: 2px solid rgba(192,192,192,.40);
+  font-weight: 900;
+  font-size: 14px;
+  text-decoration: none;
+  transition: transform .15s ease;
+}
+
+.dashboard-btn:hover{
   transform: translateY(-1px);
-  box-shadow: 0 14px 28px rgba(0,0,0,.16),
-              0 0 0 1px rgba(255,255,255,.9) inset !important;
 }
 
-.btn-ghost:active{
+.dashboard-btn:active{
   transform: scale(.98);
+}
+
+@media (max-width:520px){
+  .w-wrap{ padding: 16px 12px 40px; }
+  .back-btn, .dashboard-btn{ 
+    height: 40px; 
+    padding: 0 20px; 
+    font-size: 13px; 
+  }
 }
 </style>
 
-<div class="tx-wrap tx-page">
-  <div class="tx-card">
-    <div class="row" style="margin-bottom:8px;">
+<div class="w-wrap">
+  <!-- ===== Card: Transactions List ===== -->
+  <div class="cardx">
+    <div class="row" style="margin-bottom:12px;">
       <div>
-        <div class="title"><span class="silver-run">Transactions</span></div>
+        <div class="title">Transactions</div>
         <div class="sub">Only Payment sent / Rejected (Latest 20)</div>
       </div>
-      <span class="badge">Balance: PHP {{ request.user.balance|default:"0" }}</span>
+      <div class="pill">Balance: PHP {{ request.user.balance|default:"0" }}</div>
     </div>
 
     {% for w in withdrawals %}
       <div class="list-row">
         <div>
-          <div style="font-weight:900;">PHP {{ w.amount }} {{ w.currency }}</div>
+          <div class="fw">PHP {{ w.amount }} {{ w.currency }}</div>
           <div class="muted">{{ w.created_at|date:"M d, Y, P" }}</div>
         </div>
 
@@ -190,10 +203,11 @@
       <div class="muted" style="padding:10px 0;">No transactions yet.</div>
     {% endfor %}
 
-    <div style="margin-top:14px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">
-      <a class="btn btn-ghost" href="/profile/">Back</a>
-      <a class="btn btn-primary" href="/dashboard/">Dashboard</a>
+    <div class="btn-container">
+      <a class="back-btn" href="/profile/">← Back</a>
+      <a class="dashboard-btn" href="/dashboard/">Dashboard</a>
     </div>
   </div>
 </div>
+
 {% endblock %}

@@ -76,23 +76,16 @@
 
   /* Card (same vibe) + "ភ្លែតៗ" shimmer */
   .cardx{
-  position: relative;
-
-  background: rgba(0, 0, 0, 0.788);
-
-  border-radius: 18px;
-  border: 2px solid rgba(192, 192, 192, 0.904);
-
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-
-  box-shadow: 0 0 10px rgba(10, 10, 9, 0.788),
-              0 14px 10px rgba(0, 0, 0, 0.815);
-
-  overflow: hidden;
-  margin-bottom: 16px;
-  padding: 18px;
-}
+    position: relative;
+    background: rgba(9, 10, 10, 0.856);
+    border-radius: 18px;
+    padding: 18px;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 3px 6px rgba(245, 245, 245, 0.808), inset 0 1px 0 rgba(163, 157, 157, 0.918);
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
   
 
   .grid-2{
@@ -440,192 +433,7 @@ textarea{
 .idbox.has-img .id-guide{
   display:none;
 }
-/* =========================
-   LOAN APPLY = WHITE CARDS + BLUE TEXT
-   ========================= */
 
-/* font */
-.page, .page *{
-  font-family: "Ovelion", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
-}
-
-/* ✅ White luxury card style */
-.page .cardx{
-  position: relative !important;
-  overflow: hidden !important;
-
-  background: linear-gradient(
-    180deg,
-    #ffffff 0%,
-    #f8fafc 45%,
-    #eef2f7 75%,
-    #ffffff 100%
-  ) !important;
-
-  border: 2px solid rgba(212,175,55,.85) !important;
-  border-radius: 18px !important;
-
-  box-shadow:
-    0 20px 45px rgba(0,0,0,.12),
-    0 0 0 1px rgba(255,255,255,.9) inset !important;
-}
-
-/* glow */
-.page .cardx::before{
-  content:"" !important;
-  position:absolute !important;
-  inset:0 !important;
-  pointer-events:none !important;
-  opacity:.75 !important;
-  background:
-    radial-gradient(circle at 90% 90%, rgba(212,175,55,.25), transparent 55%),
-    radial-gradient(circle at 10% 10%, rgba(0,65,130,.08), transparent 60%) !important;
-}
-
-/* shine */
-.page .cardx::after{
-  content:"" !important;
-  position:absolute !important;
-  inset:0 !important;
-  pointer-events:none !important;
-  opacity:.6 !important;
-  background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,0) 55%) !important;
-}
-
-/* keep content above overlays */
-.page .cardx > *{
-  position: relative !important;
-  z-index: 1 !important;
-}
-
-/* ✅ Blue text inside cards */
-.page .cardx,
-.page .cardx *{
-  color:#0b2f55 !important;
-  text-shadow: none !important;
-}
-
-/* section title should be blue too (was white) */
-.page .section-title{
-  color:#0b2f55 !important;
-  text-shadow:none !important;
-  opacity: .95 !important;
-}
-
-/* summary divider / borders */
-.page .summary{
-  border-top-color: rgba(11,47,85,.14) !important;
-}
-.page hr{
-  border-top-color: rgba(11,47,85,.14) !important;
-}
-
-/* ✅ Inputs look like wallet white inputs */
-.page input,
-.page textarea{
-  border: 1px solid rgba(11,47,85,.18) !important;
-  background: rgba(11,47,85,.06) !important;
-  color:#0b2f55 !important;
-}
-
-.page input::placeholder,
-.page textarea::placeholder{
-  color: rgba(11,47,85,.55) !important;
-}
-
-/* focus already exists, but keep consistent */
-.page input:focus,
-.page textarea:focus{
-  border-color: rgba(0,65,130,.75) !important;
-  box-shadow: 0 0 0 3px rgba(5,69,133,.22) !important;
-  background: rgba(11,47,85,.08) !important;
-}
-
-/* ✅ term buttons -> white style */
-.page .term-btn{
-  border: 1px solid rgba(11,47,85,.18) !important;
-  background: rgba(11,47,85,.06) !important;
-  color:#0b2f55 !important;
-}
-.page .term-btn.active{
-  background: linear-gradient(90deg, #004182, #054585d0) !important;
-  color:#fff !important;
-  border-color: rgba(0,65,130,.55) !important;
-}
-
-/* ✅ purpose pills -> white style + blue text */
-.page .purpose-pill{
-  border: 1px solid rgba(11,47,85,.18) !important;
-  background: rgba(11,47,85,.06) !important;
-  color:#0b2f55 !important;
-}
-.page .purpose-pill:has(input:checked){
-  background: linear-gradient(90deg, rgba(0,65,130,.75), rgba(5,69,133,.65)) !important;
-  border-color: rgba(0,65,130,.55) !important;
-  color:#fff !important;
-}
-.page .purpose-pill:has(input:checked) *{
-  color:#fff !important;
-}
-
-/* ✅ ID upload boxes = white card style too */
-.page .idbox{
-  border: 2px solid rgba(212,175,55,.65) !important;
-  background: linear-gradient(180deg,#ffffff,#f3f6fb) !important;
-  color:#0b2f55 !important;
-  box-shadow: 0 16px 34px rgba(0,0,0,.10) !important;
-}
-.page .idbox .id-text,
-.page .idbox .id-text *{
-  color:#0b2f55 !important;
-}
-.page .choose-btn{
-  background: rgba(11,47,85,.06) !important;
-  border: 1px solid rgba(11,47,85,.18) !important;
-  color:#0b2f55 !important;
-}
-
-/* signature canvas should be light */
-.page .sig-canvas{
-  background: rgba(11,47,85,.06) !important;
-  border-color: rgba(0,65,130,.40) !important;
-}
-
-/* clear signature button looks good on white */
-.page .sig-clear-wrap .sig-btn{
-  background: #ffffff !important;
-  color:#0b2f55 !important;
-  border: 2px solid rgba(11,47,85,.22) !important;
-  box-shadow: 0 10px 22px rgba(0,0,0,.12),
-              0 0 0 1px rgba(255,255,255,.9) inset !important;
-}
-.page .sig-clear-wrap .sig-btn:hover{
-  background: rgba(255,44,44,.90) !important;
-  color:#fff !important;
-  border-color: rgba(255,44,44,.70) !important;
-}
-
-/* ✅ confirm apply button stays blue */
-.page .btn.btn-primary{
-  background: linear-gradient(90deg, #004182, #054585d0) !important;
-  color:#fff !important;
-  border: 0 !important;
-}
-
-/* ✅ Back button = White visible (same as other pages) */
-.page .back-btn{
-  background: #ffffff !important;
-  color: #0b2f55 !important;
-  font-weight: 950 !important;
-  text-decoration:none !important;
-
-  border: 2px solid rgba(11,47,85,.22) !important;
-  box-shadow: 0 10px 22px rgba(0,0,0,.14),
-              0 0 0 1px rgba(255,255,255,.9) inset !important;
-}
-.page .back-btn:hover{ transform: translateY(-1px); }
-.page .back-btn:active{ transform: scale(.98); opacity: 1 !important; }
-.page .back-btn::before{ border-right-color:#ffffff !important; }
 </style>
 <div class="page">
 <div class="top-actions-line"></div>
@@ -721,9 +529,9 @@ textarea{
                  required>
         </div>
         
-        <div class="field">
-  <label>Identify name</label>
-  <input
+  <div class="field">
+    <label>Identify name</label>
+    <input
     type="text"
     name="identity_name"
     id="identityName"
@@ -731,23 +539,23 @@ textarea{
     placeholder="Identify Name"
     {% if locked %}readonly{% endif %}
     required
-    pattern="[A-Za-z0-9 ]+"
-    title="Letters, numbers and spaces only">
+    pattern="[A-Za-z ]+"
+    title="Letters only, no numbers allowed">
 </div>
         
-        <div class="field">
-          <label>Identify numbers</label>
-<input
+  <div class="field">
+    <label>Identify numbers</label>
+    <input
   type="text"
   name="identity_number"
   id="identityNumber"
   value="{{ loan.identity_number|default:'' }}"
   placeholder="Identify Number"
-  inputmode="numeric"
-  pattern="[0-9]*"
   {% if locked %}readonly{% endif %}
-  required>
-        </div>
+  required
+  pattern="[A-Za-z0-9 ]+"
+  title="Letters, numbers and spaces only">
+</div>
         
         <div class="field" style="grid-column: 1 / -1;">
           <label>Loan purposes (optional)</label>
@@ -831,10 +639,9 @@ textarea{
                  alt="ID Front guide">
         
             <input type="file" name="id_front" accept="image/*"
-                 class="compress-img"
-                 {% if not locked %}required{% endif %}
-                 {% if locked %}disabled{% endif %}
-                 hidden>
+                   {% if not locked %}required{% endif %}
+                   {% if locked %}disabled{% endif %}
+                   hidden>
           </label>
         
         
@@ -849,10 +656,9 @@ textarea{
                  alt="ID Back guide">
         
             <input type="file" name="id_back" accept="image/*"
-       class="compress-img"
-       {% if not locked %}required{% endif %}
-       {% if locked %}disabled{% endif %}
-       hidden>
+                   {% if not locked %}required{% endif %}
+                   {% if locked %}disabled{% endif %}
+                   hidden>
           </label>
         
         
@@ -867,10 +673,9 @@ textarea{
                  alt="Selfie + ID guide">
         
             <input type="file" name="selfie_with_id" accept="image/*"
-                class="compress-img"
-                {% if not locked %}required{% endif %}
-                {% if locked %}disabled{% endif %}
-                hidden>
+                   {% if not locked %}required{% endif %}
+                   {% if locked %}disabled{% endif %}
+                   hidden>
           </label>
         
         </div>
@@ -912,30 +717,31 @@ textarea{
       <div class="section-title" style="margin:0 0 10px;">Apply Loan</div>
 
       <div class="field">
-        <label>Loan amount (Min 80,000 • Max 5,000,000)</label>
-        <input type="number" name="loan_amount" id="loanAmount" min="80000" max="5000000" required>
+        <label>Loan amount (Min ₱90,000 · Max ₱5,000,000)</label>
+        <input type="number" name="loan_amount" id="loanAmount" min="90000" max="5000000" placeholder="Enter amount (Min ₱90,000 - Max ₱5,000,000)" required>
       </div>
 
       <div class="field">
         <label>Loan terms</label>
-      
+
         <input type="hidden" name="loan_terms" id="loanTerms" required>
-      
+
         <div class="term-grid">
-          <button type="button" class="term-btn" data-term="6">6</button>
           <button type="button" class="term-btn" data-term="12">12</button>
+          <button type="button" class="term-btn" data-term="18">18</button>
           <button type="button" class="term-btn" data-term="24">24</button>
-          <button type="button" class="term-btn" data-term="36">36</button>
-      </div>
+          <button type="button" class="term-btn" data-term="30">30</button>
+        </div>
       
         <div class="muted" id="termHint" style="margin-top:8px;">Choose months</div>
       </div>      
 
       <div class="summary" aria-live="polite">
         <div class="row"><div class="k">Amount of loan</div><div class="v" id="sumAmount">—</div></div>
-        <div class="row"><div class="k">Interest rate</div><div class="v">0.5%</div></div>
+        <div class="row"><div class="k">Interest rate</div><div class="v">0.3% per month</div></div>
         <div class="row"><div class="k">Loan period</div><div class="v" id="sumTerm">—</div></div>
         <div class="row"><div class="k">Monthly repayment</div><div class="v" id="sumMonthly">—</div></div>
+        <div class="row"><div class="k">Total payment</div><div class="v" id="sumTotal">—</div></div>
       </div>
 
       {% if locked %}
@@ -947,6 +753,13 @@ textarea{
     Confirm Apply
   </button>
 {% endif %}
+<!-- TOP ACTIONS -->
+<div class="top-actions">
+  <a class="back-btn" href="{% url 'profile' %}">
+    Back
+  </a>
+</div>
+<div class="top-actions-line"></div>
 
     </form>
   </div>
@@ -973,7 +786,7 @@ textarea{
   bindPreview('boxBack', 'id_back', 'prevBack');
   bindPreview('boxSelfie', 'selfie_with_id', 'prevSelfie');
 
-  // Simple live calc (0.03% monthly) — UI only
+  // Simple live calc (0.05% monthly) — UI only
   const amountEl = document.getElementById('loanAmount');
   const termEl = document.getElementById('loanTerms');
   const sumAmount = document.getElementById('sumAmount');
@@ -1003,31 +816,35 @@ textarea{
   })();
   </script>
   <script>
+    function fmt(n){
+      return n.toLocaleString("en-US", {minimumFractionDigits:2, maximumFractionDigits:2});
+    }
     function updateSummary(){
       const amountEl = document.getElementById("loanAmount");
       const termEl   = document.getElementById("loanTerms");
-    
+
       const outAmount = document.getElementById("sumAmount");
       const outTerm   = document.getElementById("sumTerm");
       const outMonthly= document.getElementById("sumMonthly");
-    
+      const outTotal  = document.getElementById("sumTotal");
+
       if(!amountEl || !termEl || !outAmount || !outTerm || !outMonthly) return;
-    
+
       const amount = Number(amountEl.value || 0);
       const term   = Number(termEl.value || 0);
-    
-      // show amount + term
-      outAmount.textContent = amount ? amount.toLocaleString() : "—";
+
+      outAmount.textContent = amount ? ("₱" + fmt(amount)) : "—";
       outTerm.textContent   = term ? (term + " months") : "—";
-    
-      // monthly repayment (simple)
-      const rate = 0.005; // 0.5%
+
+      const rate = 0.003; // 0.3% per month
       if(amount > 0 && term > 0){
-        const total = amount + (amount * rate * term);
-        const monthly = total / term;
-        outMonthly.textContent = Math.round(monthly).toLocaleString();
+        const monthly = amount * rate * Math.pow(1+rate, term) / (Math.pow(1+rate, term) - 1);
+        const total = monthly * term;
+        outMonthly.textContent = "₱" + fmt(monthly);
+        if(outTotal) outTotal.textContent = "₱" + fmt(total);
       }else{
         outMonthly.textContent = "—";
+        if(outTotal) outTotal.textContent = "—";
       }
     }
     
@@ -1084,20 +901,20 @@ textarea{
     if(!el) return;
 
     el.addEventListener("input", function(){
-      this.value = this.value.replace(/[^A-Za-z0-9 ]+/g, "");
+      this.value = this.value.replace(/[^A-Za-z ]+/g, "");
     });
   })();
 </script>
     <script>
-      (function(){
-        const el = document.getElementById("identityNumber");
-        if(!el) return;
-    
-        el.addEventListener("input", function(){
-          this.value = this.value.replace(/[^0-9]/g, "");
-        });
-      })();
-    </script>
+  (function(){
+    const el = document.getElementById("identityNumber");
+    if(!el) return;
+
+    el.addEventListener("input", function(){
+      this.value = this.value.replace(/[^A-Za-z0-9 ]+/g, "");
+    });
+  })();
+</script>
     <script>
       (function(){
         const living = document.getElementById("currentLiving");
