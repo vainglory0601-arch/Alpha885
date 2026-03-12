@@ -1,1 +1,41 @@
-claude "In my register.html file, fix the agreement modal CSS so the Agree/Not Agree buttons are always visible on desktop. The fix is simple - just 4 CSS changes: 1) .agreement-box add display:flex and flex-direction:column  2) .agreement-body remove max-height:58vh and add flex:1 and min-height:0  3) .agreement-foot add flex-shrink:0  4) .agreement-head add flex-shrink:0. Do NOT change anything else in the file."
+I have a Django welcome/choose page (choose.html) that needs a style refresh. Please update the design to look more modern and unique while following these strict rules:
+
+**MUST KEEP THE SAME:**
+- All text content (do not change any words)
+- Color culture: Navy blue (#1B2A5E), Red (#E03020), Gold/Yellow (#F5C518), White (#FFFFFF)
+- All button links and functionality
+- All logos and images
+
+**STYLE CHANGES I WANT:**
+
+1. **Welcome Card:**
+   - Make it look more premium/professional
+   - Add subtle shadow and border styling (use red border like other pages in my project)
+   - White background with clean design
+
+2. **Bank Logos Section:**
+   - Display logos in a cleaner grid or carousel style
+   - Add very subtle hover effects (scale or opacity only)
+   - Remove cluttered look
+
+3. **"Fast & Secure Online Loans" Section:**
+   - Make this section stand out more
+   - Professional gradient or card-based design
+   - Clean typography
+
+4. **Bottom Stats (18+ Years, 50K+ Customers, License):**
+   - Display in professional card style with white background and red border
+   - Add very LOW/subtle animation (like gentle fade-in on scroll or soft pulse on icons)
+   - Keep icons simple
+
+5. **Animations:**
+   - ONLY subtle/low animations allowed
+   - Examples: soft fade-in, gentle scale on hover (1.02-1.05 max), subtle shadow change
+   - NO flashy, bouncing, or distracting animations
+
+6. **Overall:**
+   - Mobile-friendly responsive design
+   - Match the style of my dashboard.html (white cards, red borders, navy text)
+   - Clean, professional, trustworthy banking/finance look
+
+Please provide the complete updated choose.html file.
