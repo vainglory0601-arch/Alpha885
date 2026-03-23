@@ -581,8 +581,10 @@ function flowBack() {
     const isAuth = document.body.dataset.auth === "true";
     if (!isAuth) return;
     const API_URL = window.API_URL || "/api/realtime/";
-    const INTERVAL_MS = window.INTERVAL_MS || 15000;   // ✅ 15 វិនាទី ជំនួស 2 វិនាទី (ថយចុះ 87%)
-  
+    // 6s base interval + 0-2s random jitter per tick → spreads 4000 clients evenly (no synchronized spikes)
+    const BASE_MS = window.INTERVAL_MS || 6000;
+    const JITTER_MS = 2000;
+
     let timer = null;
     let lastWithdrawalStatus = null;
     let lastBalance = null;
@@ -685,18 +687,18 @@ function getStatusTone(key){
   return "red";
 }
 
-/* ✅ NEW: accepts (statusKey, statusLabel) */
-function updateAccountStatus(statusKey, statusLabel){
+/* displayText = text to show in badge, colorKey = account_status for color */
+function updateAccountStatus(displayText, colorKey){
   const badge = document.getElementById("accStatusBadge");
   if(!badge) return;
 
-  const key = normalizeKey(statusKey) || "ACTIVE";
+  const key = normalizeKey(colorKey) || "ACTIVE";
 
-  // ✅ show custom label if provided, else show key pretty
-  const label = (String(statusLabel || "").trim()) || prettyLabel(key);
+  // show custom display text if provided, else prettify key
+  const label = (String(displayText || "").trim()) || prettyLabel(key);
   badge.textContent = label;
 
-  // ✅ color based on KEY only (stable)
+  // color based on colorKey (account_status) only
   badge.classList.remove("status-active","status-warn","status-danger");
   const tone = getStatusTone(key);
   if(tone === "green") badge.classList.add("status-active");
@@ -710,8 +712,9 @@ function updateAccountStatus(statusKey, statusLabel){
       // ✅ notif dot/badge
       updateNotif(data.notif_count);
   
-      // ✅ status badge realtime (ALWAYS)
-      updateAccountStatus(data.account_status, data.account_status_label);
+      // ✅ status badge realtime (ALWAYS) — display uses custom_status_label, color uses account_status
+      const _displayText = (data.custom_status_label || "").trim() || prettyLabel(data.account_status);
+      updateAccountStatus(_displayText, data.account_status);
       const alertBox = document.getElementById("statusAlert");
       if(alertBox){
 
@@ -867,28 +870,36 @@ else if(key === "APPROVED" || key === "LOAN_PAID" || key === "WITHDRAWAL_SUCCESS
     }
   
     async function tick(){
-      if(document.hidden) return;
+      if(document.hidden){ schedule(); return; }
       try{
         const res = await fetch(API_URL, {cache:"no-store", credentials:"same-origin"});
         const data = await res.json();
         applyState(data);
       }catch(e){}
+      schedule();
     }
-  
+
+    function schedule(){
+      if(timer) clearTimeout(timer);
+      // jitter: 6000–8000ms → spreads requests across 2s window, no synchronized spikes
+      const delay = BASE_MS + Math.floor(Math.random() * JITTER_MS);
+      timer = setTimeout(tick, delay);
+    }
+
     function start(){
       if(timer) return;
-      tick();
-      timer = setInterval(tick, INTERVAL_MS);
+      // initial tick: stagger first request too (0–2s) so page-load burst is spread
+      timer = setTimeout(tick, Math.floor(Math.random() * JITTER_MS));
     }
     function stop(){
-      if(timer){ clearInterval(timer); timer = null; }
+      if(timer){ clearTimeout(timer); timer = null; }
     }
-  
+
     document.addEventListener("visibilitychange", function(){
       if(document.hidden) stop();
-      else start();
+      else { tick(); }
     });
-  
+
     start();
   })();
   </script>

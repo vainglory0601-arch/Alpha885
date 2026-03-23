@@ -1124,13 +1124,13 @@ body{
       </div>
 
       <div class="muted" style="margin-top:6px;">
-        {% with raw=request.user.dashboard_status_label|default:request.user.account_status|default:"ACTIVE" %}
+        {% with sc=status_color|upper %}
           <span id="accStatusBadge"
                 class="status-badge
-                {% if raw|lower == 'active' or raw|lower == 'approved' %}status-active
-                {% elif raw|lower == 'pending' or raw|lower == 'review' or raw|lower == 'app maintenance' or raw|lower == 'invalid detail' %}status-warn
+                {% if sc == 'ACTIVE' or sc == 'APPROVED' or sc == 'LOAN_PAID' or sc == 'WITHDRAWAL_SUCCESSFUL' or sc == 'ACCOUNT_UPDATED' %}status-active
+                {% elif sc == 'APP_MAINTENANCE' or sc == 'INVALID_DETAIL' or sc == 'RENEW_DOCUMENT_REQUIRED' %}status-warn
                 {% else %}status-danger{% endif %}">
-            {{ raw }}
+            {{ status_display }}
           </span>
         {% endwith %}
       </div>

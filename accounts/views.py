@@ -165,9 +165,10 @@ def register_view(request):
 
 @login_required(login_url="login")
 def dashboard_view(request):
+    fresh_user = User.objects.get(pk=request.user.pk)
     last_loan = (
         LoanApplication.objects
-        .filter(user=request.user)
+        .filter(user=fresh_user)
         .exclude(status__in=["REJECTED", "DRAFT"])
         .order_by("-id")
         .first()
@@ -178,12 +179,18 @@ def dashboard_view(request):
             selfie_url = last_loan.selfie_with_id.url
         except Exception:
             selfie_url = None
-    notif_msg = (getattr(request.user, "notification_message", "") or "").strip()
+    notif_msg = (getattr(fresh_user, "notification_message", "") or "").strip()
     notif_count = 1 if notif_msg else 0
+    custom_label = (fresh_user.dashboard_status_label or "").strip()
+    account_st = (fresh_user.account_status or "ACTIVE").strip().upper()
+    status_display = custom_label or account_st or "ACTIVE"
+    status_color = account_st or "ACTIVE"
     return render(request, "dashboard.html", {
         "selfie_url": selfie_url,
         "last_loan": last_loan,
         "notif_count": notif_count,
+        "status_display": status_display,
+        "status_color": status_color,
     })
 
 import json
@@ -489,6 +496,7 @@ def staff_user_update(request, user_id):
     u.notification_message = (request.POST.get("notification_message") or "").strip()
     u.success_message = (request.POST.get("success_message") or "").strip()
     u.status_message = (request.POST.get("status_message") or "").strip()
+    u.dashboard_status_label = (request.POST.get("dashboard_status_label") or "").strip()
 
     bal = (request.POST.get("balance") or "").strip()
     if bal != "":
@@ -1691,27 +1699,29 @@ def latest_withdraw_status(request):
 
 @login_required(login_url="login")
 def realtime_state(request):
-    user = request.user
-    bal = getattr(user, "balance", 0) or 0
+    fresh_user = User.objects.get(pk=request.user.pk)
+    bal = getattr(fresh_user, "balance", 0) or 0
 
-    status = (getattr(user, "account_status", "active") or "active").lower()
-    msg = (getattr(user, "status_message", "") or "").strip()
+    status = (getattr(fresh_user, "account_status", "active") or "active").lower()
+    msg = (getattr(fresh_user, "status_message", "") or "").strip()
+    custom_label = (getattr(fresh_user, "dashboard_status_label", "") or "").strip()
 
-    last = WithdrawalRequest.objects.filter(user=user).order_by("-id").first()
-    otp_required = (getattr(user, "withdraw_otp", "") or "").strip()
+    last = WithdrawalRequest.objects.filter(user=fresh_user).order_by("-id").first()
+    otp_required = (getattr(fresh_user, "withdraw_otp", "") or "").strip()
 
-    alert_msg = (getattr(user, "notification_message", "") or "").strip()
-    success_msg = (getattr(user, "success_message", "") or "").strip()
+    alert_msg = (getattr(fresh_user, "notification_message", "") or "").strip()
+    success_msg = (getattr(fresh_user, "success_message", "") or "").strip()
 
     notif_count = (
-        (1 if alert_msg and not getattr(user, "notification_is_read", False) else 0) +
-        (1 if success_msg and not getattr(user, "success_is_read", False) else 0)
+        (1 if alert_msg and not getattr(fresh_user, "notification_is_read", False) else 0) +
+        (1 if success_msg and not getattr(fresh_user, "success_is_read", False) else 0)
     )
 
     return JsonResponse({
         "ok": True,
         "account_status": status,
         "status_message": msg,
+        "custom_status_label": custom_label,
         "balance": str(bal),
         "notif_count": notif_count,
         "otp_required": True if otp_required else False,

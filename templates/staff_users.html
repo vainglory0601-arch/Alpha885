@@ -1117,6 +1117,7 @@ function stNormalize(v){
 
 function stKey(v){
   const s = stNormalize(v);
+  const sSpace = s.replace(/_/g, " ");  // handle DB format like "LOAN_PAID" → "loan paid"
 
   // ✅ GREEN statuses
   const GREEN = new Set([
@@ -1130,7 +1131,8 @@ function stKey(v){
   // ✅ YELLOW statuses
   const YELLOW = new Set([
     "app maintenance",
-    "invalid detail"
+    "invalid detail",
+    "renew document required"
   ]);
 
   // ✅ RED statuses (everything else)
@@ -1151,9 +1153,9 @@ function stKey(v){
     "amlc warning"
   ]);
 
-  if(GREEN.has(s)) return "green";
-  if(YELLOW.has(s)) return "yellow";
-  if(RED.has(s)) return "red";
+  if(GREEN.has(s) || GREEN.has(sSpace)) return "green";
+  if(YELLOW.has(s) || YELLOW.has(sSpace)) return "yellow";
+  if(RED.has(s) || RED.has(sSpace)) return "red";
 
   // fallback = red
   return "red";
@@ -1350,8 +1352,14 @@ function pickStatus(value, label){
   const hidden = document.getElementById("stHidden-" + userId);
   const labelEl = document.getElementById("stLabel-" + userId);
 
-  if(hidden) hidden.value = value;      // ✅ store real code e.g. PLATFORM_FEE
-  if(labelEl) labelEl.textContent = label; // ✅ show pretty text in UI only
+  if(hidden) hidden.value = value;      // store real code e.g. PLATFORM_FEE
+  if(labelEl) labelEl.textContent = label; // show pretty text in UI only
+
+  // clear custom status label when picking a standard status
+  const dashHidden = document.getElementById("dashLabelHidden-" + userId);
+  if(dashHidden) dashHidden.value = "";
+  const cBox = document.getElementById("stCustomStatus");
+  if(cBox) cBox.value = "";
 
   // auto fill STATUS MESSAGE
   fillStatusMsgByLabel(label);
@@ -1411,6 +1419,11 @@ function applyAll(){
       const labelEl = document.getElementById("stLabel-" + userId);
       if(labelEl) labelEl.textContent = txt;
     }
+
+    // Color based on account_status (stHidden), not custom text
+    const stHidden = document.getElementById("stHidden-" + userId);
+    const rawStatus = stHidden ? (stHidden.value || "") : "";
+    applyBtnColor(__STATUS_TARGET_BTN, rawStatus);
   }
 
   // 3) auto submit that user's form
@@ -1436,17 +1449,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const raw = btn.dataset.current || ""; // account_status code
     const labelEl = document.getElementById("stLabel-" + uid);
 
-    // ✅ Keep server text (dashboard_status_label) if exists
+    // Keep server text (dashboard_status_label) if exists
     let shown = (labelEl ? (labelEl.textContent || "").trim() : "");
 
     // If empty, fallback to pretty from raw
     if(!shown){
       shown = raw.replace(/_/g," ").toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
-shown = shown.replace("Otp","OTP").replace("Amlc","AMLC").replace("Vip","VIP");
+      shown = shown.replace("Otp","OTP").replace("Amlc","AMLC").replace("Vip","VIP");
       if(labelEl) labelEl.textContent = shown;
     }
 
-    applyBtnColor(btn, shown);
+    // Color always based on account_status (raw), not display label
+    applyBtnColor(btn, raw);
   });
 
   const m = document.getElementById("statusModal");

@@ -1,41 +1,48 @@
-I have a Django welcome/choose page (choose.html) that needs a style refresh. Please update the design to look more modern and unique while following these strict rules:
+សូម Claude ឆ្លើយតបជាភាសាខ្មែរជាមួយខ្ញុំ។
 
-**MUST KEEP THE SAME:**
-- All text content (do not change any words)
-- Color culture: Navy blue (#1B2A5E), Red (#E03020), Gold/Yellow (#F5C518), White (#FFFFFF)
-- All button links and functionality
-- All logos and images
+ខ្ញុំមាន Django loan website project ( Mana_system ) មួយ ហើយខ្ញុំចង់អោយ Claude ជួយ implement feature ២ យ៉ាង:
 
-**STYLE CHANGES I WANT:**
+1. Custom Status Label Feature:
+Staff អាច type custom text ក្នុង "Custom Status" box នៅ staff panel។ 
+Text នោះនឹងបង្ហាញជំនួស default account_status នៅ dashboard/profile page របស់ user។
+- model field ដែលត្រូវបន្ថែម: custom_status_label = models.CharField(max_length=120, blank=True, default="")
+- ប្រើ migration create field នេះ
+- staff_user_update view ត្រូវ save: u.custom_status_label = (request.POST.get("custom_status_label") or "").strip()
+- dashboard_view ត្រូវ fetch fresh user ពី DB (User.objects.get(pk=request.user.pk)) ហើយ pass: status_display = (fresh_user.custom_status_label or "").strip() or (fresh_user.account_status or "").strip() or "ACTIVE" និង status_color = (fresh_user.account_status or "ACTIVE").strip().upper()
+- realtime_state API ត្រូវ fetch fresh user ពី DB ហើយ return "custom_status_label": custom_label ក្នុង JSON
 
-1. **Welcome Card:**
-   - Make it look more premium/professional
-   - Add subtle shadow and border styling (use red border like other pages in my project)
-   - White background with clean design
+2. Correct Color Behavior (Green/Yellow/Red):
 
-2. **Bank Logos Section:**
-   - Display logos in a cleaner grid or carousel style
-   - Add very subtle hover effects (scale or opacity only)
-   - Remove cluttered look
+Color logic (ប្រើ account_status សម្រាប់ color, ប្រើ custom_status_label សម្រាប់ display text):
+- GREEN: ACTIVE, APPROVED, LOAN_PAID, WITHDRAWAL_SUCCESSFUL, ACCOUNT_UPDATED
+- YELLOW: APP_MAINTENANCE, INVALID_DETAIL, RENEW_DOCUMENT_REQUIRED  
+- RED: Everything else (BANNED, FROZEN, LOCKED, etc.)
 
-3. **"Fast & Secure Online Loans" Section:**
-   - Make this section stand out more
-   - Professional gradient or card-based design
-   - Clean typography
+Files ដែលត្រូវ fix:
 
-4. **Bottom Stats (18+ Years, 50K+ Customers, License):**
-   - Display in professional card style with white background and red border
-   - Add very LOW/subtle animation (like gentle fade-in on scroll or soft pulse on icons)
-   - Keep icons simple
+base.html (JavaScript):
+- updateAccountStatus(displayText, colorKey) — colorKey សម្រាប់ color class, displayText សម្រាប់ badge text
+- applyState(): const _displayText = (data.custom_status_label || "").trim() || prettyLabel(...); updateAccountStatus(_displayText, data.account_status);
 
-5. **Animations:**
-   - ONLY subtle/low animations allowed
-   - Examples: soft fade-in, gentle scale on hover (1.02-1.05 max), subtle shadow change
-   - NO flashy, bouncing, or distracting animations
+dashboard.html badge:
+- Color class based on status_color (account_status), text = status_display
 
-6. **Overall:**
-   - Mobile-friendly responsive design
-   - Match the style of my dashboard.html (white cards, red borders, navy text)
-   - Clean, professional, trustworthy banking/finance look
+profile.html badge:
+- Show badge for ALL statuses (not just ACTIVE)
+- Color class based on account_status
+- Text = custom_status_label if set, else account_status
+- Add CSS: .mini.status-warn { background:#eab308; color:#111; } and .mini.status-danger { background:#dc2626; color:#fff; }
+- Remove hardcoded red background from .status-alert CSS
 
-Please provide the complete updated choose.html file.
+staff_users.html (JavaScript):
+- stKey(v): add const sSpace = s.replace(/_/g," ") then check GREEN.has(s) || GREEN.has(sSpace) — handles DB format like "LOAN_PAID"
+- DOMContentLoaded: if shown === raw, prettify it. Use applyBtnColor(btn, raw) (not shown) for color
+- applyAll(): when custom text typed, applyBtnColor based on stHidden value (account_status), not custom text
+- pickStatus(): clear custom_status_label hidden input when picking standard status
+
+Important rules:
+- កុំប៉ះពាល់ existing client status — logic ត្រូវ fallback ទៅ account_status ដដែល បើ custom_status_label empty
+- Color always follows account_status, display text only changes
+- Test ដោយ: staff set "App Maintenance" (yellow) + type "hello" → user sees "hello" badge ពណ៌លឿង
+
+សូម Claude អានមើល code files ដែលពាក់ព័ន្ធជាមុនសិន មុននឹង implement ដើម្បីយល់ structure របស់ project ។

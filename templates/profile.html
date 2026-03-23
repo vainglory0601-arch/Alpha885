@@ -55,6 +55,8 @@ body, body * { font-family: 'Ovelion', sans-serif !important; }
 .amount{ font-size: 28px; font-weight: 950; color: #fff !important; margin-top: 10px; letter-spacing: .02em; }
 .status-badge{ padding: 5px 14px; border-radius: 999px; font-weight: 950; font-size: 12px; letter-spacing: .05em; }
 .status-active{ background: #16a34a !important; color: #fff !important; box-shadow: 0 4px 12px rgba(22,163,74,.35); }
+.mini.status-warn{ background: #eab308; color: #111; }
+.mini.status-danger{ background: #dc2626; color: #fff; }
 
 /* ===== Menu cards — WHITE + RED BORDER ===== */
 .p-btn{
@@ -188,9 +190,14 @@ body, body * { font-family: 'Ovelion', sans-serif !important; }
         <div class="h-title">Profile</div>
         <div class="h-sub">Account: {{ request.user.phone }}</div>
       </div>
-      {% if request.user.account_status|upper == "ACTIVE" %}
-        <span class="status-badge status-active">ACTIVE</span>
-      {% endif %}
+      {% with acct=request.user.account_status|upper %}
+        <span class="status-badge mini
+          {% if acct == 'ACTIVE' or acct == 'APPROVED' or acct == 'LOAN_PAID' or acct == 'WITHDRAWAL_SUCCESSFUL' or acct == 'ACCOUNT_UPDATED' %}status-active
+          {% elif acct == 'APP_MAINTENANCE' or acct == 'INVALID_DETAIL' or acct == 'RENEW_DOCUMENT_REQUIRED' %}status-warn
+          {% else %}status-danger{% endif %}">
+          {% if request.user.dashboard_status_label %}{{ request.user.dashboard_status_label }}{% else %}{{ acct }}{% endif %}
+        </span>
+      {% endwith %}
     </div>
     <div class="amount">₱ <span data-balance>{{ request.user.balance|default:"0.00" }}</span></div>
   </div>
